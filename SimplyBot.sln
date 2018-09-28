@@ -5,6 +5,10 @@ VisualStudioVersion = 15.0.28010.2019
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimplyBotUI", "SimplyBotUI\SimplyBotUI.csproj", "{3C91D1A8-2156-4F64-AB3D-5FF602EC8784}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestingUI", "TestingUI\TestingUI.csproj", "{2B563D27-1F32-4B98-8B6D-8883D9030BCA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QueryMaster", "QueryMaster\QueryMaster.csproj", "{4CA9C894-518F-42D7-BBE2-CFDFE7A03F8A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{3C91D1A8-2156-4F64-AB3D-5FF602EC8784}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3C91D1A8-2156-4F64-AB3D-5FF602EC8784}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3C91D1A8-2156-4F64-AB3D-5FF602EC8784}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2B563D27-1F32-4B98-8B6D-8883D9030BCA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2B563D27-1F32-4B98-8B6D-8883D9030BCA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2B563D27-1F32-4B98-8B6D-8883D9030BCA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2B563D27-1F32-4B98-8B6D-8883D9030BCA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4CA9C894-518F-42D7-BBE2-CFDFE7A03F8A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4CA9C894-518F-42D7-BBE2-CFDFE7A03F8A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4CA9C894-518F-42D7-BBE2-CFDFE7A03F8A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4CA9C894-518F-42D7-BBE2-CFDFE7A03F8A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
