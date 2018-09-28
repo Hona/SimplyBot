@@ -1,5 +1,5 @@
-﻿
-#region License
+﻿#region License
+
 /*
 Copyright (c) 2015 Betson Roy
 
@@ -24,123 +24,141 @@ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 */
+
 #endregion
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace QueryMaster.Utils
 {
     /// <summary>
-    /// Steam Universe.
+    ///     Steam Universe.
     /// </summary>
     public enum Universe
     {
         /// <summary>
-        /// Invalid.
+        ///     Invalid.
         /// </summary>
         Invalid = 0,
+
         /// <summary>
-        /// Pubic.
+        ///     Pubic.
         /// </summary>
         Public,
+
         /// <summary>
-        /// Beta.
+        ///     Beta.
         /// </summary>
         Beta,
+
         /// <summary>
-        /// Internl.
+        ///     Internl.
         /// </summary>
         Internal,
+
         /// <summary>
-        /// Dev
+        ///     Dev
         /// </summary>
         Dev
     }
+
     /// <summary>
-    /// Steam Account type
+    ///     Steam Account type
     /// </summary>
     public enum AccountType
     {
         /// <summary>
-        /// Invalid.
+        ///     Invalid.
         /// </summary>
         Invalid = 0,
+
         /// <summary>
-        /// Individual.
+        ///     Individual.
         /// </summary>
         Individual,
+
         /// <summary>
-        /// MultiSeat
+        ///     MultiSeat
         /// </summary>
         MultiSeat,
+
         /// <summary>
-        /// Game Server.
+        ///     Game Server.
         /// </summary>
         GameServer,
+
         /// <summary>
-        /// Anonymous Game Server
+        ///     Anonymous Game Server
         /// </summary>
         AnonGameServer,
+
         /// <summary>
-        /// Pending.
+        ///     Pending.
         /// </summary>
         Pending,
+
         /// <summary>
-        /// Content Server.
+        ///     Content Server.
         /// </summary>
         ContentServer,
+
         /// <summary>
-        /// Clan.
+        ///     Clan.
         /// </summary>
         Clan,
+
         /// <summary>
-        /// Chat.
+        ///     Chat.
         /// </summary>
         Chat,
+
         /// <summary>
-        /// Console user.
+        ///     Console user.
         /// </summary>
         ConsoleUser,
+
         /// <summary>
-        /// Anonymous user.
+        ///     Anonymous user.
         /// </summary>
         AnonUser,
+
         /// <summary>
-        /// Max.
+        ///     Max.
         /// </summary>
         Max,
+
         /// <summary>
-        /// P2PSuperSeeder.
+        ///     P2PSuperSeeder.
         /// </summary>
         P2PSuperSeeder
     }
+
     /// <summary>
-    /// Steam Instance
+    ///     Steam Instance
     /// </summary>
     public enum Instance
     {
         /// <summary>
-        /// Invalid.
+        ///     Invalid.
         /// </summary>
-        Invalid=-1,
+        Invalid = -1,
+
         /// <summary>
-        /// All.
+        ///     All.
         /// </summary>
-        All=0,
+        All = 0,
+
         /// <summary>
-        /// Desktop.
+        ///     Desktop.
         /// </summary>
-        Desktop=1,
+        Desktop = 1,
+
         /// <summary>
-        /// Console.
+        ///     Console.
         /// </summary>
-        Console=2,
+        Console = 2,
+
         /// <summary>
-        /// Web.
+        ///     Web.
         /// </summary>
-        Web=4,
-        
+        Web = 4
     }
 }

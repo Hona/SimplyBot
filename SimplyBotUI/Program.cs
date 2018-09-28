@@ -18,9 +18,9 @@ namespace SimplyBotUI
     {
         private DiscordSocketClient _client;
         private CommandService _commands;
-        private IServiceProvider _services;
-        private Timer _rankUpdateTimer;
         private DataAccess _dataAccess;
+        private Timer _rankUpdateTimer;
+        private IServiceProvider _services;
 
         private int FromMinutes(int minutes)
         {
@@ -172,12 +172,16 @@ namespace SimplyBotUI
                 .WithFooter("Updated " + DateTime.Now.ToShortTimeString());
             await channel.SendMessageAsync("", embed: builder);
         }
+
         private async Task SendRecentRecords(IMessageChannel channel)
         {
             var recentRecords = await _dataAccess.GetRecentRecords(10);
-            var recentRecordsString = recentRecords.Aggregate("", (currentString, nextHighscore) => currentString + $"{ClassConstants.ToString(nextHighscore.Class)} **#{nextHighscore.Position + 1}** on **{nextHighscore.Map}** in **__{nextHighscore.GetTimeSpan:c}__** run by **{nextHighscore.Name}**" + Environment.NewLine);
+            var recentRecordsString = recentRecords.Aggregate("",
+                (currentString, nextHighscore) => currentString +
+                                                  $"{ClassConstants.ToString(nextHighscore.Class)} **#{nextHighscore.Position + 1}** on **{nextHighscore.Map}** in **__{nextHighscore.GetTimeSpan:c}__** run by **{nextHighscore.Name}**" +
+                                                  Environment.NewLine);
 
-            var builder = new EmbedBuilder { Title = "Recent Map Records" };
+            var builder = new EmbedBuilder {Title = "Recent Map Records"};
 
             builder.WithDescription(recentRecordsString)
                 .WithFooter("Updated " + DateTime.Now.ToShortTimeString());

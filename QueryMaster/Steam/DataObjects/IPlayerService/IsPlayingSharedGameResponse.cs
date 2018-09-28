@@ -1,5 +1,5 @@
-﻿
-#region License
+﻿#region License
+
 /*
 Copyright (c) 2015 Betson Roy
 
@@ -24,36 +24,34 @@ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 */
+
 #endregion
-using Newtonsoft.Json;
+
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using Newtonsoft.Json;
 
 namespace QueryMaster.Steam
 {
     /// <summary>
-    /// Contains response of IsPlayingSharedGame method.
+    ///     Contains response of IsPlayingSharedGame method.
     /// </summary>
     [Serializable]
-   public class IsPlayingSharedGameResponse : SteamResponse 
+    public class IsPlayingSharedGameResponse : SteamResponse
     {
         /// <summary>
-        /// Parsed response.
+        ///     Parsed response.
         /// </summary>
-       [JsonProperty("response")]
-       public IsPlayingSharedGameResponseResponse ParsedResponse { get; internal set; }
+        [JsonProperty("response")]
+        public IsPlayingSharedGameResponseResponse ParsedResponse { get; internal set; }
     }
 
     [Serializable]
-   public class IsPlayingSharedGameResponseResponse : DataObject
-   {
+    public class IsPlayingSharedGameResponseResponse : DataObject
+    {
         /// <summary>
-        /// Lender's SteamId.
+        ///     Lender's SteamId.
         /// </summary>
         [JsonProperty("lender_steamid")]
-       public ulong LenderSteamid { get; internal set; }
-   }
-
+        public ulong LenderSteamid { get; internal set; }
+    }
 }

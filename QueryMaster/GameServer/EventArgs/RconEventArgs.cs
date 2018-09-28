@@ -1,5 +1,5 @@
-﻿
-#region License
+﻿#region License
+
 /*
 Copyright (c) 2015 Betson Roy
 
@@ -24,42 +24,46 @@ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 */
+
 #endregion
+
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace QueryMaster.GameServer
 {
     /// <summary>
-    /// Provides data for rcon event.
+    ///     Provides data for rcon event.
     /// </summary>
     [Serializable]
     public class RconEventArgs : LogEventArgs
     {
         /// <summary>
-        /// Gets Challenge Id of remote client.
+        ///     Gets Challenge Id of remote client.
         /// </summary>
         public string Challenge { get; internal set; }
+
         /// <summary>
-        /// Gets Password.
+        ///     Gets Password.
         /// </summary>
         public string Password { get; internal set; }
+
         /// <summary>
-        /// Gets command sent by remote client.
+        ///     Gets command sent by remote client.
         /// </summary>
         public string Command { get; internal set; }
+
         /// <summary>
-        /// Gets IP-Address of client.
+        ///     Gets IP-Address of client.
         /// </summary>
         public string Ip { get; internal set; }
+
         /// <summary>
-        /// Gets Port number of client.
+        ///     Gets Port number of client.
         /// </summary>
         public ushort Port { get; internal set; }
+
         /// <summary>
-        /// Returns true if password sent is valid.
+        ///     Returns true if password sent is valid.
         /// </summary>
         public bool IsValid { get; internal set; }
     }

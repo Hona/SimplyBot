@@ -1,5 +1,5 @@
-﻿
-#region License
+﻿#region License
+
 /*
 Copyright (c) 2015 Betson Roy
 
@@ -24,40 +24,42 @@ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 */
+
 #endregion
+
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace QueryMaster.GameServer
 {
     /// <summary>
-    /// Contains extra information about server.
+    ///     Contains extra information about server.
     /// </summary>
     [Serializable]
     public class ExtraInfo : DataObject
     {
         /// <summary>
-        /// The server's game port number.
+        ///     The server's game port number.
         /// </summary>
         public ushort Port { get; internal set; }
+
         /// <summary>
-        /// Server's SteamID. 
+        ///     Server's SteamID.
         /// </summary>
         public ulong SteamId { get; internal set; }
+
         /// <summary>
-        /// Contains information on Source TV.(if it is Source TV).
+        ///     Contains information on Source TV.(if it is Source TV).
         /// </summary>
         public SourceTVInfo SpecInfo { get; internal set; }
+
         /// <summary>
-        /// Tags that describe the game according to the server. 
+        ///     Tags that describe the game according to the server.
         /// </summary>
         public string Keywords { get; internal set; }
+
         /// <summary>
-        /// The server's 64-bit GameID.
+        ///     The server's 64-bit GameID.
         /// </summary>
         public ulong GameId { get; internal set; }
-
     }
 }

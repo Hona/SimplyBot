@@ -1,5 +1,5 @@
-﻿
-#region License
+﻿#region License
+
 /*
 Copyright (c) 2015 Betson Roy
 
@@ -24,78 +24,86 @@ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 */
+
 #endregion
-using Newtonsoft.Json;
+
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using Newtonsoft.Json;
 
 namespace QueryMaster.Steam
 {
     /// <summary>
-    /// Contains response of GetOwnedGames method.
+    ///     Contains response of GetOwnedGames method.
     /// </summary>
     [Serializable]
-   public class GetOwnedGamesResponse : SteamResponse
+    public class GetOwnedGamesResponse : SteamResponse
     {
         /// <summary>
-        /// Parsed response.
+        ///     Parsed response.
         /// </summary>
-       [JsonProperty("response")]
-       public GetOwnedGamesResponseResponse ParsedResponse { get; internal set; }
+        [JsonProperty("response")]
+        public GetOwnedGamesResponseResponse ParsedResponse { get; internal set; }
     }
 
     [Serializable]
-   public class GetOwnedGamesResponseResponse : DataObject
-   {
+    public class GetOwnedGamesResponseResponse : DataObject
+    {
         /// <summary>
-       /// Total number of games.
+        ///     Total number of games.
         /// </summary>
         [JsonProperty("game_count")]
-       public uint Count { get; internal set; }
+        public uint Count { get; internal set; }
+
         /// <summary>
-        /// Collection of <see cref="GetOwnedGamesResponseGame"/> instances.
+        ///     Collection of <see cref="GetOwnedGamesResponseGame" /> instances.
         /// </summary>
         [JsonProperty("games")]
-       public QueryMasterCollection<GetOwnedGamesResponseGame> Games { get; internal set; }
-   }
+        public QueryMasterCollection<GetOwnedGamesResponseGame> Games { get; internal set; }
+    }
 
     [Serializable]
     public class GetOwnedGamesResponseGame : DataObject
     {
         /// <summary>
-        /// Application Id of the game.
+        ///     Application Id of the game.
         /// </summary>
         [JsonProperty("appid")]
         public uint AppId { get; internal set; }
+
         /// <summary>
-        /// A string containing the program's publicly facing title(Optional).
+        ///     A string containing the program's publicly facing title(Optional).
         /// </summary>
         [JsonProperty("name")]
         public string Name { get; internal set; }
+
         /// <summary>
-        /// Player's playtime in the past 2 weeks(Optional).
+        ///     Player's playtime in the past 2 weeks(Optional).
         /// </summary>
-        [JsonProperty("playtime_2weeks"), JsonConverter(typeof(IntegerTimeSpanConverter))]
+        [JsonProperty("playtime_2weeks")]
+        [JsonConverter(typeof(IntegerTimeSpanConverter))]
         public TimeSpan Playtime2Weeks { get; internal set; }
+
         /// <summary>
-        /// Player's total playtime(Optional).
+        ///     Player's total playtime(Optional).
         /// </summary>
-        [JsonProperty("playtime_forever"), JsonConverter(typeof(IntegerTimeSpanConverter))]
+        [JsonProperty("playtime_forever")]
+        [JsonConverter(typeof(IntegerTimeSpanConverter))]
         public TimeSpan PlaytimeForever { get; internal set; }
+
         /// <summary>
-        /// Game icon url(Optional).
+        ///     Game icon url(Optional).
         /// </summary>
         [JsonProperty("img_icon_url")]
         public string IconUrl { get; internal set; }
+
         /// <summary>
-        /// Game logo url(Optional).
+        ///     Game logo url(Optional).
         /// </summary>
         [JsonProperty("img_logo_url")]
         public string LogoUrl { get; internal set; }
+
         /// <summary>
-        /// Whether the program has stats accessible via GetUserStatsForGame and GetGlobalStatsForGame(Optional). 
+        ///     Whether the program has stats accessible via GetUserStatsForGame and GetGlobalStatsForGame(Optional).
         /// </summary>
         [JsonProperty("has_community_visible_stats")]
         public bool HasCommunityVisibleStats { get; internal set; }

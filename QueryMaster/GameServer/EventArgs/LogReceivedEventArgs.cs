@@ -1,5 +1,5 @@
-﻿
-#region License
+﻿#region License
+
 /*
 Copyright (c) 2015 Betson Roy
 
@@ -24,22 +24,21 @@ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 */
+
 #endregion
+
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace QueryMaster.GameServer
 {
     /// <summary>
-    /// Provides data for log received event.
+    ///     Provides data for log received event.
     /// </summary>
     [Serializable]
-    public class LogReceivedEventArgs : LogEventArgs 
+    public class LogReceivedEventArgs : LogEventArgs
     {
         /// <summary>
-        /// Gets received log message.
+        ///     Gets received log message.
         /// </summary>
         public string Message { get; internal set; }
     }

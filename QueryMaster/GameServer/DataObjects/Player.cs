@@ -1,5 +1,5 @@
-﻿
-#region License
+﻿#region License
+
 /*
 Copyright (c) 2015 Betson Roy
 
@@ -24,30 +24,31 @@ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 */
+
 #endregion
+
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace QueryMaster.GameServer
 {
     /// <summary>
-    /// Contains information of a player currently in server.
+    ///     Contains information of a player currently in server.
     /// </summary>
     [Serializable]
     public class PlayerInfo : DataObject
     {
         /// <summary>
-        /// Name of the player. 
+        ///     Name of the player.
         /// </summary>
         public string Name { get; internal set; }
+
         /// <summary>
-        /// Player's score (usually "frags" or "kills".).
+        ///     Player's score (usually "frags" or "kills".).
         /// </summary>
         public long Score { get; internal set; }
+
         /// <summary>
-        /// Time  player has been connected to the server.(returns TimeSpan instance).
+        ///     Time  player has been connected to the server.(returns TimeSpan instance).
         /// </summary>
         public TimeSpan Time { get; internal set; }
     }

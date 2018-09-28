@@ -1,5 +1,5 @@
-﻿
-#region License
+﻿#region License
+
 /*
 Copyright (c) 2015 Betson Roy
 
@@ -24,24 +24,22 @@ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 */
+
 #endregion
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Net;
-using System.Net.Sockets;
-using QueryMaster;
+
 namespace QueryMaster.GameServer
 {
-   internal class GoldSource : Server
+    internal class GoldSource : Server
     {
         internal GoldSource(ConnectionInfo conInfo, bool? isObsolete)
-           : base(conInfo, EngineType.GoldSource, isObsolete) { }
+            : base(conInfo, EngineType.GoldSource, isObsolete)
+        {
+        }
+
         public override bool GetControl(string pass)
         {
             ThrowIfDisposed();
-            bool isSuccess = false;
+            var isSuccess = false;
             Rcon = RconGoldSource.Authorize(ConInfo, pass);
             if (Rcon != null)
                 isSuccess = true;

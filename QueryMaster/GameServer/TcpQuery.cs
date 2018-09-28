@@ -1,5 +1,5 @@
-﻿
-#region License
+﻿#region License
+
 /*
 Copyright (c) 2015 Betson Roy
 
@@ -24,48 +24,49 @@ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 */
+
 #endregion
+
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Net;
-using QueryMaster;
 using System.Net.Sockets;
 
 namespace QueryMaster.GameServer
 {
     internal class TcpQuery : ServerSocket
     {
-        private byte[] EmptyPkt = new byte[] { 0x0a, 0x00, 0x00, 0x00, 0x0A, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
+        private readonly byte[] EmptyPkt =
+            {0x0a, 0x00, 0x00, 0x00, 0x0A, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
 
         internal TcpQuery(ConnectionInfo conInfo)
-            : base(conInfo, ProtocolType.Tcp) { }
+            : base(conInfo, ProtocolType.Tcp)
+        {
+        }
 
         internal byte[] GetResponse(byte[] msg)
         {
             byte[] recvData;
             SendData(msg);
-            recvData = ReceiveData();//Response value packet
-            recvData = ReceiveData();//Auth response packet
+            recvData = ReceiveData(); //Response value packet
+            recvData = ReceiveData(); //Auth response packet
 
             return recvData;
         }
 
         internal List<byte[]> GetMultiPacketResponse(byte[] msg)
         {
-            List<byte[]> recvBytes = new List<byte[]>();
-            bool isRemaining = true;
+            var recvBytes = new List<byte[]>();
+            var isRemaining = true;
             byte[] recvData;
             SendData(msg);
-            SendData(EmptyPkt);//Empty packet
-            recvData = ReceiveData();//reply
+            SendData(EmptyPkt); //Empty packet
+            recvData = ReceiveData(); //reply
             recvBytes.Add(recvData);
 
             do
             {
-                recvData = ReceiveData();//may or may not be an empty packet
-                if (BitConverter.ToInt32(recvData, 4) == (int)PacketId.Empty)
+                recvData = ReceiveData(); //may or may not be an empty packet
+                if (BitConverter.ToInt32(recvData, 4) == (int) PacketId.Empty)
                     isRemaining = false;
                 else
                     recvBytes.Add(recvData);

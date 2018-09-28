@@ -1,5 +1,5 @@
-﻿
-#region License
+﻿#region License
+
 /*
 Copyright (c) 2015 Betson Roy
 
@@ -24,34 +24,34 @@ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 */
+
 #endregion
-using Newtonsoft.Json;
+
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using Newtonsoft.Json;
 
 namespace QueryMaster.Steam
 {
     /// <summary>
-    /// Contains response of GetGroupDetails method.
+    ///     Contains response of GetGroupDetails method.
     /// </summary>
     [Serializable]
-   public class GetGroupDetailsResponse : SteamResponse
+    public class GetGroupDetailsResponse : SteamResponse
     {
         /// <summary>
-        /// Parsed response.
+        ///     Parsed response.
         /// </summary>
         [JsonProperty("memberList")]
         public GetGroupDetailsResponseMemberList ParsedResponse { get; set; }
+
         /// <summary>
-        /// Gets raw response.
+        ///     Gets raw response.
         /// </summary>
         /// <param name="format"></param>
         /// <returns></returns>
         public override string GetRawResponse(Format format)
         {
-            switch(format)
+            switch (format)
             {
                 case Format.Json: return string.Empty;
                 case Format.Vdf: return string.Empty;
@@ -65,96 +65,109 @@ namespace QueryMaster.Steam
     public class GetGroupDetailsResponseMemberList : DataObject
     {
         /// <summary>
-        /// 64 bit steam id of group.
+        ///     64 bit steam id of group.
         /// </summary>
         [JsonProperty("groupID64")]
         public string SteamId { get; set; }
+
         /// <summary>
-        /// Group details.
+        ///     Group details.
         /// </summary>
         [JsonProperty("groupDetails")]
         public GetGroupDetailsResponseDetails Details { get; set; }
+
         /// <summary>
-        /// Total number of Pages.
+        ///     Total number of Pages.
         /// </summary>
         [JsonProperty("totalPages")]
         public int TotalPages { get; set; }
+
         /// <summary>
-        /// Current Page number.
+        ///     Current Page number.
         /// </summary>
         [JsonProperty("currentPage")]
         public int CurrentPage { get; set; }
+
         /// <summary>
-        /// 64 bit steamid starting Member.
+        ///     64 bit steamid starting Member.
         /// </summary>
         [JsonProperty("startingMember")]
         public ulong StartingMember { get; set; }
+
         /// <summary>
-        /// Collection of 64 bit steamids of members.
+        ///     Collection of 64 bit steamids of members.
         /// </summary>
         [JsonProperty("steamID64")]
         public QueryMasterCollection<ulong> Members { get; set; }
     }
-   
+
     [Serializable]
     public class GetGroupDetailsResponseDetails : DataObject
     {
         /// <summary>
-        /// Group Name(may contain html tags).
+        ///     Group Name(may contain html tags).
         /// </summary>
         [JsonProperty("groupName")]
         public string Name { get; set; }
+
         /// <summary>
-        /// Group Url.
+        ///     Group Url.
         /// </summary>
         [JsonProperty("groupURL")]
         public string URL { get; set; }
+
         /// <summary>
-        /// Headline(may contain html tags).
+        ///     Headline(may contain html tags).
         /// </summary>
         [JsonProperty("headline")]
         public string Headline { get; set; }
+
         /// <summary>
-        /// Summary(may contain html tags).
+        ///     Summary(may contain html tags).
         /// </summary>
         [JsonProperty("summary")]
         public string Summary { get; set; }
+
         /// <summary>
-        /// Avatar icon.
+        ///     Avatar icon.
         /// </summary>
         [JsonProperty("avatarIcon")]
         public string AvatarIcon { get; set; }
+
         /// <summary>
-        /// Avatar Medium.
+        ///     Avatar Medium.
         /// </summary>
         [JsonProperty("avatarMedium")]
         public string AvatarMedium { get; set; }
+
         /// <summary>
-        /// Avatar Full.
+        ///     Avatar Full.
         /// </summary>
         [JsonProperty("avatarFull")]
         public string AvatarFull { get; set; }
+
         /// <summary>
-        /// Total number of members.
+        ///     Total number of members.
         /// </summary>
         [JsonProperty("memberCount")]
         public string MemberCount { get; set; }
+
         /// <summary>
-        /// Count of members in chat.
+        ///     Count of members in chat.
         /// </summary>
         [JsonProperty("membersInChat")]
         public string MembersInChat { get; set; }
+
         /// <summary>
-        /// Count of members who are in game.
+        ///     Count of members who are in game.
         /// </summary>
         [JsonProperty("membersInGame")]
         public string MembersInGame { get; set; }
+
         /// <summary>
-        /// Count of members who are currently online.
+        ///     Count of members who are currently online.
         /// </summary>
         [JsonProperty("membersOnline")]
         public string MembersOnline { get; set; }
     }
-
-
 }

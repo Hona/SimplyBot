@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Reflection.Metadata.Ecma335;
-using System.Security.AccessControl;
-using System.Text;
-
-namespace SimplyBotUI.Models
+﻿namespace SimplyBotUI.Models
 {
     internal class HightowerPlayerModel
     {
@@ -28,7 +22,5 @@ namespace SimplyBotUI.Models
         public int DominationsBad { get; set; }
         public int Deflects { get; set; }
         public int Streak { get; set; }
-
-        
     }
 }

@@ -1,5 +1,5 @@
-﻿
-#region License
+﻿#region License
+
 /*
 Copyright (c) 2015 Betson Roy
 
@@ -24,26 +24,26 @@ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 */
+
 #endregion
+
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace QueryMaster.GameServer
 {
     /// <summary>
-    /// Provides data for playerkicked event.
+    ///     Provides data for playerkicked event.
     /// </summary>
     [Serializable]
     public class KickEventArgs : PlayerEventArgs
     {
         /// <summary>
-        /// Gets the name of the admin who kicked the player.
+        ///     Gets the name of the admin who kicked the player.
         /// </summary>
         public string Kicker { get; internal set; }
+
         /// <summary>
-        /// Gets the message sent as a reason for the kick.
+        ///     Gets the message sent as a reason for the kick.
         /// </summary>
         public string Message { get; internal set; }
     }

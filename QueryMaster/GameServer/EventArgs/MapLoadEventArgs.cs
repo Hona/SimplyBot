@@ -1,5 +1,5 @@
-﻿
-#region License
+﻿#region License
+
 /*
 Copyright (c) 2015 Betson Roy
 
@@ -24,22 +24,21 @@ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 */
+
 #endregion
+
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace QueryMaster.GameServer
 {
     /// <summary>
-    /// Provides data for map loaded event.
+    ///     Provides data for map loaded event.
     /// </summary>
     [Serializable]
     public class MapLoadEventArgs : LogEventArgs
     {
         /// <summary>
-        /// Gets Map name.
+        ///     Gets Map name.
         /// </summary>
         public string MapName { get; internal set; }
     }

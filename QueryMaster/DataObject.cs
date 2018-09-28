@@ -1,5 +1,5 @@
-﻿
-#region License
+﻿#region License
+
 /*
 Copyright (c) 2015 Betson Roy
 
@@ -24,39 +24,37 @@ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 */
+
 #endregion
-using Newtonsoft.Json;
+
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using Newtonsoft.Json;
 
 namespace QueryMaster
 {
     /// <summary>
-    /// Base of all data objects in this library.
+    ///     Base of all data objects in this library.
     /// </summary>
     [Serializable]
-   public class DataObject
+    public class DataObject
     {
-        [NonSerialized]
-        internal  JsonConverter[] Converters = null;
+        [NonSerialized] internal JsonConverter[] Converters = null;
+
         /// <summary>
-        /// Returns Json string.
+        ///     Returns Json string.
         /// </summary>
         /// <returns>Json string.</returns>
-       public override string ToString()
-       {
-           JsonSerializerSettings settings = new JsonSerializerSettings
-           {          
+        public override string ToString()
+        {
+            var settings = new JsonSerializerSettings
+            {
                 ContractResolver = new OriginalNameContractResolver(),
-                Formatting= Formatting.Indented
-           };
+                Formatting = Formatting.Indented
+            };
 
-           if (Converters != null && Converters.Length > 0)
-               settings.Converters = Converters;
-           return JsonConvert.SerializeObject(this, settings);
-       }
-
+            if (Converters != null && Converters.Length > 0)
+                settings.Converters = Converters;
+            return JsonConvert.SerializeObject(this, settings);
+        }
     }
 }

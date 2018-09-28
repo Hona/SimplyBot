@@ -10,7 +10,8 @@ namespace SimplyBotUI
             builder.WithDescription(text);
             return builder;
         }
-        internal static Embed CreateEmbed(string title,string text)
+
+        internal static Embed CreateEmbed(string title, string text)
         {
             var builder = new EmbedBuilder();
             builder.WithDescription(text)

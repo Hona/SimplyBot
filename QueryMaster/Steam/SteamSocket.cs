@@ -1,5 +1,5 @@
-﻿
-#region License
+﻿#region License
+
 /*
 Copyright (c) 2015 Betson Roy
 
@@ -24,50 +24,49 @@ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 */
+
 #endregion
-using System;
-using System.Collections.Generic;
+
 using System.IO;
-using System.Linq;
 using System.Net;
-using System.Net.Sockets;
-using System.Text;
 
 namespace QueryMaster.Steam
 {
-   internal class SteamSocket
+    internal class SteamSocket
     {
-       internal string GetResponse(string url,string postData="")
-       {
-           if (string.IsNullOrEmpty(postData))
-           {
-               string responseStr = string.Empty;
-               HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
-               using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
-               using (StreamReader reader = new StreamReader(response.GetResponseStream()))
-               {
-                   responseStr = reader.ReadToEnd();
-               }
-               return responseStr;
-           }
-           else
-           {
-               string responseStr = string.Empty;
-               HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
-               request.Method = "POST";
-               request.ContentType = "application/x-www-form-urlencoded; charset=UTF-8";
-               using (StreamWriter writer = new StreamWriter(request.GetRequestStream()))
-               {
-                   writer.Write(postData);
-               }
-               using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
-               using (StreamReader reader = new StreamReader(response.GetResponseStream()))
-               {
-                   responseStr = reader.ReadToEnd();
-               }
-               return responseStr;
-           }
-       }
+        internal string GetResponse(string url, string postData = "")
+        {
+            if (string.IsNullOrEmpty(postData))
+            {
+                var responseStr = string.Empty;
+                var request = (HttpWebRequest) WebRequest.Create(url);
+                using (var response = (HttpWebResponse) request.GetResponse())
+                using (var reader = new StreamReader(response.GetResponseStream()))
+                {
+                    responseStr = reader.ReadToEnd();
+                }
 
+                return responseStr;
+            }
+            else
+            {
+                var responseStr = string.Empty;
+                var request = (HttpWebRequest) WebRequest.Create(url);
+                request.Method = "POST";
+                request.ContentType = "application/x-www-form-urlencoded; charset=UTF-8";
+                using (var writer = new StreamWriter(request.GetRequestStream()))
+                {
+                    writer.Write(postData);
+                }
+
+                using (var response = (HttpWebResponse) request.GetResponse())
+                using (var reader = new StreamReader(response.GetResponseStream()))
+                {
+                    responseStr = reader.ReadToEnd();
+                }
+
+                return responseStr;
+            }
+        }
     }
 }

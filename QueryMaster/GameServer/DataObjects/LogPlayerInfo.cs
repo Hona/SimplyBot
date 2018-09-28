@@ -1,5 +1,5 @@
-﻿
-#region License
+﻿#region License
+
 /*
 Copyright (c) 2015 Betson Roy
 
@@ -24,34 +24,36 @@ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 */
+
 #endregion
+
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace QueryMaster.GameServer
 {
     /// <summary>
-    /// Contains information of a player.
+    ///     Contains information of a player.
     /// </summary>
     [Serializable]
     public class LogPlayerInfo
     {
         /// <summary>
-        /// Name of player.
+        ///     Name of player.
         /// </summary>
         public string Name { get; internal set; }
+
         /// <summary>
-        /// UId of player(Steam ID).
+        ///     UId of player(Steam ID).
         /// </summary>
         public string Uid { get; internal set; }
+
         /// <summary>
-        /// Won Id.
+        ///     Won Id.
         /// </summary>
         public string WonId { get; internal set; }
+
         /// <summary>
-        /// Player's Team Name.
+        ///     Player's Team Name.
         /// </summary>
         public string Team { get; internal set; }
     }

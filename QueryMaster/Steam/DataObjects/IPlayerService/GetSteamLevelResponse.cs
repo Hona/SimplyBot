@@ -1,5 +1,5 @@
-﻿
-#region License
+﻿#region License
+
 /*
 Copyright (c) 2015 Betson Roy
 
@@ -24,23 +24,22 @@ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 */
+
 #endregion
-using Newtonsoft.Json;
+
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using Newtonsoft.Json;
 
 namespace QueryMaster.Steam
 {
     /// <summary>
-    /// Contains response of GetSteamLevel method.
+    ///     Contains response of GetSteamLevel method.
     /// </summary>
     [Serializable]
     public class GetSteamLevelResponse : SteamResponse
     {
         /// <summary>
-        /// Parsed response.
+        ///     Parsed response.
         /// </summary>
         [JsonProperty("response")]
         public GetSteamLevelResponseResponse ParsedResponse { get; internal set; }
@@ -50,9 +49,9 @@ namespace QueryMaster.Steam
     public class GetSteamLevelResponseResponse : DataObject
     {
         /// <summary>
-        /// The steam level of the player.
+        ///     The steam level of the player.
         /// </summary>
         [JsonProperty("player_level")]
-        public int  Level { get; internal set; }
+        public int Level { get; internal set; }
     }
 }

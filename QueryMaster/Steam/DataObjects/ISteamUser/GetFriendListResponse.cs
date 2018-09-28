@@ -1,5 +1,5 @@
-﻿
-#region License
+﻿#region License
+
 /*
 Copyright (c) 2015 Betson Roy
 
@@ -24,24 +24,23 @@ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 */
+
 #endregion
+
+using System;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace QueryMaster.Steam
 {
     /// <summary>
-    /// Contains response of GetFriendList method.
+    ///     Contains response of GetFriendList method.
     /// </summary>
     [Serializable]
     public class GetFriendListResponse : SteamResponse
     {
         /// <summary>
-        /// Parsed response.
+        ///     Parsed response.
         /// </summary>
         [JsonProperty("friendslist")]
         public GetFriendListResponseFriendsList ParsedResponse { get; internal set; }
@@ -51,19 +50,23 @@ namespace QueryMaster.Steam
     public class GetFriendListResponseFriend : DataObject
     {
         /// <summary>
-        /// The 64 bit Steam id of the friend.
+        ///     The 64 bit Steam id of the friend.
         /// </summary>
         [JsonProperty("steamid")]
         public ulong SteamId { get; internal set; }
+
         /// <summary>
-        /// Role in relation to the given steamid.
+        ///     Role in relation to the given steamid.
         /// </summary>
-        [JsonProperty("relationship"), JsonConverter(typeof(StringEnumConverter))]
+        [JsonProperty("relationship")]
+        [JsonConverter(typeof(StringEnumConverter))]
         public GetFriendListRelationship Relationship { get; internal set; }
+
         /// <summary>
-        /// The time when friend was added to the list.
+        ///     The time when friend was added to the list.
         /// </summary>
-        [JsonProperty("friend_since"), JsonConverter(typeof(IntegerUnixTimeStampConverter))]
+        [JsonProperty("friend_since")]
+        [JsonConverter(typeof(IntegerUnixTimeStampConverter))]
         public DateTime FriendSince { get; internal set; }
     }
 
@@ -71,7 +74,7 @@ namespace QueryMaster.Steam
     public class GetFriendListResponseFriendsList : DataObject
     {
         /// <summary>
-        /// Collection of <see cref="GetFriendListResponseFriend"/> instances.
+        ///     Collection of <see cref="GetFriendListResponseFriend" /> instances.
         /// </summary>
         [JsonProperty("friends")]
         public QueryMasterCollection<GetFriendListResponseFriend> Friends { get; internal set; }

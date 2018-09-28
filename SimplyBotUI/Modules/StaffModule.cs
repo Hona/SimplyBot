@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
-using Discord;
+﻿using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
 
@@ -13,6 +9,7 @@ namespace SimplyBotUI.Modules
     public class StaffModule : ExtraModuleBase
     {
         private DiscordSocketClient _client;
+
         public StaffModule(DiscordSocketClient client)
         {
             _client = client;
@@ -24,7 +21,5 @@ namespace SimplyBotUI.Modules
         //    if (_client.GetChannel(Constants.RankChannelId) is IMessageChannel channel)
         //        await channel.SendMessageAsync("", embed:);
         //}
-
-
     }
 }

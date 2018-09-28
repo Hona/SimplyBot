@@ -1,7 +1,4 @@
-﻿using System;
-using Discord;
-
-namespace SimplyBotUI.Data
+﻿namespace SimplyBotUI.Data
 {
     internal static class ClassConstants
     {
@@ -14,6 +11,7 @@ namespace SimplyBotUI.Data
 
         internal static string ToString(int value)
         {
+            // TODO: Add emoji to this class
             switch (value)
             {
                 case 0: return "Soldier";

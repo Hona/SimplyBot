@@ -1,5 +1,5 @@
-﻿
-#region License
+﻿#region License
+
 /*
 Copyright (c) 2015 Betson Roy
 
@@ -24,37 +24,36 @@ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 */
+
 #endregion
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
+
 using System.Globalization;
-using System.Linq;
-using System.Text;
 
 namespace QueryMaster.Steam
 {
     /// <summary>
-    /// Represents the ISteamDirectory interface.
+    ///     Represents the ISteamDirectory interface.
     /// </summary>
-   public class ISteamDirectory : InterfaceBase 
+    public class ISteamDirectory : InterfaceBase
     {
-       internal ISteamDirectory()
-       {
-           Interface = "ISteamDirectory";
-       }
-       /// <summary>
-       /// GetCMList web api method(version 1).
-       /// </summary>
-       /// <param name="cellId">Client's Steam cell ID</param>
-       /// <param name="maxCount">Max number of servers to return.</param>
-       /// <returns>Instance of <see cref="GetCMListResponse"/>.</returns>
-       public GetCMListResponse GetCMList(UInt32 cellId,UInt32 maxCount=10)
-       {
-           SteamUrl url = new SteamUrl { Interface = Interface, Method = "GetCMList", Version = 1 };
-           url.Parameters.Add(new Parameter { Name = "cellid", Value = cellId.ToString(CultureInfo.InvariantCulture) });
-           url.Parameters.Add(new Parameter { Name = "maxcount", Value = maxCount.ToString(CultureInfo.InvariantCulture) });
-           return GetParsedResponse<GetCMListResponse>(url);
-       }
+        internal ISteamDirectory()
+        {
+            Interface = "ISteamDirectory";
+        }
+
+        /// <summary>
+        ///     GetCMList web api method(version 1).
+        /// </summary>
+        /// <param name="cellId">Client's Steam cell ID</param>
+        /// <param name="maxCount">Max number of servers to return.</param>
+        /// <returns>Instance of <see cref="GetCMListResponse" />.</returns>
+        public GetCMListResponse GetCMList(uint cellId, uint maxCount = 10)
+        {
+            var url = new SteamUrl {Interface = Interface, Method = "GetCMList", Version = 1};
+            url.Parameters.Add(new Parameter {Name = "cellid", Value = cellId.ToString(CultureInfo.InvariantCulture)});
+            url.Parameters.Add(new Parameter
+                {Name = "maxcount", Value = maxCount.ToString(CultureInfo.InvariantCulture)});
+            return GetParsedResponse<GetCMListResponse>(url);
+        }
     }
 }

@@ -1,5 +1,5 @@
-﻿
-#region License
+﻿#region License
+
 /*
 Copyright (c) 2015 Betson Roy
 
@@ -24,25 +24,22 @@ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 */
+
 #endregion
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
+
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace QueryMaster
 {
-    class OriginalNameContractResolver : DefaultContractResolver
+    internal class OriginalNameContractResolver : DefaultContractResolver
     {
         protected override IList<JsonProperty> CreateProperties(Type type, MemberSerialization memberSerialization)
         {
-            IList<JsonProperty> properties = base.CreateProperties(type, memberSerialization);
-            foreach (JsonProperty property in properties)
-            {
-                property.PropertyName = property.UnderlyingName;
-            }
+            var properties = base.CreateProperties(type, memberSerialization);
+            foreach (var property in properties) property.PropertyName = property.UnderlyingName;
             return properties;
         }
     }

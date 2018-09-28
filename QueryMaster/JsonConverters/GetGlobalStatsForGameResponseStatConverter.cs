@@ -1,5 +1,5 @@
-﻿
-#region License
+﻿#region License
+
 /*
 Copyright (c) 2015 Betson Roy
 
@@ -24,29 +24,30 @@ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 */
+
 #endregion
+
+using System;
+using System.Collections.Generic;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using QueryMaster.Steam;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace QueryMaster
 {
-    class GetGlobalStatsForGameResponseStatConverter : JsonConverter
+    internal class GetGlobalStatsForGameResponseStatConverter : JsonConverter
     {
         public override bool CanConvert(Type objectType)
         {
             return true;
         }
 
-        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+        public override object ReadJson(JsonReader reader, Type objectType, object existingValue,
+            JsonSerializer serializer)
         {
-           List<GetGlobalStatsForGameResponseStat> stats = new List<GetGlobalStatsForGameResponseStat>();
-           JObject jsonObject = JObject.Load(reader);
-            foreach(JProperty i in jsonObject.Properties())
+            var stats = new List<GetGlobalStatsForGameResponseStat>();
+            var jsonObject = JObject.Load(reader);
+            foreach (var i in jsonObject.Properties())
             {
                 stats.Add(new GetGlobalStatsForGameResponseStat
                 {
@@ -56,12 +57,13 @@ namespace QueryMaster
                 var name = i.Name;
                 var value = i.Value;
             }
+
             return new QueryMasterCollection<GetGlobalStatsForGameResponseStat>(stats);
         }
 
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
-            serializer.Serialize(writer,value);
+            serializer.Serialize(writer, value);
         }
     }
 }

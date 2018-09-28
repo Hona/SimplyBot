@@ -1,5 +1,5 @@
-﻿
-#region License
+﻿#region License
+
 /*
 Copyright (c) 2015 Betson Roy
 
@@ -24,13 +24,13 @@ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 */
+
 #endregion
+
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Net.Sockets;
 using System.Net;
+using System.Net.Sockets;
 
 namespace QueryMaster.GameServer
 {
@@ -38,22 +38,23 @@ namespace QueryMaster.GameServer
     {
         internal static readonly int UdpBufferSize = 1400;
         internal static readonly int TcpBufferSize = 4110;
-        internal IPEndPoint Address = null;
-        protected internal int BufferSize = 0;
-        internal EngineType EngineType { get; set; }
-        internal Socket Socket { set; get; }
         private readonly object LockObj = new object();
-        internal ServerSocket(ConnectionInfo conInfo,ProtocolType  type)
+        internal IPEndPoint Address;
+        protected internal int BufferSize;
+
+        internal ServerSocket(ConnectionInfo conInfo, ProtocolType type)
         {
             switch (type)
             {
-                case ProtocolType.Tcp: 
-                    Socket = new Socket(AddressFamily.InterNetwork, System.Net.Sockets.SocketType.Stream, ProtocolType.Tcp); 
-                    BufferSize = TcpBufferSize; 
+                case ProtocolType.Tcp:
+                    Socket = new Socket(AddressFamily.InterNetwork, System.Net.Sockets.SocketType.Stream,
+                        ProtocolType.Tcp);
+                    BufferSize = TcpBufferSize;
                     break;
-                case ProtocolType.Udp: 
-                    Socket = new Socket(AddressFamily.InterNetwork, System.Net.Sockets.SocketType.Dgram, ProtocolType.Udp); 
-                    BufferSize = UdpBufferSize; 
+                case ProtocolType.Udp:
+                    Socket = new Socket(AddressFamily.InterNetwork, System.Net.Sockets.SocketType.Dgram,
+                        ProtocolType.Udp);
+                    BufferSize = UdpBufferSize;
                     break;
                 default: throw new ArgumentException("An invalid SocketType was specified.");
             }
@@ -61,27 +62,35 @@ namespace QueryMaster.GameServer
             Socket.SendTimeout = conInfo.SendTimeout;
             Socket.ReceiveTimeout = conInfo.ReceiveTimeout;
             Address = conInfo.EndPoint;
-            IAsyncResult result = Socket.BeginConnect(Address, null, null);
-            bool success = result.AsyncWaitHandle.WaitOne(conInfo.ReceiveTimeout, true);
+            var result = Socket.BeginConnect(Address, null, null);
+            var success = result.AsyncWaitHandle.WaitOne(conInfo.ReceiveTimeout, true);
             if (!success)
-                throw new SocketException((int)SocketError.TimedOut);
+                throw new SocketException((int) SocketError.TimedOut);
             IsDisposed = false;
         }
+
+        internal EngineType EngineType { get; set; }
+        internal Socket Socket { set; get; }
 
         internal int SendData(byte[] data)
         {
             ThrowIfDisposed();
-            lock(LockObj)
+            lock (LockObj)
+            {
                 return Socket.Send(data);
+            }
         }
 
         internal byte[] ReceiveData()
         {
             ThrowIfDisposed();
-            byte[] recvData = new byte[BufferSize];
-            int recv = 0;
-            lock(LockObj)
+            var recvData = new byte[BufferSize];
+            var recv = 0;
+            lock (LockObj)
+            {
                 recv = Socket.Receive(recvData);
+            }
+
             return recvData.Take(recv).ToArray();
         }
 
@@ -90,13 +99,12 @@ namespace QueryMaster.GameServer
             if (!IsDisposed)
             {
                 if (disposing)
-                {
                     lock (LockObj)
                     {
                         if (Socket != null)
                             Socket.Close();
                     }
-                }
+
                 base.Dispose(disposing);
                 IsDisposed = true;
             }

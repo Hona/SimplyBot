@@ -1,5 +1,5 @@
-﻿
-#region License
+﻿#region License
+
 /*
 Copyright (c) 2015 Betson Roy
 
@@ -24,26 +24,26 @@ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 */
+
 #endregion
+
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace QueryMaster.GameServer
 {
     /// <summary>
-    /// Provides data for player killed event.
+    ///     Provides data for player killed event.
     /// </summary>
     [Serializable]
     public class KillEventArgs : PlayerEventArgs
     {
         /// <summary>
-        /// Gets Victim player's info.
+        ///     Gets Victim player's info.
         /// </summary>
         public LogPlayerInfo Victim { get; internal set; }
+
         /// <summary>
-        /// Gets the name of the weapon used.
+        ///     Gets the name of the weapon used.
         /// </summary>
         public string Weapon { get; internal set; }
     }

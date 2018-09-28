@@ -1,5 +1,5 @@
-﻿
-#region License
+﻿#region License
+
 /*
 Copyright (c) 2015 Betson Roy
 
@@ -24,24 +24,23 @@ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 */
+
 #endregion
-using Newtonsoft.Json;
+
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Text;
+using Newtonsoft.Json;
 
 namespace QueryMaster.Steam
 {
     /// <summary>
-    /// Contains response of GetCMList method.
+    ///     Contains response of GetCMList method.
     /// </summary>
     [Serializable]
     public class GetCMListResponse : SteamResponse
     {
         /// <summary>
-        /// Parsed response.
+        ///     Parsed response.
         /// </summary>
         [JsonProperty("response")]
         public GetCMListResponseResponse ParsedResponse { get; internal set; }
@@ -51,17 +50,20 @@ namespace QueryMaster.Steam
     public class GetCMListResponseResponse : DataObject
     {
         /// <summary>
-        /// List of server end points
+        ///     List of server end points
         /// </summary>
-        [JsonProperty("serverlist"),JsonConverter(typeof(StringIpEndPointConverter))]
+        [JsonProperty("serverlist")]
+        [JsonConverter(typeof(StringIpEndPointConverter))]
         public QueryMasterCollection<IPEndPoint> Servers { get; internal set; }
+
         /// <summary>
-        /// Result.
+        ///     Result.
         /// </summary>
         [JsonProperty("result")]
         public int Result { get; internal set; }
+
         /// <summary>
-        /// Message.
+        ///     Message.
         /// </summary>
         [JsonProperty("message")]
         public string Message { get; internal set; }

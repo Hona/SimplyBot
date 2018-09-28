@@ -1,5 +1,5 @@
-﻿
-#region License
+﻿#region License
+
 /*
 Copyright (c) 2015 Betson Roy
 
@@ -24,59 +24,59 @@ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 */
+
 #endregion
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
+
 using System.Globalization;
-using System.Linq;
 using System.Net;
-using System.Text;
 
 namespace QueryMaster.Steam
 {
     /// <summary>
-    /// Represents the ISteamApps interface.
+    ///     Represents the ISteamApps interface.
     /// </summary>
-    public class ISteamApps:InterfaceBase
+    public class ISteamApps : InterfaceBase
     {
         internal ISteamApps()
         {
             Interface = "ISteamApps";
         }
+
         /// <summary>
-        /// Full list of every publicly facing program in the store/library(GetAppList web api method(version 2)).
+        ///     Full list of every publicly facing program in the store/library(GetAppList web api method(version 2)).
         /// </summary>
-        /// <returns>Instance of <see cref="GetAppListResponse"/>.</returns>
+        /// <returns>Instance of <see cref="GetAppListResponse" />.</returns>
         public GetAppListResponse GetAppList()
         {
-            SteamUrl url = new SteamUrl { Interface = Interface, Method = "GetAppList", Version = 2 };
+            var url = new SteamUrl {Interface = Interface, Method = "GetAppList", Version = 2};
             return GetParsedResponse<GetAppListResponse>(url);
         }
+
         /// <summary>
-        /// Calls GetServersAtAddress web api method(version 1).
+        ///     Calls GetServersAtAddress web api method(version 1).
         /// </summary>
         /// <param name="ipEndPoint">IP EndPoint of server.</param>
-        /// <returns>Instance of <see cref="GetServersAtAddressResponse"/>.</returns>
+        /// <returns>Instance of <see cref="GetServersAtAddressResponse" />.</returns>
         public GetServersAtAddressResponse GetServersAtAddress(IPEndPoint ipEndPoint)
         {
-            SteamUrl url = new SteamUrl { Interface = Interface, Method = "GetServersAtAddress", Version = 1 };
-            url.Parameters.Add(new Parameter { Name = "addr", Value = ipEndPoint.ToString() });
+            var url = new SteamUrl {Interface = Interface, Method = "GetServersAtAddress", Version = 1};
+            url.Parameters.Add(new Parameter {Name = "addr", Value = ipEndPoint.ToString()});
             return GetParsedResponse<GetServersAtAddressResponse>(url);
         }
+
         /// <summary>
-        /// Calls UpToDateCheck web api method(version 1).
+        ///     Calls UpToDateCheck web api method(version 1).
         /// </summary>
         /// <param name="appId">Application Id of the game</param>
         /// <param name="version">The installed version of the game.</param>
-        /// <returns>Instance of <see cref="UpToDateCheckResponse"/>.</returns>
-        public UpToDateCheckResponse UpToDateCheck(UInt32 appId,UInt32 version)
+        /// <returns>Instance of <see cref="UpToDateCheckResponse" />.</returns>
+        public UpToDateCheckResponse UpToDateCheck(uint appId, uint version)
         {
-            SteamUrl url = new SteamUrl { Interface = Interface, Method = "UpToDateCheck", Version = 1 };
-            url.Parameters.Add(new Parameter { Name = "appid", Value = appId.ToString(CultureInfo.InvariantCulture) });
-            url.Parameters.Add(new Parameter { Name = "version", Value = version.ToString(CultureInfo.InvariantCulture) });
+            var url = new SteamUrl {Interface = Interface, Method = "UpToDateCheck", Version = 1};
+            url.Parameters.Add(new Parameter {Name = "appid", Value = appId.ToString(CultureInfo.InvariantCulture)});
+            url.Parameters.Add(new Parameter
+                {Name = "version", Value = version.ToString(CultureInfo.InvariantCulture)});
             return GetParsedResponse<UpToDateCheckResponse>(url);
         }
-      
     }
 }

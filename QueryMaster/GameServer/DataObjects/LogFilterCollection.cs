@@ -1,5 +1,5 @@
-﻿
-#region License
+﻿#region License
+
 /*
 Copyright (c) 2015 Betson Roy
 
@@ -24,95 +24,111 @@ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 */
+
 #endregion
+
 using System;
+using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace QueryMaster.GameServer
 {
     /// <summary>
-    /// Represents collection of logfilter.
+    ///     Represents collection of logfilter.
     /// </summary>
-    public class LogFilterCollection:IEnumerable<LogFilter>
+    public class LogFilterCollection : IEnumerable<LogFilter>
     {
-        private List<LogFilter> filterList = new List<LogFilter>();
         /// <summary>
-        /// used to set lock on add/remove of filter.
+        ///     used to set lock on add/remove of filter.
         /// </summary>
-        protected internal static object  LockObj = new object();
+        protected internal static object LockObj = new object();
+
+        private readonly List<LogFilter> filterList = new List<LogFilter>();
+
         /// <summary>
-        /// Enables all filters.
+        ///     Returns an enumerator that iterates through the Filter collection.
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerator<LogFilter> GetEnumerator()
+        {
+            foreach (var i in filterList) yield return i;
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+
+        /// <summary>
+        ///     Enables all filters.
         /// </summary>
         public void EnableAll()
         {
             filterList.ForEach(x => x.Enabled = true);
         }
+
         /// <summary>
-        /// Enables filter of specific type.
+        ///     Enables filter of specific type.
         /// </summary>
         /// <param name="type">Filter type.</param>
         public void EnableAll(Type type)
         {
-            filterList.ForEach(x => { if (x.GetType() == type)x.Enabled = true; });
+            filterList.ForEach(x =>
+            {
+                if (x.GetType() == type) x.Enabled = true;
+            });
         }
 
         /// <summary>
-        /// Disables all filters.
+        ///     Disables all filters.
         /// </summary>
         public void DisableAll()
         {
             filterList.ForEach(x => x.Enabled = false);
         }
+
         /// <summary>
-        /// Disables filter of specific type.
+        ///     Disables filter of specific type.
         /// </summary>
         /// <param name="type">Filter type.</param>
         public void DisableAll(Type type)
         {
-            filterList.ForEach(x => { if (x.GetType() == type)x.Enabled = false; });
+            filterList.ForEach(x =>
+            {
+                if (x.GetType() == type) x.Enabled = false;
+            });
         }
+
         /// <summary>
-        /// Adds a filter to the end of the collection.
+        ///     Adds a filter to the end of the collection.
         /// </summary>
         /// <param name="filter"></param>
         public void Add(LogFilter filter)
         {
-            lock(LockObj)
+            lock (LockObj)
+            {
                 filterList.Add(filter);
+            }
         }
+
         /// <summary>
-        /// Removes specified filter from the collection.
+        ///     Removes specified filter from the collection.
         /// </summary>
         /// <param name="filter"></param>
         public void Remove(LogFilter filter)
         {
             lock (LockObj)
+            {
                 filterList.Remove(filter);
+            }
         }
+
         /// <summary>
-        /// Removes all filters from the collection.
+        ///     Removes all filters from the collection.
         /// </summary>
         public void Clear()
         {
             filterList.Clear();
-        }
-        /// <summary>
-        /// Returns an enumerator that iterates through the Filter collection.
-        /// </summary>
-        /// <returns></returns>
-        public IEnumerator<LogFilter> GetEnumerator()
-        {
-            foreach(LogFilter i in filterList )
-            {
-                yield return i;
-            }
-        }
-
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
         }
     }
 }

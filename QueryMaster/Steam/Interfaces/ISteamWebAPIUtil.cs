@@ -1,5 +1,5 @@
-﻿
-#region License
+﻿#region License
+
 /*
 Copyright (c) 2015 Betson Roy
 
@@ -24,43 +24,41 @@ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 */
+
 #endregion
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace QueryMaster.Steam
 {
     /// <summary>
-    /// Represents the ISteamWebAPIUtil interface.
+    ///     Represents the ISteamWebAPIUtil interface.
     /// </summary>
-  public class ISteamWebApiUtil :InterfaceBase 
+    public class ISteamWebApiUtil : InterfaceBase
     {
-      internal ISteamWebApiUtil()
-      {
-          Interface = "ISteamWebAPIUtil";
-      }
-      /// <summary>
-      /// Gets WebAPI server time and checks server status(GetServerInfo web api method(version 1)).
-      /// </summary>
-      /// <returns>Instance of <see cref="GetServerInfoResponse"/>.</returns>
-      public GetServerInfoResponse GetServerInfo()
-      {
-          SteamUrl url = new SteamUrl { Interface = Interface, Method = "GetServerInfo", Version = 1 };
-          return GetParsedResponse<GetServerInfoResponse>(url,true);
-      }
-      /// <summary>
-      /// Lists all available WebAPI interfaces(GetSupportedAPIList web api method(version 1)).
-      /// </summary>
-      /// <param name="appendKey">if true then response would include all available methods and interfaces allowed for that key.</param>
-      /// <returns>Instance of <see cref="GetSupportedAPIListResponse"/>.</returns>
-      public GetSupportedAPIListResponse GetSupportedAPIList(bool appendKey=false )
-      {
-          SteamUrl url = new SteamUrl { Interface = Interface, Method = "GetSupportedAPIList", Version = 1, AppendKey = appendKey };
-          return GetParsedResponse<GetSupportedAPIListResponse>(url);
-      }
+        internal ISteamWebApiUtil()
+        {
+            Interface = "ISteamWebAPIUtil";
+        }
 
+        /// <summary>
+        ///     Gets WebAPI server time and checks server status(GetServerInfo web api method(version 1)).
+        /// </summary>
+        /// <returns>Instance of <see cref="GetServerInfoResponse" />.</returns>
+        public GetServerInfoResponse GetServerInfo()
+        {
+            var url = new SteamUrl {Interface = Interface, Method = "GetServerInfo", Version = 1};
+            return GetParsedResponse<GetServerInfoResponse>(url, true);
+        }
+
+        /// <summary>
+        ///     Lists all available WebAPI interfaces(GetSupportedAPIList web api method(version 1)).
+        /// </summary>
+        /// <param name="appendKey">if true then response would include all available methods and interfaces allowed for that key.</param>
+        /// <returns>Instance of <see cref="GetSupportedAPIListResponse" />.</returns>
+        public GetSupportedAPIListResponse GetSupportedAPIList(bool appendKey = false)
+        {
+            var url = new SteamUrl
+                {Interface = Interface, Method = "GetSupportedAPIList", Version = 1, AppendKey = appendKey};
+            return GetParsedResponse<GetSupportedAPIListResponse>(url);
+        }
     }
 }

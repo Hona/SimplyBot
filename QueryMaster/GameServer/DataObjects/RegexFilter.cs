@@ -1,5 +1,5 @@
-﻿
-#region License
+﻿#region License
+
 /*
 Copyright (c) 2015 Betson Roy
 
@@ -24,30 +24,28 @@ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 */
+
 #endregion
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace QueryMaster.GameServer
 {
     /// <summary>
-    /// Represents a filter that filters by provided regex filter pattern.
+    ///     Represents a filter that filters by provided regex filter pattern.
     /// </summary>
-   public class RegexFilter:LogFilter 
+    public class RegexFilter : LogFilter
     {
-       /// <summary>
-       /// Regex pattern.
-       /// </summary>
-       public string RegexPattern { get; set; }
-       /// <summary>
-       /// Regex filter pattern.
-       /// </summary>
-       /// <returns>Regex filter pattern.</returns>
-       public override string ToString()
-       {
-           return RegexPattern;
-       }
+        /// <summary>
+        ///     Regex pattern.
+        /// </summary>
+        public string RegexPattern { get; set; }
+
+        /// <summary>
+        ///     Regex filter pattern.
+        /// </summary>
+        /// <returns>Regex filter pattern.</returns>
+        public override string ToString()
+        {
+            return RegexPattern;
+        }
     }
 }

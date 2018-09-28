@@ -1,5 +1,5 @@
-﻿
-#region License
+﻿#region License
+
 /*
 Copyright (c) 2015 Betson Roy
 
@@ -24,38 +24,40 @@ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 */
+
 #endregion
-using Newtonsoft.Json;
-using System;
+
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
 using System.Net;
-using System.Text;
+using Newtonsoft.Json;
 
 namespace QueryMaster
 {
     /// <summary>
-    /// Wrapper on ReadOnlyCollection that returns its json representation on calling ToString().
+    ///     Wrapper on ReadOnlyCollection that returns its json representation on calling ToString().
     /// </summary>
     /// <typeparam name="T"></typeparam>
-   public class QueryMasterCollection<T> : ReadOnlyCollection<T>
+    public class QueryMasterCollection<T> : ReadOnlyCollection<T>
     {
-       /// <summary>
-        /// Initializes QueryMasterCollection/>
-       /// </summary>
-       /// <param name="collection"></param>
-       public QueryMasterCollection(IList<T> collection)
-           : base(collection) { }
-       /// <summary>
-       /// Returns Json string.
-       /// </summary>
-       /// <returns>Json string.</returns>
-       public override string ToString()
-       {
-           if(typeof(T)==typeof(IPEndPoint))
-               return JsonConvert.SerializeObject(this, Formatting.Indented,new StringIpEndPointConverter());
-           return JsonConvert.SerializeObject(this, Formatting.Indented);
-       }
+        /// <summary>
+        ///     Initializes QueryMasterCollection/>
+        /// </summary>
+        /// <param name="collection"></param>
+        public QueryMasterCollection(IList<T> collection)
+            : base(collection)
+        {
+        }
+
+        /// <summary>
+        ///     Returns Json string.
+        /// </summary>
+        /// <returns>Json string.</returns>
+        public override string ToString()
+        {
+            if (typeof(T) == typeof(IPEndPoint))
+                return JsonConvert.SerializeObject(this, Formatting.Indented, new StringIpEndPointConverter());
+            return JsonConvert.SerializeObject(this, Formatting.Indented);
+        }
     }
 }

@@ -1,5 +1,5 @@
-﻿
-#region License
+﻿#region License
+
 /*
 Copyright (c) 2015 Betson Roy
 
@@ -24,37 +24,34 @@ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 */
+
 #endregion
-using Newtonsoft.Json;
+
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using Newtonsoft.Json;
 
 namespace QueryMaster
 {
-    class IntegerUnixTimeStampConverter : JsonConverter
+    internal class IntegerUnixTimeStampConverter : JsonConverter
     {
         public override bool CanConvert(Type objectType)
         {
-            return (objectType == typeof(DateTime));
+            return objectType == typeof(DateTime);
         }
 
-        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+        public override object ReadJson(JsonReader reader, Type objectType, object existingValue,
+            JsonSerializer serializer)
         {
-            string value = reader.Value.ToString();
+            var value = reader.Value.ToString();
             double seconds = 0;
-            DateTime dateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0);
-            if (Double.TryParse(value, out seconds))
-            {
-              dateTime=  dateTime.AddSeconds(seconds).ToLocalTime();
-            }
+            var dateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0);
+            if (double.TryParse(value, out seconds)) dateTime = dateTime.AddSeconds(seconds).ToLocalTime();
             return dateTime;
         }
 
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
-            DateTime dateTime = (DateTime)value;
+            var dateTime = (DateTime) value;
             writer.WriteValue(dateTime.ToString());
         }
     }

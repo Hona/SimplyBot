@@ -14,9 +14,10 @@ namespace SimplyBotUI.Data
     internal class DataAccess
     {
         private readonly string _mapInfoConnectionString;
-        private MySqlConnection _mapInfoConnection;
         private readonly string _playerRanksConnectionString;
+        private MySqlConnection _mapInfoConnection;
         private MySqlConnection _playerRanksConnection;
+
         internal DataAccess()
         {
             FluentMapper.Initialize(config =>
@@ -30,7 +31,6 @@ namespace SimplyBotUI.Data
             var connectionStringLines = File.ReadAllLines(Constants.DatabaseInfoPath);
             _mapInfoConnectionString = connectionStringLines[0];
             _playerRanksConnectionString = connectionStringLines[1];
-
         }
 
         private async Task OpenMapInfoConnection()
@@ -42,8 +42,10 @@ namespace SimplyBotUI.Data
 
         private async Task CheckMapInfoConnection()
         {
-            if (_mapInfoConnection == null || _mapInfoConnection.State == ConnectionState.Closed) await OpenMapInfoConnection();
+            if (_mapInfoConnection == null || _mapInfoConnection.State == ConnectionState.Closed)
+                await OpenMapInfoConnection();
         }
+
         private async Task OpenPlayerRanksConnection()
         {
             _playerRanksConnection = new MySqlConnection(_playerRanksConnectionString);
@@ -53,7 +55,8 @@ namespace SimplyBotUI.Data
 
         private async Task CheckPlayerRankConnection()
         {
-            if (_playerRanksConnection == null || _playerRanksConnection.State == ConnectionState.Closed) await OpenPlayerRanksConnection();
+            if (_playerRanksConnection == null || _playerRanksConnection.State == ConnectionState.Closed)
+                await OpenPlayerRanksConnection();
         }
 
         internal void Close()
@@ -69,8 +72,8 @@ namespace SimplyBotUI.Data
             await CheckMapInfoConnection();
 
             return (await _mapInfoConnection.QueryAsync(query)).ToList();
-
         }
+
         internal async Task<List<HighscoreModel>> GetMapTimes(int classValue, string mapName)
         {
             await CheckMapInfoConnection();
@@ -92,7 +95,8 @@ namespace SimplyBotUI.Data
         {
             await CheckMapInfoConnection();
             var query = $@"select map from details where map like '%{partialName}%'";
-            var output = (await _mapInfoConnection.QueryAsync<DetailsModel>(query)).ToList().ConvertAll(x => x.Map).ToList();
+            var output = (await _mapInfoConnection.QueryAsync<DetailsModel>(query)).ToList().ConvertAll(x => x.Map)
+                .ToList();
             if (output.Count < 30) return output;
             var extraCount = output.Count - 30;
             output = output.Take(30).ToList();
@@ -107,7 +111,8 @@ namespace SimplyBotUI.Data
             var query =
                 $@"select * from highscores where timestamp>0 and class={classValue} and map like '%{mapName}%' and name like '%{user}%'";
 
-            return (await _mapInfoConnection.QueryAsync<HighscoreModel>(query)).OrderBy(time => time.RunTime).FirstOrDefault();
+            return (await _mapInfoConnection.QueryAsync<HighscoreModel>(query)).OrderBy(time => time.RunTime)
+                .FirstOrDefault();
         }
 
         internal async Task<DetailsModel> GetMapDetails(string partialName)
@@ -118,12 +123,36 @@ namespace SimplyBotUI.Data
             return result;
         }
 
-        internal async Task<List<JumpRankModel>> GetTopDemo(int count) => await GetTop("dem", count);
-        internal async Task<List<JumpRankModel>> GetTopSolly(int count) => await GetTop("sol", count);
-        internal async Task<List<JumpRankModel>> GetTopConc(int count) => await GetTop("conc", count);
-        internal async Task<List<JumpRankModel>> GetTopEngi(int count) => await GetTop("eng", count);
-        internal async Task<List<JumpRankModel>> GetTopPyro(int count) => await GetTop("pyro", count);
-        internal async Task<List<JumpRankModel>> GetTopOverall(int count) => await GetTop("general", count);
+        internal async Task<List<JumpRankModel>> GetTopDemo(int count)
+        {
+            return await GetTop("dem", count);
+        }
+
+        internal async Task<List<JumpRankModel>> GetTopSolly(int count)
+        {
+            return await GetTop("sol", count);
+        }
+
+        internal async Task<List<JumpRankModel>> GetTopConc(int count)
+        {
+            return await GetTop("conc", count);
+        }
+
+        internal async Task<List<JumpRankModel>> GetTopEngi(int count)
+        {
+            return await GetTop("eng", count);
+        }
+
+        internal async Task<List<JumpRankModel>> GetTopPyro(int count)
+        {
+            return await GetTop("pyro", count);
+        }
+
+        internal async Task<List<JumpRankModel>> GetTopOverall(int count)
+        {
+            return await GetTop("general", count);
+        }
+
         private async Task<List<JumpRankModel>> GetTop(string type, int count)
         {
             await CheckMapInfoConnection();
@@ -132,6 +161,7 @@ namespace SimplyBotUI.Data
             var result = await _mapInfoConnection.QueryAsync<JumpRankModel>(query);
             return result.ToList();
         }
+
         internal async Task<List<HighscoreModel>> GetRecentRecords(int count)
         {
             await CheckMapInfoConnection();
@@ -151,8 +181,8 @@ namespace SimplyBotUI.Data
             await CheckPlayerRankConnection();
 
             return (await _playerRanksConnection.QueryAsync(query)).ToList();
-
         }
+
         internal async Task<List<HightowerPlayerModel>> GetTopHightowerRank(int count)
         {
             await CheckPlayerRankConnection();
@@ -160,7 +190,6 @@ namespace SimplyBotUI.Data
             var query = $@"select * from players order by points desc limit {count}";
 
             return (await _playerRanksConnection.QueryAsync<HightowerPlayerModel>(query)).ToList();
-
         }
 
         #endregion

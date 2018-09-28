@@ -1,5 +1,5 @@
-﻿
-#region License
+﻿#region License
+
 /*
 Copyright (c) 2015 Betson Roy
 
@@ -24,26 +24,26 @@ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 */
+
 #endregion
+
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace QueryMaster.GameServer
 {
     /// <summary>
-    /// Provides data for TeamAlliance event.
+    ///     Provides data for TeamAlliance event.
     /// </summary>
     [Serializable]
     public class TeamAllianceEventArgs : LogEventArgs
     {
         /// <summary>
-        /// Gets the name of 1st team.
+        ///     Gets the name of 1st team.
         /// </summary>
         public string Team1 { get; internal set; }
+
         /// <summary>
-        /// Gets the name of 2nd team.
+        ///     Gets the name of 2nd team.
         /// </summary>
         public string Team2 { get; internal set; }
     }

@@ -1,5 +1,5 @@
-﻿
-#region License
+﻿#region License
+
 /*
 Copyright (c) 2015 Betson Roy
 
@@ -24,17 +24,16 @@ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 */
+
 #endregion
+
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.IO;
-using Ionic.BZip2;
-using System.Net;
-using Ionic.Crc;
+using System.Linq;
 using System.Net.Sockets;
-using QueryMaster;
+using Ionic.BZip2;
+using Ionic.Crc;
 
 namespace QueryMaster.GameServer
 {
@@ -45,9 +44,11 @@ namespace QueryMaster.GameServer
         private EngineType Type;
 
         internal UdpQuery(ConnectionInfo conInfo)
-            : base(conInfo, ProtocolType.Udp) { }
+            : base(conInfo, ProtocolType.Udp)
+        {
+        }
 
-        internal byte[] GetResponse(byte[] msg, EngineType type,bool isMultiPacket=false)
+        internal byte[] GetResponse(byte[] msg, EngineType type, bool isMultiPacket = false)
         {
             int header;
             byte[] recvData = null, parsedData = null;
@@ -55,39 +56,40 @@ namespace QueryMaster.GameServer
 
             SendData(msg);
             recvData = ReceiveData();
-            if(isMultiPacket)
+            if (isMultiPacket)
             {
-                List<byte> data = new List<byte>();
+                var data = new List<byte>();
                 data.AddRange(recvData);
-                while(true)
-                {
+                while (true)
                     try
                     {
                         recvData = ReceiveData();
                         data.AddRange(recvData);
                     }
-                    catch(SocketException ex)
+                    catch (SocketException ex)
                     {
                         if (ex.SocketErrorCode == SocketError.TimedOut)
                         {
                             recvData = data.ToArray();
                             break;
                         }
-                        else
-                        {
-                            Dispose();
-                            throw;
-                        }
+
+                        Dispose();
+                        throw;
                     }
-                }
             }
+
             try
             {
                 header = BitConverter.ToInt32(recvData, 0);
                 switch (header)
                 {
-                    case SinglePacket: parsedData = ParseSinglePkt(recvData); break;
-                    case MultiPacket: parsedData = ParseMultiPkt(recvData); break;
+                    case SinglePacket:
+                        parsedData = ParseSinglePkt(recvData);
+                        break;
+                    case MultiPacket:
+                        parsedData = ParseMultiPkt(recvData);
+                        break;
                     default: throw new InvalidHeaderException("Protocol header is not valid");
                 }
             }
@@ -111,8 +113,12 @@ namespace QueryMaster.GameServer
             byte[] parsedData = null;
             switch (Type)
             {
-                case EngineType.Source: parsedData = SourcePackets(data); break;
-                case EngineType.GoldSource: parsedData = GoldSourcePackets(data); break;
+                case EngineType.Source:
+                    parsedData = SourcePackets(data);
+                    break;
+                case EngineType.GoldSource:
+                    parsedData = GoldSourcePackets(data);
+                    break;
                 default: throw new ArgumentException("An invalid EngineType was specified.");
             }
 
@@ -126,10 +132,10 @@ namespace QueryMaster.GameServer
 
             var pktCount = data[8] & 0x0F;
 
-            List<KeyValuePair<int, byte[]>> pktList = new List<KeyValuePair<int, byte[]>>(pktCount);
-            pktList.Add(new KeyValuePair<int, byte[]>(data[8] >> 4, data));     
-       
-            for (int i = 1; i < pktCount; i++)
+            var pktList = new List<KeyValuePair<int, byte[]>>(pktCount);
+            pktList.Add(new KeyValuePair<int, byte[]>(data[8] >> 4, data));
+
+            for (var i = 1; i < pktCount; i++)
             {
                 recvData = new byte[BufferSize];
                 recvData = ReceiveData();
@@ -140,28 +146,25 @@ namespace QueryMaster.GameServer
             byteList = new List<byte>();
             byteList.AddRange(pktList[0].Value.Skip(13));
 
-            for (int i = 1; i < pktList.Count; i++)
-            {
-                byteList.AddRange(pktList[i].Value.Skip(9));
-            }
+            for (var i = 1; i < pktList.Count; i++) byteList.AddRange(pktList[i].Value.Skip(9));
 
             return byteList.ToArray<byte>();
         }
 
         private byte[] SourcePackets(byte[] data)
-        {           
-            bool isCompressed = false;
-            int checksum = 0;
+        {
+            var isCompressed = false;
+            var checksum = 0;
             byte[] recvData = null;
             List<byte> recvList = null;
             Parser parser = null;
 
-            byte pktCount = data[8];
+            var pktCount = data[8];
 
-            List<KeyValuePair<byte, byte[]>> pktList = new List<KeyValuePair<byte, byte[]>>(pktCount);
+            var pktList = new List<KeyValuePair<byte, byte[]>>(pktCount);
             pktList.Add(new KeyValuePair<byte, byte[]>(data[9], data));
 
-            for (int i = 1; i < pktCount; i++)
+            for (var i = 1; i < pktCount; i++)
             {
                 recvData = ReceiveData();
                 pktList.Add(new KeyValuePair<byte, byte[]>(recvData[9], recvData));
@@ -170,23 +173,24 @@ namespace QueryMaster.GameServer
             pktList.Sort((x, y) => x.Key.CompareTo(y.Key));
             recvList = new List<byte>();
             parser = new Parser(pktList[0].Value);
-            parser.SkipBytes(4);//header
-            if (parser.ReadInt() < 0)//ID
+            parser.SkipBytes(4); //header
+            if (parser.ReadInt() < 0) //ID
                 isCompressed = true;
-            parser.ReadByte();//total
-            int pktId = parser.ReadByte();// packet id
-            parser.ReadUShort();//size
+            parser.ReadByte(); //total
+            int pktId = parser.ReadByte(); // packet id
+            parser.ReadUShort(); //size
             if (isCompressed)
             {
-                parser.SkipBytes(2);//decompressed size of data
-                checksum = parser.ReadInt();//Checksum
+                parser.SkipBytes(2); //decompressed size of data
+                checksum = parser.ReadInt(); //Checksum
             }
+
             recvList.AddRange(parser.GetUnParsedBytes());
 
-            for (int i = 1; i < pktList.Count; i++)
+            for (var i = 1; i < pktList.Count; i++)
             {
                 parser = new Parser(pktList[i].Value);
-                parser.SkipBytes(12);//multipacket header 
+                parser.SkipBytes(12); //multipacket header 
                 recvList.AddRange(parser.GetUnParsedBytes());
             }
 
@@ -195,10 +199,11 @@ namespace QueryMaster.GameServer
             {
                 recvData = Decompress(recvData);
                 if (!IsValid(recvData, checksum))
-                    throw new InvalidPacketException("packet's checksum value does not match with the calculated checksum");
+                    throw new InvalidPacketException(
+                        "packet's checksum value does not match with the calculated checksum");
             }
 
-            return recvData.Skip(4).ToArray<byte>();
+            return recvData.Skip(4).ToArray();
         }
 
         private byte[] Decompress(byte[] data)
@@ -207,11 +212,11 @@ namespace QueryMaster.GameServer
             using (var output = new MemoryStream())
             using (var unZip = new BZip2InputStream(input))
             {
-                int ch = unZip.ReadByte();
+                var ch = unZip.ReadByte();
 
                 while (ch != -1)
                 {
-                    output.WriteByte((byte)ch);
+                    output.WriteByte((byte) ch);
                     ch = unZip.ReadByte();
                 }
 

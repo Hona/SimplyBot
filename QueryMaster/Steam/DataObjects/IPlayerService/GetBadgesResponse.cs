@@ -1,5 +1,5 @@
-﻿
-#region License
+﻿#region License
+
 /*
 Copyright (c) 2015 Betson Roy
 
@@ -24,23 +24,22 @@ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 */
+
 #endregion
-using Newtonsoft.Json;
+
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using Newtonsoft.Json;
 
 namespace QueryMaster.Steam
 {
     /// <summary>
-    /// Contains response of GetBadges method.
+    ///     Contains response of GetBadges method.
     /// </summary>
     [Serializable]
-    public class GetBadgesResponse : SteamResponse 
+    public class GetBadgesResponse : SteamResponse
     {
         /// <summary>
-        /// Parsed response.
+        ///     Parsed response.
         /// </summary>
         [JsonProperty("response")]
         public GetBadgesResponseResponse ParsedResponse { get; internal set; }
@@ -50,72 +49,84 @@ namespace QueryMaster.Steam
     public class GetBadgesResponseBadge : DataObject
     {
         /// <summary>
-        /// Id.
+        ///     Id.
         /// </summary>
         [JsonProperty("badgeid")]
         public uint Id { get; internal set; }
+
         /// <summary>
-        /// Application Id of the game(Optional).
+        ///     Application Id of the game(Optional).
         /// </summary>
         [JsonProperty("appid")]
         public uint AppId { get; internal set; }
+
         /// <summary>
-        /// Level.
+        ///     Level.
         /// </summary>
         [JsonProperty("level")]
         public uint Level { get; internal set; }
+
         /// <summary>
-        /// The date/time when the steam user acquired the badge.
+        ///     The date/time when the steam user acquired the badge.
         /// </summary>
-        [JsonProperty("completion_time"), JsonConverter(typeof(IntegerUnixTimeStampConverter))]
+        [JsonProperty("completion_time")]
+        [JsonConverter(typeof(IntegerUnixTimeStampConverter))]
         public DateTime CompletionTime { get; internal set; }
+
         /// <summary>
-        /// The experience this badge is worth, contributing toward the steam account's player_xp. 
+        ///     The experience this badge is worth, contributing toward the steam account's player_xp.
         /// </summary>
         [JsonProperty("xp")]
         public uint Xp { get; internal set; }
+
         /// <summary>
-        /// The amount of people who has this badge. 
+        ///     The amount of people who has this badge.
         /// </summary>
         [JsonProperty("scarcity")]
         public uint Scarcity { get; internal set; }
+
         /// <summary>
-        /// Provided if the badge relates to an app (trading cards)(Optional).
+        ///     Provided if the badge relates to an app (trading cards)(Optional).
         /// </summary>
-         [JsonProperty("communityitemid ")]
+        [JsonProperty("communityitemid ")]
         public uint CommunityItemId { get; internal set; }
+
         /// <summary>
-         /// Provided if the badge relates to an app (trading cards)(Optional).
+        ///     Provided if the badge relates to an app (trading cards)(Optional).
         /// </summary>
         [JsonProperty("border_color ")]
-         public string BorderColor { get; internal set; }
+        public string BorderColor { get; internal set; }
     }
 
     [Serializable]
     public class GetBadgesResponseResponse : DataObject
     {
         /// <summary>
-        /// Collection of <see cref="GetBadgesResponseBadge"/> instances.
+        ///     Collection of <see cref="GetBadgesResponseBadge" /> instances.
         /// </summary>
         [JsonProperty("badges")]
         public QueryMasterCollection<GetBadgesResponseBadge> Badges { get; internal set; }
+
         /// <summary>
-        /// Player Xp.
+        ///     Player Xp.
         /// </summary>
         [JsonProperty("player_xp")]
         public uint PlayerXp { get; internal set; }
+
         /// <summary>
-        /// Player level.
+        ///     Player level.
         /// </summary>
         [JsonProperty("player_level")]
         public uint PlayerLevel { get; internal set; }
+
         /// <summary>
-        /// Amount of hp needed to level up.
+        ///     Amount of hp needed to level up.
         /// </summary>
         [JsonProperty("player_xp_needed_to_level_up")]
         public uint PlayerXpNeededToLevelUp { get; internal set; }
+
         /// <summary>
-        /// Amount of hp needed to complete current level.
+        ///     Amount of hp needed to complete current level.
         /// </summary>
         [JsonProperty("player_xp_needed_current_level")]
         public uint PlayerXpNeededCurrentLevel { get; internal set; }

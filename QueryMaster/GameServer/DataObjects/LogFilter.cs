@@ -1,5 +1,5 @@
-﻿
-#region License
+﻿#region License
+
 /*
 Copyright (c) 2015 Betson Roy
 
@@ -24,42 +24,42 @@ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 */
+
 #endregion
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+
 using System.Text.RegularExpressions;
 
 namespace QueryMaster.GameServer
 {
     /// <summary>
-    /// Represents log filter.
+    ///     Represents log filter.
     /// </summary>
     public abstract class LogFilter
     {
-        /// <summary>
-        /// Regex instance.
-        /// </summary>
-       protected internal Regex RegexInstance { get; set; }
-        /// <summary>
-        /// used to store the regex pattern.
-        /// </summary>
-       protected internal string FilterString { get; set; }
-        /// <summary>
-       /// Gets or sets a value indicating whether the filter is enabled.
-        /// </summary>
-       public bool Enabled { get; set; }
-        /// <summary>
-       /// Gets or sets <see cref="LogFilterAction"/>
-        /// </summary>
-       public LogFilterAction Action { get; set; }
+        internal LogFilter()
+        {
+            Enabled = true;
+            Action = LogFilterAction.Allow;
+        }
 
-       internal LogFilter()
-       {
-           Enabled = true;
-           Action = LogFilterAction.Allow;
-       }
+        /// <summary>
+        ///     Regex instance.
+        /// </summary>
+        protected internal Regex RegexInstance { get; set; }
 
+        /// <summary>
+        ///     used to store the regex pattern.
+        /// </summary>
+        protected internal string FilterString { get; set; }
+
+        /// <summary>
+        ///     Gets or sets a value indicating whether the filter is enabled.
+        /// </summary>
+        public bool Enabled { get; set; }
+
+        /// <summary>
+        ///     Gets or sets <see cref="LogFilterAction" />
+        /// </summary>
+        public LogFilterAction Action { get; set; }
     }
 }

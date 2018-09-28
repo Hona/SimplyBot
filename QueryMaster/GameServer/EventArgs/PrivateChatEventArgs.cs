@@ -1,5 +1,5 @@
-﻿
-#region License
+﻿#region License
+
 /*
 Copyright (c) 2015 Betson Roy
 
@@ -24,30 +24,31 @@ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 */
+
 #endregion
+
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace QueryMaster.GameServer
 {
     /// <summary>
-    /// Provides data for PrivateChat event.
+    ///     Provides data for PrivateChat event.
     /// </summary>
     [Serializable]
     public class PrivateChatEventArgs : LogEventArgs
     {
         /// <summary>
-        /// Gets Sender Player's info.
+        ///     Gets Sender Player's info.
         /// </summary>
         public LogPlayerInfo Sender { get; internal set; }
+
         /// <summary>
-        /// Gets Receiver Player's info.
+        ///     Gets Receiver Player's info.
         /// </summary>
         public LogPlayerInfo Receiver { get; internal set; }
+
         /// <summary>
-        /// Get the message sent by sender.
+        ///     Get the message sent by sender.
         /// </summary>
         public string Message { get; internal set; }
     }

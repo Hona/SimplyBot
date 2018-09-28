@@ -1,5 +1,5 @@
-﻿
-#region License
+﻿#region License
+
 /*
 Copyright (c) 2015 Betson Roy
 
@@ -24,23 +24,22 @@ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 */
+
 #endregion
-using Newtonsoft.Json;
+
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using Newtonsoft.Json;
 
 namespace QueryMaster.Steam
 {
     /// <summary>
-    /// Contains response of GetAppList method.
+    ///     Contains response of GetAppList method.
     /// </summary>
     [Serializable]
     public class GetAppListResponse : SteamResponse
     {
         /// <summary>
-        /// Parsed response.
+        ///     Parsed response.
         /// </summary>
         [JsonProperty("applist")]
         public GetAppListResponseApplist ParsedResponse { get; internal set; }
@@ -50,28 +49,28 @@ namespace QueryMaster.Steam
     public class GetAppListResponseApplist : DataObject
     {
         /// <summary>
-        /// Collection of <see cref="GetAppListResponseApp"/> instances.
+        ///     Collection of <see cref="GetAppListResponseApp" /> instances.
         /// </summary>
         [JsonProperty("apps")]
         public QueryMasterCollection<GetAppListResponseApp> Apps { get; internal set; }
     }
 
     /// <summary>
-    /// Contains application Id and Name.
+    ///     Contains application Id and Name.
     /// </summary>
     [Serializable]
     public class GetAppListResponseApp : DataObject
     {
         /// <summary>
-        /// An integer containing the program's ID.
+        ///     An integer containing the program's ID.
         /// </summary>
         [JsonProperty("appid")]
         public uint AppId { get; internal set; }
+
         /// <summary>
-        /// A string containing the program's publicly facing title.
+        ///     A string containing the program's publicly facing title.
         /// </summary>
         [JsonProperty("name")]
         public string Name { get; internal set; }
     }
-
 }

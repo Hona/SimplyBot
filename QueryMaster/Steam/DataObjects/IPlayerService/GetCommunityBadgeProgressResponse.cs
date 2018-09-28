@@ -1,5 +1,5 @@
-﻿
-#region License
+﻿#region License
+
 /*
 Copyright (c) 2015 Betson Roy
 
@@ -24,51 +24,50 @@ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 */
+
 #endregion
-using Newtonsoft.Json;
+
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using Newtonsoft.Json;
 
 namespace QueryMaster.Steam
 {
     /// <summary>
-    /// Contains response of GetCommunityBadgeProgress method.
+    ///     Contains response of GetCommunityBadgeProgress method.
     /// </summary>
     [Serializable]
-   public class GetCommunityBadgeProgressResponse : SteamResponse
+    public class GetCommunityBadgeProgressResponse : SteamResponse
     {
         /// <summary>
-        /// Parsed response.
+        ///     Parsed response.
         /// </summary>
-       [JsonProperty("response")]
-       public GetCommunityBadgeProgressResponseResponse ParsedResponse { get; internal set; }
+        [JsonProperty("response")]
+        public GetCommunityBadgeProgressResponseResponse ParsedResponse { get; internal set; }
     }
 
     [Serializable]
-   public class GetCommunityBadgeProgressResponseResponse : DataObject
-   {
-       /// <summary>
-       /// Collection of <see cref="GetCommunityBadgeProgressResponseQuest"/> instances.
-       /// </summary>
-       [JsonProperty("quests")]
-       public QueryMasterCollection<GetCommunityBadgeProgressResponseQuest> Quests { get; internal set; }
-   }
+    public class GetCommunityBadgeProgressResponseResponse : DataObject
+    {
+        /// <summary>
+        ///     Collection of <see cref="GetCommunityBadgeProgressResponseQuest" /> instances.
+        /// </summary>
+        [JsonProperty("quests")]
+        public QueryMasterCollection<GetCommunityBadgeProgressResponseQuest> Quests { get; internal set; }
+    }
 
     [Serializable]
-   public class GetCommunityBadgeProgressResponseQuest : DataObject
-   {
-       /// <summary>
-       /// Quest ID; no schema is currently available.
-       /// </summary>
-       [JsonProperty("questid")]
-       public uint Id { get; internal set; }
-       /// <summary>
-       /// Whether the steam account has completed this quest.
-       /// </summary>
-       [JsonProperty("completed")]
-       public bool HasCompleted { get; internal set; }
-   }
+    public class GetCommunityBadgeProgressResponseQuest : DataObject
+    {
+        /// <summary>
+        ///     Quest ID; no schema is currently available.
+        /// </summary>
+        [JsonProperty("questid")]
+        public uint Id { get; internal set; }
 
+        /// <summary>
+        ///     Whether the steam account has completed this quest.
+        /// </summary>
+        [JsonProperty("completed")]
+        public bool HasCompleted { get; internal set; }
+    }
 }

@@ -1,5 +1,5 @@
-﻿
-#region License
+﻿#region License
+
 /*
 Copyright (c) 2015 Betson Roy
 
@@ -24,23 +24,22 @@ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 */
+
 #endregion
-using Newtonsoft.Json;
+
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using Newtonsoft.Json;
 
 namespace QueryMaster.Steam
 {
     /// <summary>
-    /// Contains response of GetPlayerBans method.
+    ///     Contains response of GetPlayerBans method.
     /// </summary>
     [Serializable]
     public class GetPlayerBansResponse : SteamResponse
     {
         /// <summary>
-        /// Parsed response.
+        ///     Parsed response.
         /// </summary>
         [JsonProperty("RootObject")]
         public GetPlayerBansResponseRootObject ParsedResponse { get; internal set; }
@@ -50,45 +49,50 @@ namespace QueryMaster.Steam
     public class GetPlayerBansResponseRootObject : DataObject
     {
         /// <summary>
-        /// Collection of <see cref="GetPlayerBansResponsePlayer"/> instances.
+        ///     Collection of <see cref="GetPlayerBansResponsePlayer" /> instances.
         /// </summary>
         [JsonProperty("players")]
         public QueryMasterCollection<GetPlayerBansResponsePlayer> Players { get; internal set; }
     }
 
     [Serializable]
-    public class GetPlayerBansResponsePlayer : DataObject 
+    public class GetPlayerBansResponsePlayer : DataObject
     {
         /// <summary>
-        /// Player's 64 bit steam ID.
+        ///     Player's 64 bit steam ID.
         /// </summary>
         public ulong SteamId { get; internal set; }
+
         /// <summary>
-        /// Indicates whether the player is banned from Community(http://steamcommunity.com/).
+        ///     Indicates whether the player is banned from Community(http://steamcommunity.com/).
         /// </summary>
         [JsonProperty("CommunityBanned")]
         public bool IsCommunityBanned { get; internal set; }
+
         /// <summary>
-        /// Indicates whether the player has VAC bans on record.
+        ///     Indicates whether the player has VAC bans on record.
         /// </summary>
         [JsonProperty("VACBanned")]
         public bool? IsVACBanned { get; internal set; }
+
         /// <summary>
-        /// Number of bans.
+        ///     Number of bans.
         /// </summary>
         public int? NumberOfVACBans { get; internal set; }
+
         /// <summary>
-        /// Days since last ban.
+        ///     Days since last ban.
         /// </summary>
         public int? DaysSinceLastBan { get; internal set; }
+
         /// <summary>
-        /// Number of game bans.
+        ///     Number of game bans.
         /// </summary>
         public int? NumberOfGameBans { get; internal set; }
+
         /// <summary>
-        /// Player's ban status in the economy.
+        ///     Player's ban status in the economy.
         /// </summary>
         public string EconomyBan { get; internal set; }
     }
-
 }

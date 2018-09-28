@@ -1,5 +1,5 @@
-﻿
-#region License
+﻿#region License
+
 /*
 Copyright (c) 2015 Betson Roy
 
@@ -24,42 +24,40 @@ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 */
+
 #endregion
-using Newtonsoft.Json;
+
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using Newtonsoft.Json;
 
 namespace QueryMaster.Steam
 {
     /// <summary>
-    /// Contains response of GetNumberOfCurrentPlayers method.
+    ///     Contains response of GetNumberOfCurrentPlayers method.
     /// </summary>
     [Serializable]
-   public class GetNumberOfCurrentPlayersResponse : SteamResponse 
+    public class GetNumberOfCurrentPlayersResponse : SteamResponse
     {
         /// <summary>
-        /// Parsed response.
+        ///     Parsed response.
         /// </summary>
         [JsonProperty("response")]
-       public GetNumberOfCurrentPlayersResponseResponse ParsedResponse { get; internal set; }
+        public GetNumberOfCurrentPlayersResponseResponse ParsedResponse { get; internal set; }
     }
 
     [Serializable]
-   public class GetNumberOfCurrentPlayersResponseResponse : DataObject
-   {
+    public class GetNumberOfCurrentPlayersResponseResponse : DataObject
+    {
         /// <summary>
-        /// Count of players.
+        ///     Count of players.
         /// </summary>
         [JsonProperty("player_count")]
-       public int Count { get; internal set; }
+        public int Count { get; internal set; }
+
         /// <summary>
-        /// Result.
+        ///     Result.
         /// </summary>
         [JsonProperty("result")]
-       public int Result { get; internal set; }
-   }
-
-
+        public int Result { get; internal set; }
+    }
 }

@@ -1,5 +1,5 @@
-﻿
-#region License
+﻿#region License
+
 /*
 Copyright (c) 2015 Betson Roy
 
@@ -24,106 +24,117 @@ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 */
+
 #endregion
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace QueryMaster.Steam
 {
     /// <summary>
-    /// Reply format.
+    ///     Reply format.
     /// </summary>
     public enum Format
     {
         /// <summary>
-        /// Json.
+        ///     Json.
         /// </summary>
         Json,
+
         /// <summary>
-        /// Xml.
+        ///     Xml.
         /// </summary>
         Xml,
+
         /// <summary>
-        /// Vdf.
+        ///     Vdf.
         /// </summary>
         Vdf
     }
+
     /// <summary>
-    /// GetFriendList Relationship(used in ISteamUser.GetFriendList method).
+    ///     GetFriendList Relationship(used in ISteamUser.GetFriendList method).
     /// </summary>
     public enum GetFriendListRelationship
     {
         /// <summary>
-        /// All.
+        ///     All.
         /// </summary>
         All,
+
         /// <summary>
-        /// Friend.
+        ///     Friend.
         /// </summary>
         Friend
     }
+
     /// <summary>
-    /// CommunityVisibilityState(used in ISteamUser.GetPlayerSummaries method).
+    ///     CommunityVisibilityState(used in ISteamUser.GetPlayerSummaries method).
     /// </summary>
     public enum CommunityVisibilityState
     {
         /// <summary>
-        /// Private.
+        ///     Private.
         /// </summary>
-        Private=1,
+        Private = 1,
+
         /// <summary>
-        /// FriendsOnly.
+        ///     FriendsOnly.
         /// </summary>
         FriendsOnly,
+
         /// <summary>
-        /// FriendsOfFriends.
+        ///     FriendsOfFriends.
         /// </summary>
         FriendsOfFriends,
+
         /// <summary>
-        /// UsersOnly.
+        ///     UsersOnly.
         /// </summary>
         UsersOnly,
+
         /// <summary>
-        /// Public.
+        ///     Public.
         /// </summary>
         Public
     }
+
     /// <summary>
-    /// PersonaState(used in ISteamUser.GetPlayerSummaries method).
+    ///     PersonaState(used in ISteamUser.GetPlayerSummaries method).
     /// </summary>
     public enum PersonaState
     {
         /// <summary>
-        /// Offline.
+        ///     Offline.
         /// </summary>
         Offline,
+
         /// <summary>
-        /// Online.
+        ///     Online.
         /// </summary>
         Online,
+
         /// <summary>
-        /// Busy.
+        ///     Busy.
         /// </summary>
         Busy,
+
         /// <summary>
-        /// Away.
+        ///     Away.
         /// </summary>
         Away,
+
         /// <summary>
-        /// Snooze.
+        ///     Snooze.
         /// </summary>
         Snooze,
+
         /// <summary>
-        /// LookingToTrade.
+        ///     LookingToTrade.
         /// </summary>
         LookingToTrade,
+
         /// <summary>
-        /// LookingToPlay.
+        ///     LookingToPlay.
         /// </summary>
-        LookingToPlay 
+        LookingToPlay
     }
-
-
 }

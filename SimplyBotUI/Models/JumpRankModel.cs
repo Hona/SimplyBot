@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace SimplyBotUI.Models
+﻿namespace SimplyBotUI.Models
 {
     internal class JumpRankModel
     {

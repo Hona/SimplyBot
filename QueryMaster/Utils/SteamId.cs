@@ -1,5 +1,5 @@
-﻿
-#region License
+﻿#region License
+
 /*
 Copyright (c) 2015 Betson Roy
 
@@ -24,52 +24,34 @@ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 */
+
 #endregion
+
 using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Net;
-using System.Text;
 using System.Text.RegularExpressions;
+using QueryMaster.Steam;
+
 namespace QueryMaster.Utils
 {
     /// <summary>
-    /// Represents Steam Id.
+    ///     Represents Steam Id.
     /// </summary>
     public class SteamId
     {
-        private static Regex LegacyRegex = new Regex(@"^STEAM_([0-4]):([0-1]):(\d+)$", RegexOptions.IgnoreCase);
-        private static Regex SteamId3Regex = new Regex(@"^\[?([IUMGAPCgTcLa])?:([0-4]):(\d+)(:(\d+))?\]?$");
+        private static readonly Regex
+            LegacyRegex = new Regex(@"^STEAM_([0-4]):([0-1]):(\d+)$", RegexOptions.IgnoreCase);
 
-        /// <summary>
-        /// what Steam system this Steam ID comes from.
-        /// </summary>
-        public Universe Universe { get; internal set; }
-        /// <summary>
-        /// what type of account this is.
-        /// </summary>
-        public AccountType AccountType { get; internal set; }
-        /// <summary>
-        /// Instance.
-        /// </summary>
-        public Instance Instance { get; internal set; }
-        /// <summary>
-        /// Account Id.
-        /// </summary>
-        public uint AccountId { get; internal set; }
-        /// <summary>
-        /// Indicates whether the passed steam id is valid.
-        /// </summary>
-        public bool IsValid { get; internal set; }
+        private static readonly Regex SteamId3Regex = new Regex(@"^\[?([IUMGAPCgTcLa])?:([0-4]):(\d+)(:(\d+))?\]?$");
 
         private SteamId()
         {
-
         }
 
         /// <summary>
-        /// Create Steam id from account id,accounttype,universe and optioanl instance.
+        ///     Create Steam id from account id,accounttype,universe and optioanl instance.
         /// </summary>
         /// <param name="accountId">Account Id.</param>
         /// <param name="accountType">Account Type.</param>
@@ -81,7 +63,7 @@ namespace QueryMaster.Utils
             if (Enum.IsDefined(typeof(AccountType), accountType))
                 AccountType = accountType;
             else
-               AccountType = AccountType.Invalid;
+                AccountType = AccountType.Invalid;
 
             if (Enum.IsDefined(typeof(Universe), Universe))
                 Universe = universe;
@@ -95,23 +77,48 @@ namespace QueryMaster.Utils
         }
 
         /// <summary>
-        /// Creates <see cref="SteamId"/> instance from steam id in legacy format(STEAM_X:Y:Z).
+        ///     what Steam system this Steam ID comes from.
+        /// </summary>
+        public Universe Universe { get; internal set; }
+
+        /// <summary>
+        ///     what type of account this is.
+        /// </summary>
+        public AccountType AccountType { get; internal set; }
+
+        /// <summary>
+        ///     Instance.
+        /// </summary>
+        public Instance Instance { get; internal set; }
+
+        /// <summary>
+        ///     Account Id.
+        /// </summary>
+        public uint AccountId { get; internal set; }
+
+        /// <summary>
+        ///     Indicates whether the passed steam id is valid.
+        /// </summary>
+        public bool IsValid { get; internal set; }
+
+        /// <summary>
+        ///     Creates <see cref="SteamId" /> instance from steam id in legacy format(STEAM_X:Y:Z).
         /// </summary>
         /// <param name="id">Steam id of legacy format(STEAM_X:Y:Z).</param>
-        /// <returns>instance of <see cref="SteamId"/>.</returns>
+        /// <returns>instance of <see cref="SteamId" />.</returns>
         public static SteamId FromLegacyFormat(string id)
         {
-            SteamId steamId = new SteamId();
+            var steamId = new SteamId();
             Match match = null;
             if ((match = LegacyRegex.Match(id)).Success)
             {
-                steamId.Universe = (Universe)Int32.Parse(match.Groups[1].Value, CultureInfo.InvariantCulture);
+                steamId.Universe = (Universe) int.Parse(match.Groups[1].Value, CultureInfo.InvariantCulture);
                 if (!Enum.IsDefined(typeof(Universe), steamId.Universe))
                     steamId.Universe = Universe.Invalid;
                 if (steamId.Universe == Universe.Invalid)
                     steamId.Universe = Universe.Public;
-                uint accountID = UInt32.Parse(match.Groups[3].Value, CultureInfo.InvariantCulture);
-                steamId.AccountId = match.Groups[2].Value == "0" ? (accountID << 1) : ((accountID << 1) + 1);
+                var accountID = uint.Parse(match.Groups[3].Value, CultureInfo.InvariantCulture);
+                steamId.AccountId = match.Groups[2].Value == "0" ? accountID << 1 : (accountID << 1) + 1;
                 steamId.Instance = Instance.Desktop;
                 steamId.AccountType = AccountType.Individual;
                 steamId.IsValid = steamId.Validate();
@@ -124,36 +131,41 @@ namespace QueryMaster.Utils
                 steamId.AccountType = AccountType.Invalid;
                 steamId.IsValid = false;
             }
+
             return steamId;
         }
 
         /// <summary>
-        /// Creates <see cref="SteamId"/> instance from steam id in legacy format('[C:U:A]' or '[C:U:A:I]').
+        ///     Creates <see cref="SteamId" /> instance from steam id in legacy format('[C:U:A]' or '[C:U:A:I]').
         /// </summary>
         /// <param name="id">Steam id of SteamID3 format('[C:U:A]' or '[C:U:A:I]').</param>
-        /// <returns>instance of <see cref="SteamId"/>.</returns>
+        /// <returns>instance of <see cref="SteamId" />.</returns>
         public static SteamId FromSteamId3(string id)
         {
-            SteamId steamId = new SteamId();
+            var steamId = new SteamId();
             Match match = null;
             if ((match = SteamId3Regex.Match(id)).Success)
             {
                 steamId.AccountType = AccountTypeMapper.Instance[match.Groups[1].Value[0]];
-                steamId.Universe = (Universe)Int32.Parse(match.Groups[2].Value, CultureInfo.InvariantCulture);
+                steamId.Universe = (Universe) int.Parse(match.Groups[2].Value, CultureInfo.InvariantCulture);
                 if (!Enum.IsDefined(typeof(Universe), steamId.Universe))
                     steamId.Universe = Universe.Invalid;
-                steamId.AccountId = UInt32.Parse(match.Groups[3].Value, CultureInfo.InvariantCulture);
-                if (!String.IsNullOrEmpty(match.Groups[5].Value))
+                steamId.AccountId = uint.Parse(match.Groups[3].Value, CultureInfo.InvariantCulture);
+                if (!string.IsNullOrEmpty(match.Groups[5].Value))
                 {
-                    steamId.Instance = (Instance)Int32.Parse(match.Groups[5].Value, CultureInfo.InvariantCulture);
+                    steamId.Instance = (Instance) int.Parse(match.Groups[5].Value, CultureInfo.InvariantCulture);
                     if (!Enum.IsDefined(typeof(Instance), steamId.Instance))
                         steamId.Instance = Instance.Invalid;
                 }
+                else if (steamId.AccountType == AccountType.Clan)
+                {
+                    steamId.Instance = Instance.All;
+                }
                 else
-                    if (steamId.AccountType == AccountType.Clan)
-                        steamId.Instance = Instance.All;
-                    else
-                        steamId.Instance = Instance.Desktop;
+                {
+                    steamId.Instance = Instance.Desktop;
+                }
+
                 steamId.IsValid = steamId.Validate();
             }
             else
@@ -164,36 +176,38 @@ namespace QueryMaster.Utils
                 steamId.AccountType = AccountType.Invalid;
                 steamId.IsValid = false;
             }
-            return steamId;
 
+            return steamId;
         }
 
         /// <summary>
-        /// Creates <see cref="SteamId"/> instance from SteamID64 format steam id.
+        ///     Creates <see cref="SteamId" /> instance from SteamID64 format steam id.
         /// </summary>
         /// <param name="id">64-bit steam id.</param>
-        /// <returns>instance of <see cref="SteamId"/>.</returns>
+        /// <returns>instance of <see cref="SteamId" />.</returns>
         public static SteamId FromSteamId64(ulong id)
         {
-            SteamId steamId = new SteamId();
-            byte[] bytes = BitConverter.GetBytes(id);
+            var steamId = new SteamId();
+            var bytes = BitConverter.GetBytes(id);
             if (!BitConverter.IsLittleEndian)
                 Array.Reverse(bytes);
-            byte[] accountIdBytes = new byte[] { bytes[0], bytes[1], bytes[2], bytes[3] };
-            byte[] instanceBytes = new byte[] { bytes[4], bytes[5], (Byte)(bytes[6] & 0x0F), 0 };
+            byte[] accountIdBytes = {bytes[0], bytes[1], bytes[2], bytes[3]};
+            byte[] instanceBytes = {bytes[4], bytes[5], (byte) (bytes[6] & 0x0F), 0};
             if (!BitConverter.IsLittleEndian)
             {
                 Array.Reverse(accountIdBytes);
                 Array.Reverse(instanceBytes);
             }
+
             steamId.AccountId = BitConverter.ToUInt32(accountIdBytes, 0);
-            steamId.Instance = (Instance)Enum.Parse(typeof(Instance), BitConverter.ToUInt32(instanceBytes, 0).ToString(CultureInfo.InvariantCulture));
+            steamId.Instance = (Instance) Enum.Parse(typeof(Instance),
+                BitConverter.ToUInt32(instanceBytes, 0).ToString(CultureInfo.InvariantCulture));
             if (!Enum.IsDefined(typeof(Instance), steamId.Instance))
                 steamId.Instance = Instance.Invalid;
-            steamId.AccountType = (AccountType)(int)(bytes[6] >> 4);
+            steamId.AccountType = (AccountType) (bytes[6] >> 4);
             if (!Enum.IsDefined(typeof(AccountType), steamId.AccountType))
                 steamId.AccountType = AccountType.Invalid;
-            steamId.Universe = (Universe)bytes[7];
+            steamId.Universe = (Universe) bytes[7];
             if (!Enum.IsDefined(typeof(Universe), steamId.Universe))
                 steamId.Universe = Universe.Invalid;
             steamId.IsValid = steamId.Validate();
@@ -201,18 +215,18 @@ namespace QueryMaster.Utils
         }
 
         /// <summary>
-        /// Creates <see cref="SteamId"/> instance from Community Url(Profile Url) of player.
+        ///     Creates <see cref="SteamId" /> instance from Community Url(Profile Url) of player.
         /// </summary>
         /// <param name="url">Player's Url.</param>
         /// <param name="webApiKey">Steam web api key.</param>
-        /// <returns>instance of <see cref="SteamId"/>.</returns>
-        public static SteamId FromCommunityUrl(string url,string webApiKey)
+        /// <returns>instance of <see cref="SteamId" />.</returns>
+        public static SteamId FromCommunityUrl(string url, string webApiKey)
         {
             SteamId steamId = null;
             if (Uri.IsWellFormedUriString(url, UriKind.Relative))
             {
-                Steam.SteamQuery query = new Steam.SteamQuery(webApiKey);
-                ulong? id = query.ISteamUser.ResolveVanityURL(url).ParsedResponse.SteamId;
+                var query = new SteamQuery(webApiKey);
+                var id = query.ISteamUser.ResolveVanityURL(url).ParsedResponse.SteamId;
                 if (id == null)
                 {
                     steamId = new SteamId();
@@ -224,11 +238,14 @@ namespace QueryMaster.Utils
                 }
                 else
                 {
-                    steamId = SteamId.FromSteamId64((ulong)id);
+                    steamId = FromSteamId64((ulong) id);
                 }
             }
             else
+            {
                 throw new FormatException("Url is not in correct format.");
+            }
+
             return steamId;
         }
 
@@ -246,87 +263,89 @@ namespace QueryMaster.Utils
         }
 
         /// <summary>
-        /// Converts to format : STEAM_X:Y:Z.
+        ///     Converts to format : STEAM_X:Y:Z.
         /// </summary>
         /// <returns>Returns steam id in the format : STEAM_X:Y:Z.</returns>
         public string ToLegacyFormat()
         {
-            return String.Format(CultureInfo.InvariantCulture,"STEAM_0:{0}:{1}", (AccountId & 1), (AccountId >> 1));
+            return string.Format(CultureInfo.InvariantCulture, "STEAM_0:{0}:{1}", AccountId & 1, AccountId >> 1);
         }
+
         /// <summary>
-        /// Converts to its ID3 format :'[C:U:A]' or '[C:U:A:I]'
+        ///     Converts to its ID3 format :'[C:U:A]' or '[C:U:A:I]'
         /// </summary>
         /// <param name="includeInstanceId">Whether to include instance id.</param>
         /// <returns>Returns steam id in ID3 format('[C:U:A]' or '[C:U:A:I]').</returns>
         public string ToSteamId3(bool includeInstanceId = false)
         {
-            string id = string.Empty;
+            var id = string.Empty;
             if (includeInstanceId)
-                id = String.Format(CultureInfo.InvariantCulture,"[{0}:{1}:{2}:{3}]", AccountTypeMapper.Instance[AccountType], (int)Universe, AccountId, (int)Instance);
+                id = string.Format(CultureInfo.InvariantCulture, "[{0}:{1}:{2}:{3}]",
+                    AccountTypeMapper.Instance[AccountType], (int) Universe, AccountId, (int) Instance);
             else
-                id = String.Format(CultureInfo.InvariantCulture,"[{0}:{1}:{2}]", AccountTypeMapper.Instance[AccountType], (int)Universe, AccountId);
+                id = string.Format(CultureInfo.InvariantCulture, "[{0}:{1}:{2}]",
+                    AccountTypeMapper.Instance[AccountType], (int) Universe, AccountId);
             return id;
         }
+
         /// <summary>
-        /// Converts Steam id to its 64 bit format.
+        ///     Converts Steam id to its 64 bit format.
         /// </summary>
         /// <returns>Returns steam id in 64 bit format.</returns>
         public ulong ToSteamId64()
         {
             ulong id = 0;
             if (AccountType == AccountType.Individual)
-                id = (ulong)76561197960265728 + AccountId;
+                id = (ulong) 76561197960265728 + AccountId;
             else
-                id = ((ulong)Universe << 56) | ((ulong)AccountType << 52) | ((ulong)Instance <<32) | (ulong)AccountId;
+                id = ((ulong) Universe << 56) | ((ulong) AccountType << 52) | ((ulong) Instance << 32) | AccountId;
             return id;
         }
+
         /// <summary>
-        /// Converts Steam id to Community Url.
+        ///     Converts Steam id to Community Url.
         /// </summary>
         /// <returns>Returns player's community Url(Profile Url).</returns>
         public Uri ToCommunityUrl()
         {
-            string url = string.Empty;
+            var url = string.Empty;
             if (AccountType == AccountType.Individual)
                 url = "http://steamcommunity.com/profiles/" + ToSteamId64();
-            if(AccountType==AccountType.Clan)
+            if (AccountType == AccountType.Clan)
                 url = "http://steamcommunity.com/gid/" + ToSteamId64();
             return new Uri(url);
         }
+
         /// <summary>
-        /// Fetches the Vanity url.
+        ///     Fetches the Vanity url.
         /// </summary>
         /// <returns>Vanity url.</returns>
         public Uri GetVanityUrl()
         {
-            string vanityUrl=string.Empty;
-            HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(ToCommunityUrl());
+            var vanityUrl = string.Empty;
+            var webRequest = (HttpWebRequest) WebRequest.Create(ToCommunityUrl());
             webRequest.AllowAutoRedirect = false;
             webRequest.Timeout = 10000;
-            using (HttpWebResponse webResponse = (HttpWebResponse)webRequest.GetResponse())
+            using (var webResponse = (HttpWebResponse) webRequest.GetResponse())
             {
-                if ((int)webResponse.StatusCode >= 300 && (int)webResponse.StatusCode <= 399)
+                if ((int) webResponse.StatusCode >= 300 && (int) webResponse.StatusCode <= 399)
                 {
-                    string url = webResponse.Headers["Location"];
+                    var url = webResponse.Headers["Location"];
                     if (!string.IsNullOrWhiteSpace(url))
                     {
-                        if (url.EndsWith("/",StringComparison.OrdinalIgnoreCase))
+                        if (url.EndsWith("/", StringComparison.OrdinalIgnoreCase))
                             url = url.Remove(url.Length - 1);
                         if (url.Contains('/'))
                         {
                             vanityUrl = url.Split('/').Last();
                             if (vanityUrl == ToSteamId64().ToString(CultureInfo.InvariantCulture))
-                            {
                                 vanityUrl = string.Empty;
-                            }
                         }
                     }
-                }                 
+                }
             }
+
             return new Uri(vanityUrl);
         }
-
-
-
     }
 }

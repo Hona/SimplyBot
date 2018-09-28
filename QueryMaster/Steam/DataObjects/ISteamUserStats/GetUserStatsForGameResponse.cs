@@ -1,5 +1,5 @@
-﻿
-#region License
+﻿#region License
+
 /*
 Copyright (c) 2015 Betson Roy
 
@@ -24,78 +24,84 @@ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 */
+
 #endregion
-using Newtonsoft.Json;
+
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using Newtonsoft.Json;
 
 namespace QueryMaster.Steam
 {
     /// <summary>
-    /// Contains response of GetUserStatsForGame method.
+    ///     Contains response of GetUserStatsForGame method.
     /// </summary>
     [Serializable]
-   public class GetUserStatsForGameResponse : SteamResponse 
+    public class GetUserStatsForGameResponse : SteamResponse
     {
         /// <summary>
-        /// Parsed response.
+        ///     Parsed response.
         /// </summary>
-       [JsonProperty("playerstats")]
-       public GetUserStatsForGameResponsePlayerstats ParsedResponse { get; internal set; }
+        [JsonProperty("playerstats")]
+        public GetUserStatsForGameResponsePlayerstats ParsedResponse { get; internal set; }
     }
+
     [Serializable]
     public class GetUserStatsForGameResponsePlayerstats : DataObject
     {
         /// <summary>
-        /// 64 bit steam id.
+        ///     64 bit steam id.
         /// </summary>
         [JsonProperty("steamID")]
         public ulong SteamID { get; internal set; }
+
         /// <summary>
-        /// Game name.
+        ///     Game name.
         /// </summary>
         [JsonProperty("gameName")]
         public string GameName { get; internal set; }
+
         /// <summary>
-        ///Collection of <see cref="GetUserStatsForGameResponseStat"/> instances.
+        ///     Collection of <see cref="GetUserStatsForGameResponseStat" /> instances.
         /// </summary>
         [JsonProperty("stats")]
         public QueryMasterCollection<GetUserStatsForGameResponseStat> Stats { get; internal set; }
+
         /// <summary>
-        /// Collection of <see cref="GetUserStatsForGameResponseAchievement"/> instances.
+        ///     Collection of <see cref="GetUserStatsForGameResponseAchievement" /> instances.
         /// </summary>
         [JsonProperty("achievements")]
         public QueryMasterCollection<GetUserStatsForGameResponseAchievement> Achievements { get; internal set; }
     }
-    [Serializable]
-   public class GetUserStatsForGameResponseStat : DataObject
-   {
-       /// <summary>
-       /// Name of stat.
-       /// </summary>
-       [JsonProperty("name")]
-       public string Name { get; internal set; }
-       /// <summary>
-       /// Value of stat.
-       /// </summary>
-       [JsonProperty("value")]
-       public int Value { get; internal set; }
-   }
-    [Serializable]
-   public class GetUserStatsForGameResponseAchievement : DataObject
-   {
-       /// <summary>
-       /// Name of achievement.
-       /// </summary>
-       [JsonProperty("name")]
-       public string Name { get; internal set; }
-       /// <summary>
-       /// Indicates whether or not the achievement has been unlocked by the user. 
-       /// </summary>
-       [JsonProperty("achieved")]
-       public bool HasAchieved { get; internal set; }
-   }
 
+    [Serializable]
+    public class GetUserStatsForGameResponseStat : DataObject
+    {
+        /// <summary>
+        ///     Name of stat.
+        /// </summary>
+        [JsonProperty("name")]
+        public string Name { get; internal set; }
+
+        /// <summary>
+        ///     Value of stat.
+        /// </summary>
+        [JsonProperty("value")]
+        public int Value { get; internal set; }
+    }
+
+    [Serializable]
+    public class GetUserStatsForGameResponseAchievement : DataObject
+    {
+        /// <summary>
+        ///     Name of achievement.
+        /// </summary>
+        [JsonProperty("name")]
+        public string Name { get; internal set; }
+
+        /// <summary>
+        ///     Indicates whether or not the achievement has been unlocked by the user.
+        /// </summary>
+        [JsonProperty("achieved")]
+        public bool HasAchieved { get; internal set; }
+    }
 }

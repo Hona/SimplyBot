@@ -1,5 +1,5 @@
-﻿
-#region License
+﻿#region License
+
 /*
 Copyright (c) 2015 Betson Roy
 
@@ -24,49 +24,49 @@ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 */
+
 #endregion
-using Newtonsoft.Json;
+
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using Newtonsoft.Json;
 
 namespace QueryMaster.Steam
 {
     /// <summary>
-    /// Contains response of GetGlobalStatsForGame method.
+    ///     Contains response of GetGlobalStatsForGame method.
     /// </summary>
     [Serializable]
-   public class GetGlobalStatsForGameResponse : SteamResponse 
+    public class GetGlobalStatsForGameResponse : SteamResponse
     {
         /// <summary>
-        /// Parsed response.
+        ///     Parsed response.
         /// </summary>
         [JsonProperty("response")]
-       public GetGlobalStatsForGameResponseResult ParsedResponse { get; internal set; }
+        public GetGlobalStatsForGameResponseResult ParsedResponse { get; internal set; }
     }
 
     [Serializable]
-   public class GetGlobalStatsForGameResponseResult : DataObject
+    public class GetGlobalStatsForGameResponseResult : DataObject
     {
         /// <summary>
-        /// Collection of <see cref="GetGlobalStatsForGameResponseStat"/> instances.
+        ///     Collection of <see cref="GetGlobalStatsForGameResponseStat" /> instances.
         /// </summary>
-        [JsonProperty("globalstats"),JsonConverter(typeof(GetGlobalStatsForGameResponseStatConverter))]
-       public QueryMasterCollection<GetGlobalStatsForGameResponseStat> Stats { get; internal set; }
+        [JsonProperty("globalstats")]
+        [JsonConverter(typeof(GetGlobalStatsForGameResponseStatConverter))]
+        public QueryMasterCollection<GetGlobalStatsForGameResponseStat> Stats { get; internal set; }
     }
 
     [Serializable]
-   public class GetGlobalStatsForGameResponseStat : DataObject
+    public class GetGlobalStatsForGameResponseStat : DataObject
     {
         /// <summary>
-        /// The name of the requested stat.
+        ///     The name of the requested stat.
         /// </summary>
         public string Name { get; internal set; }
+
         /// <summary>
-        /// The value of the stat.
+        ///     The value of the stat.
         /// </summary>
         public ulong Total { get; internal set; }
     }
-
 }

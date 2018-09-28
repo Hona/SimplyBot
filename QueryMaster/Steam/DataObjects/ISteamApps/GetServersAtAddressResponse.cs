@@ -1,5 +1,5 @@
-﻿
-#region License
+﻿#region License
+
 /*
 Copyright (c) 2015 Betson Roy
 
@@ -24,24 +24,23 @@ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 */
+
 #endregion
-using Newtonsoft.Json;
+
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Text;
+using Newtonsoft.Json;
 
 namespace QueryMaster.Steam
 {
     /// <summary>
-    /// Contains response of GetServersAtAddress method.
+    ///     Contains response of GetServersAtAddress method.
     /// </summary>
     [Serializable]
-   public class GetServersAtAddressResponse : SteamResponse
+    public class GetServersAtAddressResponse : SteamResponse
     {
         /// <summary>
-        /// Parsed response.
+        ///     Parsed response.
         /// </summary>
         [JsonProperty("response")]
         public GetServersAtAddressResponseResponse ParsedResponse { get; internal set; }
@@ -51,12 +50,13 @@ namespace QueryMaster.Steam
     public class GetServersAtAddressResponseResponse : DataObject
     {
         /// <summary>
-        /// Returns true if ip address is valid, does not mean server is functioning properly. 
+        ///     Returns true if ip address is valid, does not mean server is functioning properly.
         /// </summary>
         [JsonProperty("success")]
         public bool IsSuccess { get; internal set; }
+
         /// <summary>
-        /// Collection of every server from sent ip address. 
+        ///     Collection of every server from sent ip address.
         /// </summary>
         [JsonProperty("servers")]
         public QueryMasterCollection<GetServersAtAddressResponseServer> Servers { get; internal set; }
@@ -66,50 +66,58 @@ namespace QueryMaster.Steam
     public class GetServersAtAddressResponseServer : DataObject
     {
         /// <summary>
-        /// Server endpoint.
+        ///     Server endpoint.
         /// </summary>
-        [JsonProperty("addr"), JsonConverter(typeof(StringIpEndPointConverter))]
+        [JsonProperty("addr")]
+        [JsonConverter(typeof(StringIpEndPointConverter))]
         public IPEndPoint Endpoints { get; internal set; }
+
         /// <summary>
-        /// gmsindex.
+        ///     gmsindex.
         /// </summary>
         [JsonProperty("gmsindex")]
         public int GMSIndex { get; internal set; }
+
         /// <summary>
-        /// Application Id of the game.
+        ///     Application Id of the game.
         /// </summary>
         [JsonProperty("appid")]
         public uint AppId { get; internal set; }
+
         /// <summary>
-        /// Game Directory.
+        ///     Game Directory.
         /// </summary>
         [JsonProperty("gamedir")]
         public string GameDirectory { get; internal set; }
+
         /// <summary>
-        /// Region of the server.
+        ///     Region of the server.
         /// </summary>
         [JsonProperty("region")]
         public int Region { get; internal set; }
+
         /// <summary>
-        /// Indicates whether the server is secure.
+        ///     Indicates whether the server is secure.
         /// </summary>
         [JsonProperty("secure")]
         public bool IsSecure { get; internal set; }
+
         /// <summary>
-        /// Indicates whether the server is a lan game.
+        ///     Indicates whether the server is a lan game.
         /// </summary>
         [JsonProperty("lan")]
         public bool IsLan { get; internal set; }
+
         /// <summary>
-        ///  Port number for the server.
+        ///     Port number for the server.
         /// </summary>
         [JsonProperty("gameport")]
         public int GamePort { get; internal set; }
+
         /// <summary>
-        /// Spectator port.
+        ///     Spectator port.
         /// </summary>
         [JsonProperty("specport")]
         public int SpecPort { get; internal set; }
     }
-
 }

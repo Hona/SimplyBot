@@ -1,5 +1,5 @@
-﻿
-#region License
+﻿#region License
+
 /*
 Copyright (c) 2015 Betson Roy
 
@@ -24,20 +24,23 @@ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 */
+
 #endregion
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace QueryMaster.Utils
 {
-   internal class AccountTypeMapper
+    internal class AccountTypeMapper
     {
-        private static List<Tuple<int, char, AccountType>> accountTypes = new List<Tuple<int, char, AccountType>>();
-        static AccountTypeMapper obj = null;
-        internal static AccountTypeMapper Instance { get { if (obj == null)obj = new AccountTypeMapper(); return obj; } }
-        AccountTypeMapper()
+        private static readonly List<Tuple<int, char, AccountType>> accountTypes =
+            new List<Tuple<int, char, AccountType>>();
+
+        private static AccountTypeMapper obj;
+
+        private AccountTypeMapper()
         {
             accountTypes.Add(new Tuple<int, char, AccountType>(0, 'I', AccountType.Invalid));
             accountTypes.Add(new Tuple<int, char, AccountType>(1, 'U', AccountType.Individual));
@@ -52,27 +55,35 @@ namespace QueryMaster.Utils
             accountTypes.Add(new Tuple<int, char, AccountType>(10, 'a', AccountType.AnonUser));
         }
 
+        internal static AccountTypeMapper Instance
+        {
+            get
+            {
+                if (obj == null) obj = new AccountTypeMapper();
+                return obj;
+            }
+        }
+
         internal AccountType this[char character]
         {
             get
             {
                 if (character == 'c' || character == 'L')
                     character = 'T';
-                if(accountTypes.Where(x=>x.Item2==character).Count()>0)
+                if (accountTypes.Where(x => x.Item2 == character).Count() > 0)
                     return accountTypes.Where(x => x.Item2 == character).First().Item3;
                 return AccountType.Invalid;
             }
         }
 
-        internal Char this[AccountType type]
+        internal char this[AccountType type]
         {
-            get 
+            get
             {
                 if (accountTypes.Where(x => x.Item3 == type).Count() > 0)
                     return accountTypes.Where(x => x.Item3 == type).First().Item2;
                 return 'I';
             }
         }
-
     }
 }

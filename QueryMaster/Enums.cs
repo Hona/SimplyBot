@@ -1,106 +1,100 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace QueryMaster
+﻿namespace QueryMaster
 {
-
-
     /// <summary>
-    /// Specifies the type of engine used by server
+    ///     Specifies the type of engine used by server
     /// </summary>
     public enum EngineType
     {
         /// <summary>
-        /// Source Engine
+        ///     Source Engine
         /// </summary>
         Source,
+
         /// <summary>
-        /// Gold Source Engine
+        ///     Gold Source Engine
         /// </summary>
         GoldSource
     }
 
-    
 
     /// <summary>
-    /// Specifies the Region
+    ///     Specifies the Region
     /// </summary>
     public enum Region : byte
     {
         /// <summary>
-        /// US East coast 
+        ///     US East coast
         /// </summary>
         US_East_coast,
+
         /// <summary>
-        /// 	US West coast 
+        ///     US West coast
         /// </summary>
         US_West_coast,
+
         /// <summary>
-        /// South America
+        ///     South America
         /// </summary>
         South_America,
+
         /// <summary>
-        /// Europe
+        ///     Europe
         /// </summary>
         Europe,
+
         /// <summary>
-        /// Asia
+        ///     Asia
         /// </summary>
         Asia,
+
         /// <summary>
-        /// Australia
+        ///     Australia
         /// </summary>
         Australia,
+
         /// <summary>
-        /// Middle East 
+        ///     Middle East
         /// </summary>
         Middle_East,
+
         /// <summary>
-        /// Africa
+        ///     Africa
         /// </summary>
         Africa,
+
         /// <summary>
-        /// Rest of the world 
+        ///     Rest of the world
         /// </summary>
         Rest_of_the_world = 0xFF
     }
 
-    enum SocketType
+    internal enum SocketType
     {
         Udp,
         Tcp
     }
 
-    enum ResponseMsgHeader : byte
+    internal enum ResponseMsgHeader : byte
     {
         A2S_INFO = 0x49,
         A2S_INFO_Obsolete = 0x6D,
         A2S_PLAYER = 0x44,
         A2S_RULES = 0x45,
-        A2S_SERVERQUERY_GETCHALLENGE = 0x41,
+        A2S_SERVERQUERY_GETCHALLENGE = 0x41
     }
 
     //Used in Source Rcon
-    enum PacketId
+    internal enum PacketId
     {
         Empty = 10,
         ExecCmd = 11
     }
 
-    enum PacketType
+    internal enum PacketType
     {
         Auth = 3,
         AuthResponse = 2,
         Exec = 2,
         ExecResponse = 0
     }
-
-
-
-
-
-
-
 }

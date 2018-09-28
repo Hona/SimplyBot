@@ -1,5 +1,5 @@
-﻿
-#region License
+﻿#region License
+
 /*
 Copyright (c) 2015 Betson Roy
 
@@ -24,32 +24,32 @@ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 */
+
 #endregion
+
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace QueryMaster.GameServer
 {
     /// <summary>
-    /// Contains extra information about the Ship server.
+    ///     Contains extra information about the Ship server.
     /// </summary>
     [Serializable]
     public class ShipInfo : DataObject
     {
         /// <summary>
-        /// Indicates the game mode.
+        ///     Indicates the game mode.
         /// </summary>
         public ShipMode Mode { get; internal set; }
+
         /// <summary>
-        /// The number of witnesses necessary to have a player arrested. 
+        ///     The number of witnesses necessary to have a player arrested.
         /// </summary>
         public byte Witnesses { get; internal set; }
+
         /// <summary>
-        /// Time (in seconds) before a player is arrested while being witnessed.
+        ///     Time (in seconds) before a player is arrested while being witnessed.
         /// </summary>
         public byte Duration { get; internal set; }
-
     }
 }

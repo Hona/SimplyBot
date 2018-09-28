@@ -1,5 +1,5 @@
-﻿
-#region License
+﻿#region License
+
 /*
 Copyright (c) 2015 Betson Roy
 
@@ -24,95 +24,172 @@ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 */
+
 #endregion
+
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Runtime.Serialization;
 
 namespace QueryMaster
 {
     /// <summary>
-    /// The exception that is thrown by the QueryMaster library.
+    ///     The exception that is thrown by the QueryMaster library.
     /// </summary>
     [Serializable]
     public class QueryMasterException : Exception
     {
-        public QueryMasterException() : base() { }
-        public QueryMasterException(string message) : base(message) { }
-        public QueryMasterException(string message, Exception innerException) : base(message, innerException) { }
-        protected QueryMasterException(SerializationInfo info, StreamingContext context) : base(info, context) { }
+        public QueryMasterException()
+        {
+        }
 
+        public QueryMasterException(string message) : base(message)
+        {
+        }
+
+        public QueryMasterException(string message, Exception innerException) : base(message, innerException)
+        {
+        }
+
+        protected QueryMasterException(SerializationInfo info, StreamingContext context) : base(info, context)
+        {
+        }
     }
+
     /// <summary>
-    /// The exception that is thrown when an invalid message header is received.
+    ///     The exception that is thrown when an invalid message header is received.
     /// </summary>
     [Serializable]
     public class InvalidHeaderException : QueryMasterException
     {
-        public InvalidHeaderException() : base() { }
-        public InvalidHeaderException(string message) : base(message) { }
-        public InvalidHeaderException(string message, Exception innerException) : base(message, innerException) { }
-        protected InvalidHeaderException(SerializationInfo info, StreamingContext context) : base(info, context) { }
+        public InvalidHeaderException()
+        {
+        }
+
+        public InvalidHeaderException(string message) : base(message)
+        {
+        }
+
+        public InvalidHeaderException(string message, Exception innerException) : base(message, innerException)
+        {
+        }
+
+        protected InvalidHeaderException(SerializationInfo info, StreamingContext context) : base(info, context)
+        {
+        }
     }
 
     /// <summary>
-    /// The exception that is thrown when an invalid packet is received.
+    ///     The exception that is thrown when an invalid packet is received.
     /// </summary>
     [Serializable]
     public class InvalidPacketException : QueryMasterException
     {
-        public InvalidPacketException() : base() { }
-        public InvalidPacketException(string message) : base(message) { }
-        public InvalidPacketException(string message, Exception innerException) : base(message, innerException) { }
-        protected InvalidPacketException(SerializationInfo info, StreamingContext context) : base(info, context) { }
+        public InvalidPacketException()
+        {
+        }
+
+        public InvalidPacketException(string message) : base(message)
+        {
+        }
+
+        public InvalidPacketException(string message, Exception innerException) : base(message, innerException)
+        {
+        }
+
+        protected InvalidPacketException(SerializationInfo info, StreamingContext context) : base(info, context)
+        {
+        }
     }
+
     /// <summary>
-    /// The exception that is thrown when there is an error while parsing received packets.
+    ///     The exception that is thrown when there is an error while parsing received packets.
     /// </summary>
     [Serializable]
     public class ParseException : QueryMasterException
     {
-        public ParseException() : base() { }
-        public ParseException(string message) : base(message) { }
-        public ParseException(string message, Exception innerException) : base(message, innerException) { }
-        protected ParseException(SerializationInfo info, StreamingContext context) : base(info, context) { }
+        public ParseException()
+        {
+        }
+
+        public ParseException(string message) : base(message)
+        {
+        }
+
+        public ParseException(string message, Exception innerException) : base(message, innerException)
+        {
+        }
+
+        protected ParseException(SerializationInfo info, StreamingContext context) : base(info, context)
+        {
+        }
     }
+
     /// <summary>
-    /// Base for all GameServer Exception.
+    ///     Base for all GameServer Exception.
     /// </summary>
     [Serializable]
     public class GameServerException : QueryMasterException
     {
-        public GameServerException() : base() { }
-        public GameServerException(string message) : base(message) { }
-        public GameServerException(string message, Exception innerException) : base(message, innerException) { }
-        protected GameServerException(SerializationInfo info, StreamingContext context) : base(info, context) { }
+        public GameServerException()
+        {
+        }
+
+        public GameServerException(string message) : base(message)
+        {
+        }
+
+        public GameServerException(string message, Exception innerException) : base(message, innerException)
+        {
+        }
+
+        protected GameServerException(SerializationInfo info, StreamingContext context) : base(info, context)
+        {
+        }
     }
+
     /// <summary>
-    /// Base for all MasterServer Exception.
+    ///     Base for all MasterServer Exception.
     /// </summary>
     [Serializable]
     public class MasterServerException : QueryMasterException
     {
-        public MasterServerException() : base() { }
-        public MasterServerException(string message) : base(message) { }
-        public MasterServerException(string message, Exception innerException) : base(message, innerException) { }
-        protected MasterServerException(SerializationInfo info, StreamingContext context) : base(info, context) { }
+        public MasterServerException()
+        {
+        }
+
+        public MasterServerException(string message) : base(message)
+        {
+        }
+
+        public MasterServerException(string message, Exception innerException) : base(message, innerException)
+        {
+        }
+
+        protected MasterServerException(SerializationInfo info, StreamingContext context) : base(info, context)
+        {
+        }
     }
+
     /// <summary>
-    /// Base for all Steam Exception.
+    ///     Base for all Steam Exception.
     /// </summary>
     [Serializable]
     public class SteamException : QueryMasterException
     {
-        public SteamException() : base() { }
-        public SteamException(string message) : base(message) { }
-        public SteamException(string message, Exception innerException) : base(message, innerException) { }
-        protected SteamException(SerializationInfo info, StreamingContext context) : base(info, context) { }
+        public SteamException()
+        {
+        }
+
+        public SteamException(string message) : base(message)
+        {
+        }
+
+        public SteamException(string message, Exception innerException) : base(message, innerException)
+        {
+        }
+
+        protected SteamException(SerializationInfo info, StreamingContext context) : base(info, context)
+        {
+        }
     }
-
-
-
 }

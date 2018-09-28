@@ -1,5 +1,5 @@
-﻿
-#region License
+﻿#region License
+
 /*
 Copyright (c) 2015 Betson Roy
 
@@ -24,22 +24,21 @@ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 */
+
 #endregion
+
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace QueryMaster.GameServer
 {
     /// <summary>
-    /// Serves as base class for all log  EventArgs.
+    ///     Serves as base class for all log  EventArgs.
     /// </summary>
     [Serializable]
     public class LogEventArgs : EventArgs
     {
         /// <summary>
-        /// Gets Timestamp.
+        ///     Gets Timestamp.
         /// </summary>
         public DateTime Timestamp { get; internal set; }
     }

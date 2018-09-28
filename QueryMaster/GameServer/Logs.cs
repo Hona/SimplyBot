@@ -1,5 +1,5 @@
-﻿
-#region License
+﻿#region License
+
 /*
 Copyright (c) 2015 Betson Roy
 
@@ -24,44 +24,38 @@ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 */
+
 #endregion
+
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Net.Sockets;
-using System.Text.RegularExpressions;
 using System.Net;
-using System.Globalization;
-using System.Threading;
-using QueryMaster;
-using System.Threading.Tasks;
+using System.Net.Sockets;
+using System.Text;
+
 namespace QueryMaster.GameServer
 {
     /// <summary>
-    /// Encapsulates a method that has a parameter of type string which is the log message received from server.
-    /// Invoked when a log message is received from server.
+    ///     Encapsulates a method that has a parameter of type string which is the log message received from server.
+    ///     Invoked when a log message is received from server.
     /// </summary>
     /// <param name="log">Received log message.</param>
     public delegate void LogCallback(string log);
+
     /// <summary>
-    /// Provides methods to listen to logs and to set up events on desired type of log message.
+    ///     Provides methods to listen to logs and to set up events on desired type of log message.
     /// </summary>
     public class Logs : QueryMasterBase
     {
-        Socket UdpSocket;
-        internal IPEndPoint ServerEndPoint = null;
-        internal LogCallback Callback;
         private readonly int BufferSize = 1400;
-        private byte[] recvData;
-        private int Port;
-        private int HeaderSize = 0;
-        private List<LogEvents> EventsInstanceList = new List<LogEvents>();
-        /// <summary>
-        /// Gets a value that indicates whether its listening.
-        /// </summary>
-        public bool IsListening { get; private set; }
-        
+        internal LogCallback Callback;
+        private readonly List<LogEvents> EventsInstanceList = new List<LogEvents>();
+        private readonly int HeaderSize;
+        private readonly int Port;
+        private readonly byte[] recvData;
+        internal IPEndPoint ServerEndPoint;
+        private Socket UdpSocket;
+
         internal Logs(EngineType type, int port, IPEndPoint serverEndPoint)
         {
             Port = port;
@@ -69,14 +63,23 @@ namespace QueryMaster.GameServer
             recvData = new byte[BufferSize];
             switch (type)
             {
-                case EngineType.GoldSource: HeaderSize = 10; break;
-                case EngineType.Source: HeaderSize = 7; break;
+                case EngineType.GoldSource:
+                    HeaderSize = 10;
+                    break;
+                case EngineType.Source:
+                    HeaderSize = 7;
+                    break;
             }
         }
 
+        /// <summary>
+        ///     Gets a value that indicates whether its listening.
+        /// </summary>
+        public bool IsListening { get; private set; }
+
 
         /// <summary>
-        /// Start listening to logs.
+        ///     Start listening to logs.
         /// </summary>
         public void Start()
         {
@@ -91,7 +94,7 @@ namespace QueryMaster.GameServer
         }
 
         /// <summary>
-        /// Stop listening to logs.
+        ///     Stop listening to logs.
         /// </summary>
         public void Stop()
         {
@@ -102,7 +105,7 @@ namespace QueryMaster.GameServer
         }
 
         /// <summary>
-        /// Listen to logs sent by the server.
+        ///     Listen to logs sent by the server.
         /// </summary>
         /// <param name="callback">Called when a log message is received.</param>
         public void Listen(LogCallback callback)
@@ -112,30 +115,28 @@ namespace QueryMaster.GameServer
         }
 
         /// <summary>
-        /// Returns an instance of <see cref="LogEvents"/> that provides event and filtering mechanism.
+        ///     Returns an instance of <see cref="LogEvents" /> that provides event and filtering mechanism.
         /// </summary>
-        /// <returns>Instance of <see cref="LogEvents"/> </returns>
+        /// <returns>Instance of <see cref="LogEvents" /> </returns>
         public LogEvents GetEventsInstance()
         {
             ThrowIfDisposed();
-            LogEvents eventObj = new LogEvents(ServerEndPoint);
+            var eventObj = new LogEvents(ServerEndPoint);
             EventsInstanceList.Add(eventObj);
             return eventObj;
         }
-       
+
         protected override void Dispose(bool disposing)
         {
-            if(!IsDisposed)
+            if (!IsDisposed)
             {
-                if(disposing)
+                if (disposing)
                 {
                     if (UdpSocket != null)
                         UdpSocket.Close();
-                    foreach (LogEvents i in EventsInstanceList)
-                    {
-                        i.Dispose();
-                    }
+                    foreach (var i in EventsInstanceList) i.Dispose();
                 }
+
                 base.Dispose(disposing);
                 IsDisposed = true;
             }
@@ -143,7 +144,7 @@ namespace QueryMaster.GameServer
 
         private void Recv(IAsyncResult res)
         {
-            int bytesRecv = 0;
+            var bytesRecv = 0;
             try
             {
                 bytesRecv = UdpSocket.EndReceive(res);
@@ -152,18 +153,16 @@ namespace QueryMaster.GameServer
             {
                 return;
             }
+
             if (bytesRecv > HeaderSize)
             {
-                string logLine = Encoding.UTF8.GetString(recvData, HeaderSize, bytesRecv - HeaderSize);
+                var logLine = Encoding.UTF8.GetString(recvData, HeaderSize, bytesRecv - HeaderSize);
                 if (Callback != null)
-                    Callback(String.Copy(logLine));
-                foreach (LogEvents i in EventsInstanceList)
-                {
-                    i.ProcessLog(String.Copy(logLine));
-                }
+                    Callback(string.Copy(logLine));
+                foreach (var i in EventsInstanceList) i.ProcessLog(string.Copy(logLine));
             }
+
             UdpSocket.BeginReceive(recvData, 0, recvData.Length, SocketFlags.None, Recv, null);
         }
-        
     }
 }

@@ -1,5 +1,5 @@
-﻿
-#region License
+﻿#region License
+
 /*
 Copyright (c) 2015 Betson Roy
 
@@ -24,53 +24,58 @@ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 */
+
 #endregion
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace QueryMaster.MasterServer
 {
     /// <summary>
-    /// Specifies the Region.
+    ///     Specifies the Region.
     /// </summary>
-    public enum Region 
+    public enum Region
     {
         /// <summary>
-        /// US East coast 
+        ///     US East coast
         /// </summary>
         US_East_coast,
+
         /// <summary>
-        /// 	US West coast 
+        ///     US West coast
         /// </summary>
         US_West_coast,
+
         /// <summary>
-        /// South America
+        ///     South America
         /// </summary>
         South_America,
+
         /// <summary>
-        /// Europe
+        ///     Europe
         /// </summary>
         Europe,
+
         /// <summary>
-        /// Asia
+        ///     Asia
         /// </summary>
         Asia,
+
         /// <summary>
-        /// Australia
+        ///     Australia
         /// </summary>
         Australia,
+
         /// <summary>
-        /// Middle East 
+        ///     Middle East
         /// </summary>
         Middle_East,
+
         /// <summary>
-        /// Africa
+        ///     Africa
         /// </summary>
         Africa,
+
         /// <summary>
-        /// Rest of the world 
+        ///     Rest of the world
         /// </summary>
         Rest_of_the_world = 0xFF
     }

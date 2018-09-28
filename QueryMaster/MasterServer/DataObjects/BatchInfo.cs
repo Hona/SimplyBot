@@ -1,5 +1,5 @@
-﻿
-#region License
+﻿#region License
+
 /*
 Copyright (c) 2015 Betson Roy
 
@@ -24,44 +24,46 @@ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 */
+
 #endregion
+
+using System;
+using System.Net;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Text;
 
 namespace QueryMaster.MasterServer
 {
     /// <summary>
-    /// Contains information on the batch received from master server.
+    ///     Contains information on the batch received from master server.
     /// </summary>
     [Serializable]
-    public class BatchInfo:DataObject
+    public class BatchInfo : DataObject
     {
-        internal BatchInfo() 
-        { 
-            Converters =new JsonConverter[]{new StringIpEndPointConverter()};
+        internal BatchInfo()
+        {
+            Converters = new JsonConverter[] {new StringIpEndPointConverter()};
         }
+
         /// <summary>
-        /// Master server EndPoint.
+        ///     Master server EndPoint.
         /// </summary>
         public IPEndPoint Source { get; internal set; }
+
         /// <summary>
-        /// Region.
+        ///     Region.
         /// </summary>
         [JsonConverter(typeof(StringEnumConverter))]
         public Region Region { get; internal set; }
+
         /// <summary>
-        /// Received Endpoints.
+        ///     Received Endpoints.
         /// </summary>
         public QueryMasterCollection<IPEndPoint> ReceivedEndpoints { get; internal set; }
+
         /// <summary>
-        /// Whether this is the last batch.
+        ///     Whether this is the last batch.
         /// </summary>
         public bool IsLastBatch { get; internal set; }
-
     }
 }

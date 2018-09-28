@@ -1,5 +1,5 @@
-﻿using SimplyBotUI.Models;
-using Dapper.FluentMap.Mapping;
+﻿using Dapper.FluentMap.Mapping;
+using SimplyBotUI.Models;
 
 namespace SimplyBotUI.Data.Mapping
 {

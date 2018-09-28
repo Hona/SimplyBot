@@ -1,5 +1,5 @@
-﻿
-#region License
+﻿#region License
+
 /*
 Copyright (c) 2015 Betson Roy
 
@@ -24,32 +24,28 @@ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 */
+
 #endregion
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace QueryMaster.GameServer
 {
-
-
     /// <summary>
-    /// Specifies the type of action filter should perform.
+    ///     Specifies the type of action filter should perform.
     /// </summary>
     public enum LogFilterAction
     {
         /// <summary>
-        /// Allow.
+        ///     Allow.
         /// </summary>
         Allow,
+
         /// <summary>
-        /// Block.
+        ///     Block.
         /// </summary>
         Block
     }
 
-    enum ResponseMsgHeader : byte
+    internal enum ResponseMsgHeader : byte
     {
         A2S_INFO = 0x49,
         A2S_INFO_Obsolete = 0x6D,
@@ -71,91 +67,107 @@ namespace QueryMaster.GameServer
         Exec = 2,
         ExecResponse = 1
     }
+
     /// <summary>
-    /// Game Server's type.
+    ///     Game Server's type.
     /// </summary>
     public enum GameServertype
     {
         /// <summary>
-        /// Server returned an invalid value.
+        ///     Server returned an invalid value.
         /// </summary>
         Invalid,
+
         /// <summary>
-        /// Dedicated.
+        ///     Dedicated.
         /// </summary>
         Dedicated,
+
         /// <summary>
-        /// Non Dedicated.
+        ///     Non Dedicated.
         /// </summary>
         NonDedicated,
+
         /// <summary>
-        /// Listen.
+        ///     Listen.
         /// </summary>
         Listen,
+
         /// <summary>
-        /// Source TV.
+        ///     Source TV.
         /// </summary>
         SourceTV,
+
         /// <summary>
-        /// HLTV Server
+        ///     HLTV Server
         /// </summary>
         HLTVServer
     }
+
     /// <summary>
-    /// Server's operating system.
+    ///     Server's operating system.
     /// </summary>
     public enum GameEnvironment
     {
         /// <summary>
-        /// Server returned an invalid value.
+        ///     Server returned an invalid value.
         /// </summary>
         Invalid,
+
         /// <summary>
-        /// Linux.
+        ///     Linux.
         /// </summary>
         Linux,
+
         /// <summary>
-        /// Windows.
+        ///     Windows.
         /// </summary>
         Windows,
+
         /// <summary>
-        /// Mac.
+        ///     Mac.
         /// </summary>
         Mac
     }
+
     /// <summary>
-    /// Ship Mode
+    ///     Ship Mode
     /// </summary>
     public enum ShipMode
     {
         /// <summary>
-        /// Server returned an invalid value.
+        ///     Server returned an invalid value.
         /// </summary>
         Invalid,
+
         /// <summary>
-        /// Hunt.
+        ///     Hunt.
         /// </summary>
         Hunt,
+
         /// <summary>
-        /// Elimination.
+        ///     Elimination.
         /// </summary>
         Elimination,
+
         /// <summary>
-        /// Duel.
+        ///     Duel.
         /// </summary>
         Duel,
+
         /// <summary>
-        /// Deathmatch.
+        ///     Deathmatch.
         /// </summary>
         Deathmatch,
+
         /// <summary>
-        /// VIP Team.
+        ///     VIP Team.
         /// </summary>
         VIPTeam,
+
         /// <summary>
-        /// Team Elimination.
+        ///     Team Elimination.
         /// </summary>
         TeamElimination
     }
-
 }

@@ -1,5 +1,5 @@
-﻿
-#region License
+﻿#region License
+
 /*
 Copyright (c) 2015 Betson Roy
 
@@ -24,37 +24,34 @@ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 */
+
 #endregion
-using Newtonsoft.Json;
+
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using Newtonsoft.Json;
 
 namespace QueryMaster
 {
-    class IntegerTimeSpanConverter : JsonConverter
+    internal class IntegerTimeSpanConverter : JsonConverter
     {
         public override bool CanConvert(Type objectType)
         {
-            return (objectType == typeof(TimeSpan));
+            return objectType == typeof(TimeSpan);
         }
 
-        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+        public override object ReadJson(JsonReader reader, Type objectType, object existingValue,
+            JsonSerializer serializer)
         {
-            string value = reader.Value.ToString();
+            var value = reader.Value.ToString();
             double minutes = 0;
-            TimeSpan timeSpan = TimeSpan.Zero;
-            if (Double.TryParse(value, out minutes))
-            {
-                timeSpan = TimeSpan.FromMinutes(minutes);
-            }
+            var timeSpan = TimeSpan.Zero;
+            if (double.TryParse(value, out minutes)) timeSpan = TimeSpan.FromMinutes(minutes);
             return timeSpan;
         }
 
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
-            TimeSpan timeSpan = (TimeSpan)value;
+            var timeSpan = (TimeSpan) value;
             writer.WriteValue(timeSpan.ToString());
         }
     }

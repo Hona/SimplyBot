@@ -1,5 +1,5 @@
-﻿
-#region License
+﻿#region License
+
 /*
 Copyright (c) 2015 Betson Roy
 
@@ -24,29 +24,29 @@ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 */
+
 #endregion
+
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
 namespace QueryMaster
 {
-   internal class Parser
+    internal class Parser
     {
-        private byte[] Data = null;
         private int CurrentPosition = -1;
-        private int LastPosition=0;
-        internal bool HasUnParsedBytes
-        {
-            get { return CurrentPosition <= LastPosition; }
-        }
+        private readonly byte[] Data;
+        private readonly int LastPosition;
+
         internal Parser(byte[] data)
         {
             Data = data;
             CurrentPosition = -1;
             LastPosition = Data.Length - 1;
         }
+
+        internal bool HasUnParsedBytes => CurrentPosition <= LastPosition;
 
         internal byte ReadByte()
         {
@@ -55,17 +55,16 @@ namespace QueryMaster
                 throw new ParseException("Index was outside the bounds of the byte array.");
 
             return Data[CurrentPosition];
-
         }
 
         internal ushort ReadUShort()
         {
-            ushort num=0;
+            ushort num = 0;
 
             CurrentPosition++;
             if (CurrentPosition + 3 > LastPosition)
                 throw new ParseException("Unable to parse bytes to ushort.");
-            
+
             if (!BitConverter.IsLittleEndian)
                 Array.Reverse(Data, CurrentPosition, 2);
 
@@ -77,7 +76,7 @@ namespace QueryMaster
 
         internal int ReadInt()
         {
-            int num = 0;
+            var num = 0;
 
             CurrentPosition++;
             if (CurrentPosition + 3 > LastPosition)
@@ -128,8 +127,8 @@ namespace QueryMaster
 
         internal string ReadString()
         {
-            string str = string.Empty;
-            int temp = 0;
+            var str = string.Empty;
+            var temp = 0;
 
             CurrentPosition++;
             temp = CurrentPosition;
@@ -141,7 +140,7 @@ namespace QueryMaster
                     throw new ParseException("Unable to parse bytes to string.");
             }
 
-            str= Encoding.UTF8.GetString(Data, temp, CurrentPosition - temp);
+            str = Encoding.UTF8.GetString(Data, temp, CurrentPosition - temp);
 
             return str;
         }
@@ -151,7 +150,6 @@ namespace QueryMaster
             CurrentPosition += count;
             if (CurrentPosition > LastPosition)
                 throw new ParseException("skip count was outside the bounds of the byte array.");
-
         }
 
         internal byte[] GetUnParsedBytes()

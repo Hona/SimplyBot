@@ -1,5 +1,5 @@
-﻿
-#region License
+﻿#region License
+
 /*
 Copyright (c) 2015 Betson Roy
 
@@ -24,19 +24,19 @@ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 */
+
 #endregion
+
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Net;
-using QueryMaster;
+
 namespace QueryMaster.GameServer
 {
-    class RconSource : Rcon
+    internal class RconSource : Rcon
     {
+        private readonly ConnectionInfo ConInfo;
         internal TcpQuery socket;
-        private ConnectionInfo ConInfo;
 
         private RconSource(ConnectionInfo conInfo)
         {
@@ -45,13 +45,13 @@ namespace QueryMaster.GameServer
 
         internal static Rcon Authorize(ConnectionInfo conInfo, string msg)
         {
-
             return new QueryMasterBase().Invoke<Rcon>(() =>
                 {
-                    RconSource obj = new RconSource(conInfo);
+                    var obj = new RconSource(conInfo);
                     obj.socket = new TcpQuery(conInfo);
-                    byte[] recvData = new byte[50];
-                    RconSrcPacket packet = new RconSrcPacket() { Body = msg, Id = (int)PacketId.ExecCmd, Type = (int)PacketType.Auth };
+                    var recvData = new byte[50];
+                    var packet = new RconSrcPacket
+                        {Body = msg, Id = (int) PacketId.ExecCmd, Type = (int) PacketType.Auth};
                     recvData = obj.socket.GetResponse(RconUtil.GetBytes(packet));
                     int header;
                     try
@@ -63,40 +63,36 @@ namespace QueryMaster.GameServer
                         e.Data.Add("ReceivedData", recvData == null ? new byte[1] : recvData);
                         throw;
                     }
-                    if (header != -1)
-                    {
-                        return obj;
-                    }
+
+                    if (header != -1) return obj;
                     return obj;
                 }, conInfo.Retries + 1, null, conInfo.ThrowExceptions);
         }
 
-        public override string SendCommand(string command,bool isMultipacketResponse=false)
+        public override string SendCommand(string command, bool isMultipacketResponse = false)
         {
             ThrowIfDisposed();
-            return Invoke<string>(() => sendCommand(command, isMultipacketResponse), 1, null, ConInfo.ThrowExceptions);
+            return Invoke(() => sendCommand(command, isMultipacketResponse), 1, null, ConInfo.ThrowExceptions);
         }
 
-        private string sendCommand(string command,bool isMultipacketResponse)
+        private string sendCommand(string command, bool isMultipacketResponse)
         {
-            RconSrcPacket senPacket = new RconSrcPacket() { Body = command, Id = (int)PacketId.ExecCmd, Type = (int)PacketType.Exec };
-            List<byte[]> recvData = socket.GetMultiPacketResponse(RconUtil.GetBytes(senPacket));
-            StringBuilder str = new StringBuilder();
+            var senPacket = new RconSrcPacket
+                {Body = command, Id = (int) PacketId.ExecCmd, Type = (int) PacketType.Exec};
+            var recvData = socket.GetMultiPacketResponse(RconUtil.GetBytes(senPacket));
+            var str = new StringBuilder();
             try
             {
-                for (int i = 0; i < recvData.Count; i++)
+                for (var i = 0; i < recvData.Count; i++)
                 {
                     //consecutive rcon command replies start with an empty packet 
-                    if (BitConverter.ToInt32(recvData[i], 4) == (int)PacketId.Empty)
+                    if (BitConverter.ToInt32(recvData[i], 4) == (int) PacketId.Empty)
                         continue;
                     if (recvData[i].Length - BitConverter.ToInt32(recvData[i], 0) == 4)
-                    {
                         str.Append(RconUtil.ProcessPacket(recvData[i]).Body);
-                    }
                     else
-                    {
-                        str.Append(RconUtil.ProcessPacket(recvData[i]).Body + Util.BytesToString(recvData[++i].Take(recvData[i].Length - 2).ToArray()));
-                    }
+                        str.Append(RconUtil.ProcessPacket(recvData[i]).Body +
+                                   Util.BytesToString(recvData[++i].Take(recvData[i].Length - 2).ToArray()));
                 }
             }
             catch (Exception e)
@@ -104,6 +100,7 @@ namespace QueryMaster.GameServer
                 e.Data.Add("ReceivedData", recvData.SelectMany(x => x).ToArray());
                 throw;
             }
+
             return str.ToString();
         }
 
@@ -124,10 +121,8 @@ namespace QueryMaster.GameServer
             if (!IsDisposed)
             {
                 if (disposing)
-                {
                     if (socket != null)
                         socket.Dispose();
-                }
                 base.Dispose(disposing);
                 IsDisposed = true;
             }

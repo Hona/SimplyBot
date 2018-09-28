@@ -1,5 +1,5 @@
-﻿
-#region License
+﻿#region License
+
 /*
 Copyright (c) 2015 Betson Roy
 
@@ -24,25 +24,24 @@ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 */
+
 #endregion
-using Newtonsoft.Json;
+
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using Newtonsoft.Json;
 
 namespace QueryMaster.Steam
 {
     /// <summary>
-    /// Contains response of UpToDateCheck method.
+    ///     Contains response of UpToDateCheck method.
     /// </summary>
     [Serializable]
     public class UpToDateCheckResponse : SteamResponse
     {
         /// <summary>
-        /// Parsed response.
+        ///     Parsed response.
         /// </summary>
-       [JsonProperty("response")]
+        [JsonProperty("response")]
         public UpToDateCheckResponseResponse ParsedResponse { get; internal set; }
     }
 
@@ -50,27 +49,31 @@ namespace QueryMaster.Steam
     public class UpToDateCheckResponseResponse : DataObject
     {
         /// <summary>
-        /// Indicates whether request was successful. 
+        ///     Indicates whether request was successful.
         /// </summary>
         [JsonProperty("success")]
         public bool Success { get; internal set; }
+
         /// <summary>
-        /// Indicates whether the given version number is the most current version. 
+        ///     Indicates whether the given version number is the most current version.
         /// </summary>
         [JsonProperty("up_to_date")]
         public bool IsUpToUpdate { get; internal set; }
+
         /// <summary>
-        /// Indicates whether the given version can be listed in public changelogs.
+        ///     Indicates whether the given version can be listed in public changelogs.
         /// </summary>
         [JsonProperty("version_is_listable")]
         public bool IsVersionListable { get; internal set; }
+
         /// <summary>
-        /// Most current version of the app available(Optional).
+        ///     Most current version of the app available(Optional).
         /// </summary>
         [JsonProperty("required_version")]
         public int? RequiredVersion { get; internal set; }
+
         /// <summary>
-        /// Status message(Optional).
+        ///     Status message(Optional).
         /// </summary>
         [JsonProperty("message")]
         public string Message { get; internal set; }
