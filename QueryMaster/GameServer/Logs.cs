@@ -48,11 +48,11 @@ namespace QueryMaster.GameServer
     public class Logs : QueryMasterBase
     {
         private readonly int BufferSize = 1400;
-        internal LogCallback Callback;
         private readonly List<LogEvents> EventsInstanceList = new List<LogEvents>();
         private readonly int HeaderSize;
         private readonly int Port;
         private readonly byte[] recvData;
+        internal LogCallback Callback;
         internal IPEndPoint ServerEndPoint;
         private Socket UdpSocket;
 

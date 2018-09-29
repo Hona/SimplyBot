@@ -11,14 +11,14 @@ using SimplyBotUI.Models;
 
 namespace SimplyBotUI.Data
 {
-    internal class DataAccess
+    internal class SimplyDataAccess
     {
         private readonly string _mapInfoConnectionString;
         private readonly string _playerRanksConnectionString;
         private MySqlConnection _mapInfoConnection;
         private MySqlConnection _playerRanksConnection;
 
-        internal DataAccess()
+        internal SimplyDataAccess()
         {
             FluentMapper.Initialize(config =>
             {
@@ -170,6 +170,16 @@ namespace SimplyBotUI.Data
                 $@"select * from highscores where timestamp>0 order by timestamp desc limit {count}";
 
             return (await _mapInfoConnection.QueryAsync<HighscoreModel>(query)).ToList();
+        }
+
+        internal async Task<List<PersonalTimeModel>> GetRecentPersonalBests(int count)
+        {
+            await CheckMapInfoConnection();
+
+            var query =
+                $@"select * from personal where timestamp>0 order by timestamp desc limit {count}";
+
+            return (await _mapInfoConnection.QueryAsync<PersonalTimeModel>(query)).ToList();
         }
 
         #endregion

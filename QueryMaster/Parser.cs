@@ -35,9 +35,9 @@ namespace QueryMaster
 {
     internal class Parser
     {
-        private int CurrentPosition = -1;
         private readonly byte[] Data;
         private readonly int LastPosition;
+        private int CurrentPosition = -1;
 
         internal Parser(byte[] data)
         {

@@ -49,17 +49,17 @@ namespace QueryMaster.MasterServer
     public class Server : QueryMasterBase
     {
         private static readonly int BufferSize = 1400;
+        private readonly ConnectionInfo ConInfo;
+        private readonly IPEndPoint SeedEndpoint = new IPEndPoint(IPAddress.Parse("0.0.0.0"), 0);
+        private readonly List<Task> TaskList = new List<Task>();
         private AttemptCallback AttemptCallback;
         private int BatchCount;
         private BatchReceivedCallback Callback;
-        private readonly ConnectionInfo ConInfo;
         private CancellationTokenSource cts;
         private ErrorCallback ErrorCallback;
         private IpFilter filter;
-        private readonly IPEndPoint SeedEndpoint = new IPEndPoint(IPAddress.Parse("0.0.0.0"), 0);
         private IPEndPoint RemoteEndPoint = new IPEndPoint(IPAddress.Any, 0), lastEndPoint;
         private Socket Socket;
-        private readonly List<Task> TaskList = new List<Task>();
 
         internal Server(ConnectionInfo conInfo, AttemptCallback attemptCallback)
         {

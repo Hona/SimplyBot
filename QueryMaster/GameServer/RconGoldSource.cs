@@ -44,8 +44,9 @@ namespace QueryMaster.GameServer
                 0xFF, 0xFF, 0xFF, 0xFF, 0x72, 0x63, 0x6f, 0x6e, 0x20
             }; //+<challenge id>+"<rcon password>"+<value>
 
-        internal string ChallengeId = string.Empty;
         private readonly ConnectionInfo ConInfo;
+
+        internal string ChallengeId = string.Empty;
 
         internal string RConPass = string.Empty;
         internal UdpQuery socket;

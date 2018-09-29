@@ -8,20 +8,22 @@ using SimplyBotUI.Data;
 
 namespace SimplyBotUI.Modules
 {
+    [Summary("Commands that use the database (just jump times/map info), hightower rankings")]
     public class DatabaseModule : ExtraModuleBase
     {
-        private readonly DataAccess _dataAccess;
+        private readonly SimplyDataAccess _simplyDataAccess;
 
-        internal DatabaseModule(DataAccess dataAccess)
+        internal DatabaseModule(SimplyDataAccess simplyDataAccess)
         {
-            _dataAccess = dataAccess;
+            _simplyDataAccess = simplyDataAccess;
         }
 
         [Command("maps")]
+        [Summary("Gets a list of maps containing the keyword")]
         public async Task Maps([Remainder] string map)
         {
-            var result = await _dataAccess.GetMapsContainingName(map);
-            var builder = new EmbedBuilder {Title = map};
+            var result = await _simplyDataAccess.GetMapsContainingName(map);
+            var builder = new EmbedBuilder {Title = $"**{map}**"};
 
             var mapList = string.Join(Environment.NewLine, result);
             builder.WithDescription(mapList != string.Empty ? mapList : "No maps found");
@@ -33,8 +35,8 @@ namespace SimplyBotUI.Modules
         [Summary("Gets map details from a partial/full name")]
         public async Task MapInfo([Remainder] string map)
         {
-            var details = await _dataAccess.GetMapDetails(map);
-            var builder = new EmbedBuilder {Title = details.Map};
+            var details = await _simplyDataAccess.GetMapDetails(map);
+            var builder = new EmbedBuilder {Title = $"**{details.Map}**"};
 
             builder.AddInlineField("Demoman Tier", details.DemomanTier);
             builder.AddInlineField("Soldier Tier", details.SoldierTier);
@@ -53,7 +55,7 @@ namespace SimplyBotUI.Modules
         public async Task GetDemoRecords([Remainder] [Summary("The map name, can be partial")]
             string map)
         {
-            var times = await _dataAccess.GetMapTimes(ClassConstants.Demoman, map);
+            var times = await _simplyDataAccess.GetMapTimes(ClassConstants.Demoman, map);
             await DisplayHighscores(times, map, "demoman");
         }
 
@@ -62,7 +64,7 @@ namespace SimplyBotUI.Modules
         public async Task GetSollyRecords([Remainder] [Summary("The map name, can be partial")]
             string map)
         {
-            var times = await _dataAccess.GetMapTimes(ClassConstants.Soldier, map);
+            var times = await _simplyDataAccess.GetMapTimes(ClassConstants.Soldier, map);
             await DisplayHighscores(times, map, "soldier");
         }
 
@@ -71,7 +73,7 @@ namespace SimplyBotUI.Modules
         public async Task GetConcRecords([Remainder] [Summary("The map name, can be partial")]
             string map)
         {
-            var times = await _dataAccess.GetMapTimes(ClassConstants.Conc, map);
+            var times = await _simplyDataAccess.GetMapTimes(ClassConstants.Conc, map);
             await DisplayHighscores(times, map, "conc");
         }
 
@@ -80,7 +82,7 @@ namespace SimplyBotUI.Modules
         public async Task GetEngiRecords([Remainder] [Summary("The map name, can be partial")]
             string map)
         {
-            var times = await _dataAccess.GetMapTimes(ClassConstants.Engineer, map);
+            var times = await _simplyDataAccess.GetMapTimes(ClassConstants.Engineer, map);
             await DisplayHighscores(times, map, "engineer");
         }
 
@@ -89,7 +91,7 @@ namespace SimplyBotUI.Modules
         public async Task GetPyroRecords([Remainder] [Summary("The map name, can be partial")]
             string map)
         {
-            var times = await _dataAccess.GetMapTimes(ClassConstants.Pyro, map);
+            var times = await _simplyDataAccess.GetMapTimes(ClassConstants.Pyro, map);
             await DisplayHighscores(times, map, "pyro");
         }
 
@@ -98,7 +100,7 @@ namespace SimplyBotUI.Modules
             var sortedResults = results.OrderBy(result => result.RunTime).Take(4).ToList();
 
             var builder = new EmbedBuilder
-                {Title = $"Top {className} times on **{await _dataAccess.GetFullMapName(map)}**"};
+                {Title = $"Top {className} times on **{await _simplyDataAccess.GetFullMapName(map)}**"};
             for (var i = 1; i <= sortedResults.Count; i++)
                 builder.AddField($"#{i} Time",
                     $"**{sortedResults[i - 1].Name}**: {sortedResults[i - 1].GetTimeSpan:c}");
@@ -117,7 +119,7 @@ namespace SimplyBotUI.Modules
         public async Task GetDemoTime(string user, [Remainder] [Summary("The map name, can be partial")]
             string map)
         {
-            var time = await _dataAccess.GetMapTime(ClassConstants.Demoman, map, user);
+            var time = await _simplyDataAccess.GetMapTime(ClassConstants.Demoman, map, user);
             await DisplayHighscore(time, map, "demoman");
         }
 
@@ -126,7 +128,7 @@ namespace SimplyBotUI.Modules
         public async Task GetSollyTime(string user, [Remainder] [Summary("The map name, can be partial")]
             string map)
         {
-            var time = await _dataAccess.GetMapTime(ClassConstants.Soldier, map, user);
+            var time = await _simplyDataAccess.GetMapTime(ClassConstants.Soldier, map, user);
             await DisplayHighscore(time, map, "soldier");
         }
 
@@ -135,7 +137,7 @@ namespace SimplyBotUI.Modules
         public async Task GetConcTime(string user, [Remainder] [Summary("The map name, can be partial")]
             string map)
         {
-            var time = await _dataAccess.GetMapTime(ClassConstants.Conc, map, user);
+            var time = await _simplyDataAccess.GetMapTime(ClassConstants.Conc, map, user);
             await DisplayHighscore(time, map, "conc");
         }
 
@@ -144,14 +146,14 @@ namespace SimplyBotUI.Modules
         public async Task GetPyroTime(string user, [Remainder] [Summary("The map name, can be partial")]
             string map)
         {
-            var time = await _dataAccess.GetMapTime(ClassConstants.Pyro, map, user);
+            var time = await _simplyDataAccess.GetMapTime(ClassConstants.Pyro, map, user);
             await DisplayHighscore(time, map, "pyro");
         }
 
         private async Task DisplayHighscore(HighscoreModel result, string map, string className)
         {
             var builder = new EmbedBuilder
-                {Title = $"**{result.Name}'s** {className} time on **{await _dataAccess.GetFullMapName(map)}**"};
+                {Title = $"**{result.Name}'s** {className} time on **{await _simplyDataAccess.GetFullMapName(map)}**"};
             if (EqualityComparer<HighscoreModel>.Default.Equals(result, default(HighscoreModel)))
                 builder.WithDescription("No time available");
 

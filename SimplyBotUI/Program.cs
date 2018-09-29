@@ -18,7 +18,7 @@ namespace SimplyBotUI
     {
         private DiscordSocketClient _client;
         private CommandService _commands;
-        private DataAccess _dataAccess;
+        private SimplyDataAccess _simplyDataAccess;
         private Timer _rankUpdateTimer;
         private IServiceProvider _services;
 
@@ -37,23 +37,25 @@ namespace SimplyBotUI
         {
             _client = new DiscordSocketClient();
             _commands = new CommandService();
-            _dataAccess = new DataAccess();
+            _simplyDataAccess = new SimplyDataAccess();
 
             AddClientEvents();
 
             await Login();
 
             _services = new ServiceCollection()
-                .AddSingleton(_dataAccess)
+                .AddSingleton(_simplyDataAccess)
                 .AddSingleton(_client)
                 .AddSingleton(this)
+                .AddSingleton(_commands)
+                .AddSingleton(new TempusDataAccess())
                 .BuildServiceProvider();
 
             await InstallCommands();
 
             await _client.StartAsync();
 
-            _rankUpdateTimer = new Timer(UpdateRanks, null, 0, FromMinutes(5));
+            _rankUpdateTimer = new Timer(IntervalFunctions, null, 0, FromMinutes(5));
 
 
             // Block this task until the program is closed.
@@ -69,9 +71,18 @@ namespace SimplyBotUI
 
         private async Task Login()
         {
-            // TODO: Add error handling here
-            var token = File.ReadAllText(Constants.TokenPath);
-            await _client.LoginAsync(TokenType.Bot, token);
+            try
+            {
+                Console.WriteLine(Constants.TokenPath);
+
+                var token = File.ReadAllText(Constants.TokenPath);
+                await _client.LoginAsync(TokenType.Bot, token);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
         }
 
         public async Task InstallCommands()
@@ -104,7 +115,7 @@ namespace SimplyBotUI
 
         private Task Connected()
         {
-            UpdateRanks(null);
+            IntervalFunctions(null);
             return Task.CompletedTask;
         }
 
@@ -114,7 +125,12 @@ namespace SimplyBotUI
             return Task.CompletedTask;
         }
 
-        internal async void UpdateRanks(object state)
+        internal async void IntervalFunctions(object state)
+        {
+            await UpdateRanks();
+        }
+
+        internal async Task UpdateRanks()
         {
             if (!(_client.GetChannel(Constants.RankChannelId) is IMessageChannel channel)) return;
 
@@ -124,6 +140,7 @@ namespace SimplyBotUI
                 await SendTopJumpRanks(channel);
                 await SendTopHightowerRanks(channel);
                 await SendRecentRecords(channel);
+                await SendRecentPersonalBests(channel);
             }
             catch (Exception e)
             {
@@ -146,7 +163,7 @@ namespace SimplyBotUI
             var engiTopString = await GetEngiTopString();
             var pyroTopString = await GetPyroTopString();
 
-            var builder = new EmbedBuilder {Title = "Top Ranked Jumpers"};
+            var builder = new EmbedBuilder {Title = "**Top Ranked Jumpers**"};
             builder.AddInlineField("Overall", overallTopString)
                 .AddInlineField("Soldier", soldierTopString)
                 .AddInlineField("Demoman", demomanTopString)
@@ -157,16 +174,17 @@ namespace SimplyBotUI
             await channel.SendMessageAsync("", embed: builder);
         }
 
+        // TODO: Make all titles bold
         private async Task SendTopHightowerRanks(IMessageChannel channel)
         {
-            var topHightowerScore = await _dataAccess.GetTopHightowerRank(15);
+            var topHightowerScore = await _simplyDataAccess.GetTopHightowerRank(15);
             var topHightowerScoreString = "";
 
             for (var i = 0; i < topHightowerScore.Count; i++)
                 topHightowerScoreString +=
                     $"**__#{i + 1}__**: **__{topHightowerScore[i].Nickname}__** {Math.Round(topHightowerScore[i].Points)} points, **{topHightowerScore[i].Kills} kills**, {topHightowerScore[i].Deaths} deaths, **{Math.Round((double) topHightowerScore[i].Kills / topHightowerScore[i].Deaths, 1)} K/D**, {topHightowerScore[i].Headshots} headshots, **{Math.Round(topHightowerScore[i].Playtime / 60 / 60)} hours**{Environment.NewLine}";
 
-            var builder = new EmbedBuilder {Title = "Top Ranked Hightower Players"};
+            var builder = new EmbedBuilder {Title = "**Top Ranked Hightower Players**"};
 
             builder.WithDescription(topHightowerScoreString)
                 .WithFooter("Updated " + DateTime.Now.ToShortTimeString());
@@ -175,13 +193,29 @@ namespace SimplyBotUI
 
         private async Task SendRecentRecords(IMessageChannel channel)
         {
-            var recentRecords = await _dataAccess.GetRecentRecords(10);
+            var recentRecords = await _simplyDataAccess.GetRecentRecords(10);
             var recentRecordsString = recentRecords.Aggregate("",
                 (currentString, nextHighscore) => currentString +
                                                   $"{ClassConstants.ToString(nextHighscore.Class)} **#{nextHighscore.Position + 1}** on **{nextHighscore.Map}** in **__{nextHighscore.GetTimeSpan:c}__** run by **{nextHighscore.Name}**" +
                                                   Environment.NewLine);
 
-            var builder = new EmbedBuilder {Title = "Recent Map Records"};
+            var builder = new EmbedBuilder {Title = "**Recent Map Records**"};
+
+            builder.WithDescription(recentRecordsString)
+                .WithFooter("Updated " + DateTime.Now.ToShortTimeString());
+            await channel.SendMessageAsync("", embed: builder);
+        }
+
+        private async Task SendRecentPersonalBests(IMessageChannel channel)
+        {
+            // TODO: Rename these
+            var recentPersonalBest = await _simplyDataAccess.GetRecentPersonalBests(15);
+            var recentRecordsString = recentPersonalBest.Aggregate("",
+                (currentString, nextHighscore) => currentString +
+                                                  $"**{nextHighscore.Name}** got a **{ClassConstants.ToString(nextHighscore.Class)}** personal best of **{nextHighscore.GetTimeSpan:c}** on **{nextHighscore.Map}**" +
+                                                  Environment.NewLine);
+
+            var builder = new EmbedBuilder {Title = "**Recent Personal Bests**"};
 
             builder.WithDescription(recentRecordsString)
                 .WithFooter("Updated " + DateTime.Now.ToShortTimeString());
@@ -190,37 +224,37 @@ namespace SimplyBotUI
 
         private async Task<string> GetPyroTopString()
         {
-            var pyroTop = await _dataAccess.GetTopPyro(Constants.TopRankCount);
+            var pyroTop = await _simplyDataAccess.GetTopPyro(Constants.TopRankCount);
             return TopRankToString(pyroTop, "PyroRank");
         }
 
         private async Task<string> GetEngiTopString()
         {
-            var engiTop = await _dataAccess.GetTopEngi(Constants.TopRankCount);
+            var engiTop = await _simplyDataAccess.GetTopEngi(Constants.TopRankCount);
             return TopRankToString(engiTop, "EngineerRank");
         }
 
         private async Task<string> GetConcTopString()
         {
-            var concTop = await _dataAccess.GetTopConc(Constants.TopRankCount);
+            var concTop = await _simplyDataAccess.GetTopConc(Constants.TopRankCount);
             return TopRankToString(concTop, "ConcRank");
         }
 
         private async Task<string> GetDemomanTopString()
         {
-            var demoTop = await _dataAccess.GetTopDemo(Constants.TopRankCount);
+            var demoTop = await _simplyDataAccess.GetTopDemo(Constants.TopRankCount);
             return TopRankToString(demoTop, "DemomanRank");
         }
 
         private async Task<string> GetOverallTopString()
         {
-            var overallTop = await _dataAccess.GetTopOverall(Constants.TopRankCount);
+            var overallTop = await _simplyDataAccess.GetTopOverall(Constants.TopRankCount);
             return TopRankToString(overallTop, "OverallRank");
         }
 
         private async Task<string> GetSoldierTopString()
         {
-            var soldierTop = await _dataAccess.GetTopSolly(Constants.TopRankCount);
+            var soldierTop = await _simplyDataAccess.GetTopSolly(Constants.TopRankCount);
             return TopRankToString(soldierTop, "SoldierRank");
         }
 

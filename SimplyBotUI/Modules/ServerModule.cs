@@ -9,10 +9,12 @@ using Game = QueryMaster.Game;
 
 namespace SimplyBotUI.Modules
 {
+    [Summary("Gets server info")]
     public class ServerModule : ExtraModuleBase
     {
         [Alias("si")]
         [Command("serverinfo")]
+        [Summary("Source engine server info")]
         public async Task JustJumpInfo(string address)
         {
             var ip = address.Split(':')[0];
@@ -27,6 +29,7 @@ namespace SimplyBotUI.Modules
 
         [Alias("mc")]
         [Command("minecraft")]
+        [Summary("Minecraft server info")]
         public async Task Minecraft()
         {
             var ping = await ServerPing.Ping();
@@ -48,6 +51,7 @@ namespace SimplyBotUI.Modules
 
         [Alias("jj")]
         [Command("justjump")]
+        [Summary("JustJust server info")]
         public async Task JustJumpInfo()
         {
             await DisplayInfo(ServerConstants.JustJumpServerIpAddress, ServerConstants.JustJumpServerPort,
@@ -56,6 +60,7 @@ namespace SimplyBotUI.Modules
 
         [Alias("ht")]
         [Command("hightower")]
+        [Summary("Hightower server info")]
         public async Task HighTowerInfo()
         {
             await DisplayInfo(ServerConstants.HightowerServerIpAddress, ServerConstants.HightowerServerPort,
@@ -63,6 +68,7 @@ namespace SimplyBotUI.Modules
         }
 
         [Command("gmod")]
+        [Summary("Gmod server info")]
         public async Task GmodInfo()
         {
             await DisplayInfo(ServerConstants.GmodServerIpAddress, ServerConstants.GmodServerPort, Game.Garrys_Mod);
@@ -84,7 +90,7 @@ namespace SimplyBotUI.Modules
         private async Task ReplyInfo(Server server)
         {
             var info = server.GetInfo();
-            var builder = new EmbedBuilder {Title = info.Name};
+            var builder = new EmbedBuilder {Title = $"**{info.Name}**"};
             builder.AddInlineField("Description", info.Description)
                 .AddInlineField("IP", info.Address)
                 .AddInlineField("Map", info.Map)

@@ -42,6 +42,7 @@ namespace QueryMaster.GameServer
     /// </summary>
     public abstract class Server : QueryMasterBase
     {
+        private readonly EngineType Type;
         internal ConnectionInfo ConInfo;
         private bool IsPlayerChallengeId;
         private bool IsRuleChallengeId;
@@ -50,7 +51,6 @@ namespace QueryMaster.GameServer
         private byte[] PlayerChallengeId;
         private Rcon rcon = null;
         private byte[] RuleChallengeId;
-        private readonly EngineType Type;
 
         internal UdpQuery UdpSocket;
 
