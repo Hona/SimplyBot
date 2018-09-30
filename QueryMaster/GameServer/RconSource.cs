@@ -47,8 +47,7 @@ namespace QueryMaster.GameServer
         {
             return new QueryMasterBase().Invoke<Rcon>(() =>
                 {
-                    var obj = new RconSource(conInfo);
-                    obj.socket = new TcpQuery(conInfo);
+                    var obj = new RconSource(conInfo) {socket = new TcpQuery(conInfo)};
                     var recvData = new byte[50];
                     var packet = new RconSrcPacket
                         {Body = msg, Id = (int) PacketId.ExecCmd, Type = (int) PacketType.Auth};
@@ -60,11 +59,10 @@ namespace QueryMaster.GameServer
                     }
                     catch (Exception e)
                     {
-                        e.Data.Add("ReceivedData", recvData == null ? new byte[1] : recvData);
+                        e.Data.Add("ReceivedData", recvData ?? new byte[1]);
                         throw;
                     }
 
-                    if (header != -1) return obj;
                     return obj;
                 }, conInfo.Retries + 1, null, conInfo.ThrowExceptions);
         }

@@ -157,8 +157,7 @@ namespace QueryMaster.GameServer
             if (bytesRecv > HeaderSize)
             {
                 var logLine = Encoding.UTF8.GetString(recvData, HeaderSize, bytesRecv - HeaderSize);
-                if (Callback != null)
-                    Callback(string.Copy(logLine));
+                Callback?.Invoke(string.Copy(logLine));
                 foreach (var i in EventsInstanceList) i.ProcessLog(string.Copy(logLine));
             }
 

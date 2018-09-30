@@ -7,7 +7,7 @@ using Dapper;
 using Dapper.FluentMap;
 using MySql.Data.MySqlClient;
 using SimplyBotUI.Data.Mapping;
-using SimplyBotUI.Models;
+using SimplyBotUI.Models.Simply;
 
 namespace SimplyBotUI.Data
 {
@@ -28,7 +28,7 @@ namespace SimplyBotUI.Data
                 config.AddMap(new HightowerPlayerMap());
                 config.AddMap(new PersonalTimeMap());
             });
-            var connectionStringLines = File.ReadAllLines(Constants.DatabaseInfoPath);
+            var connectionStringLines = File.ReadAllLines(Constants.Constants.DatabaseInfoPath);
             _mapInfoConnectionString = connectionStringLines[0];
             _playerRanksConnectionString = connectionStringLines[1];
         }

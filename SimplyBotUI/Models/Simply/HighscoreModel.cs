@@ -1,12 +1,13 @@
 ﻿using System;
 
-namespace SimplyBotUI.Models
+namespace SimplyBotUI.Models.Simply
 {
-    internal class PersonalTimeModel
+    internal class HighscoreModel
     {
         public TimeSpan GetTimeSpan => new TimeSpan(0, 0, (int) Math.Truncate(RunTime),
             (int) (RunTime - (int) Math.Truncate(RunTime)));
 
+        public int Position { get; set; }
         public string SteamId { get; set; }
         public string Name { get; set; }
         public double RunTime { get; set; }

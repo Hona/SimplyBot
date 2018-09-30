@@ -20,7 +20,7 @@ namespace SimplyBotUI.Modules
 
         public string GetSummaryString(string summary)
         {
-            return summary == null || summary == "" ? "" : $"({summary})";
+            return string.IsNullOrEmpty(summary) ? "" : $"({summary})";
         }
 
         [Command("stats")]
@@ -42,7 +42,7 @@ namespace SimplyBotUI.Modules
         {
             if (moduleParam == "")
             {
-                var title = $"Help commands: ({Constants.CommandPrefix}help [module])";
+                var title = $"Help commands: ({Constants.Constants.CommandPrefix}help [module])";
                 var text = CommandService.Modules.Where(x => !x.Name.Contains("ModuleBase")).Aggregate("",
                     (current, module) =>
                         current +
@@ -56,7 +56,7 @@ namespace SimplyBotUI.Modules
                 var text = module.Commands.Aggregate("",
                     (current, command) =>
                         current +
-                        $"**__{Constants.CommandPrefix + command.Name}__**{Environment.NewLine}**{command.Summary}**. Parameters: {command.Parameters.Aggregate("", (currentString, nextParameter) => currentString + $"{nextParameter.Name} {GetSummaryString(nextParameter.Summary)}, ").TrimEnd(' ', ',')}{Environment.NewLine}");
+                        $"**__{Constants.Constants.CommandPrefix + command.Name}__**{Environment.NewLine}**{command.Summary}**. Parameters: {command.Parameters.Aggregate("", (currentString, nextParameter) => currentString + $"{nextParameter.Name} {GetSummaryString(nextParameter.Summary)}, ").TrimEnd(' ', ',')}{Environment.NewLine}");
                 await ReplyEmbed(EmbedHelper.CreateEmbed(title, text));
             }
         }

@@ -5,8 +5,9 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using SimplyBotUI.Constants;
 using SimplyBotUI.Minecraft.Payloads;
-using SimplyBotUI.Models;
+using SimplyBotUI.Models.Simply;
 
 namespace SimplyBotUI.Minecraft
 {

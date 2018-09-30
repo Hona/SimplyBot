@@ -1,4 +1,4 @@
-﻿namespace SimplyBotUI.Models
+﻿namespace SimplyBotUI.Models.Simply
 {
     internal class JumpRankModel
     {

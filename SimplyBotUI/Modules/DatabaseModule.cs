@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Discord;
 using Discord.Commands;
 using SimplyBotUI.Data;
+using SimplyBotUI.Models.Simply;
 
 namespace SimplyBotUI.Modules
 {

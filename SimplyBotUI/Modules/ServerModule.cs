@@ -4,6 +4,7 @@ using Discord;
 using Discord.Commands;
 using QueryMaster;
 using QueryMaster.GameServer;
+using SimplyBotUI.Constants;
 using SimplyBotUI.Minecraft;
 using Game = QueryMaster.Game;
 
@@ -15,7 +16,7 @@ namespace SimplyBotUI.Modules
         [Alias("si")]
         [Command("serverinfo")]
         [Summary("Source engine server info")]
-        public async Task JustJumpInfo(string address)
+        public async Task ServerInfo(string address)
         {
             var ip = address.Split(':')[0];
             if (!ushort.TryParse(address.Split(':')[1], out var port))
@@ -24,13 +25,19 @@ namespace SimplyBotUI.Modules
                 return;
             }
 
-            await DisplayInfo(ip, port);
+            await ReplyEmbed(GetEmbedBuilder(ip, port));
         }
 
         [Alias("mc")]
         [Command("minecraft")]
         [Summary("Minecraft server info")]
         public async Task Minecraft()
+        {
+            var builder = await GetMinecraftEmbed();
+            await ReplyEmbed(builder);
+        }
+
+        public async Task<EmbedBuilder> GetMinecraftEmbed()
         {
             var ping = await ServerPing.Ping();
             var builder = new EmbedBuilder();
@@ -46,7 +53,7 @@ namespace SimplyBotUI.Modules
             builder.WithTitle(ping.Motd);
             builder.AddField("Players Online", $"{ping.PlayersOnline}/{ping.PlayersMax}");
             if (ping.OnlinePlayerList != null) builder.AddField("Players", string.Join(", ", ping.OnlinePlayerList));
-            await ReplyEmbed(builder);
+            return builder;
         }
 
         [Alias("jj")]
@@ -54,43 +61,57 @@ namespace SimplyBotUI.Modules
         [Summary("JustJust server info")]
         public async Task JustJumpInfo()
         {
-            await DisplayInfo(ServerConstants.JustJumpServerIpAddress, ServerConstants.JustJumpServerPort,
-                Game.Team_Fortress_2);
+            await ReplyEmbed(JustJumpEmbed);
         }
+
+        public EmbedBuilder JustJumpEmbed => GetEmbedBuilder(ServerConstants.JustJumpServerIpAddress,
+            ServerConstants.JustJumpServerPort,
+            Game.Team_Fortress_2);
 
         [Alias("ht")]
         [Command("hightower")]
         [Summary("Hightower server info")]
         public async Task HighTowerInfo()
         {
-            await DisplayInfo(ServerConstants.HightowerServerIpAddress, ServerConstants.HightowerServerPort,
-                Game.Team_Fortress_2);
+            await ReplyEmbed(HightowerEmbed);
         }
+
+        public EmbedBuilder HightowerEmbed => GetEmbedBuilder(ServerConstants.HightowerServerIpAddress,
+            ServerConstants.HightowerServerPort,
+            Game.Team_Fortress_2);
 
         [Command("gmod")]
         [Summary("Gmod server info")]
         public async Task GmodInfo()
         {
-            await DisplayInfo(ServerConstants.GmodServerIpAddress, ServerConstants.GmodServerPort, Game.Garrys_Mod);
+            await ReplyEmbed(GmodEmbed);
         }
 
-        private async Task DisplayInfo(string ip, ushort port)
+        public EmbedBuilder GmodEmbed => GetEmbedBuilder(ServerConstants.GmodServerIpAddress,
+            ServerConstants.GmodServerPort, Game.Garrys_Mod);
+        private EmbedBuilder GetEmbedBuilder(string ip, ushort port)
         {
             var server = ServerQuery.GetServerInstance(EngineType.Source, ip, port, sendTimeout: 1000,
                 receiveTimeout: 1000, throwExceptions: true);
-            await ReplyInfo(server);
+            return GetSourceServerReplyEmbed(server);
         }
 
-        private async Task DisplayInfo(string ip, ushort port, Game game)
+        private EmbedBuilder GetEmbedBuilder(string ip, ushort port, Game game)
         {
             var server = ServerQuery.GetServerInstance(game, ip, port, receiveTimeout: 1000, throwExceptions: true);
-            await ReplyInfo(server);
+            return GetSourceServerReplyEmbed(server);
         }
 
         private async Task ReplyInfo(Server server)
         {
+            var builder = GetSourceServerReplyEmbed(server);
+            await ReplyEmbed(builder);
+        }
+
+        private EmbedBuilder GetSourceServerReplyEmbed(Server server)
+        {
             var info = server.GetInfo();
-            var builder = new EmbedBuilder {Title = $"**{info.Name}**"};
+            var builder = new EmbedBuilder { Title = $"**{info.Name}**" };
             builder.AddInlineField("Description", info.Description)
                 .AddInlineField("IP", info.Address)
                 .AddInlineField("Map", info.Map)
@@ -101,7 +122,7 @@ namespace SimplyBotUI.Modules
                     server.GetPlayers().OrderBy(x => x.Name).Aggregate("",
                             (currentString, nextPlayer) => currentString + "**" + nextPlayer.Name + "**" + ", ")
                         .TrimEnd(',', ' '));
-            await ReplyEmbed(builder);
+            return builder;
         }
     }
 }

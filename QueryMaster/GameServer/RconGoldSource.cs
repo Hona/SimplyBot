@@ -96,7 +96,7 @@ namespace QueryMaster.GameServer
             }
             catch (Exception e)
             {
-                e.Data.Add("ReceivedData", recvData == null ? new byte[1] : recvData);
+                e.Data.Add("ReceivedData", recvData ?? new byte[1]);
                 throw;
             }
 
@@ -117,7 +117,7 @@ namespace QueryMaster.GameServer
                     }
                     catch (Exception e)
                     {
-                        e.Data.Add("ReceivedData", recvData == null ? new byte[1] : recvData);
+                        e.Data.Add("ReceivedData", recvData ?? new byte[1]);
                         throw;
                     }
 

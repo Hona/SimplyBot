@@ -3,13 +3,18 @@ using System.Threading.Tasks;
 using Discord;
 using Discord.Commands;
 
-namespace SimplyBotUI
+namespace SimplyBotUI.Modules
 {
     public class ExtraModuleBase : ModuleBase
     {
         public async Task ReplyNewEmbed(string text)
         {
-            await ReplyEmbed(EmbedHelper.CreateEmbed(text));
+            var parts = text.SplitInParts(2000);
+            foreach (var part in parts)
+            {
+                await ReplyEmbed(EmbedHelper.CreateEmbed(part));
+                await Task.Delay(250);
+            }
         }
 
         public async Task ReplyEmbed(Embed embed)

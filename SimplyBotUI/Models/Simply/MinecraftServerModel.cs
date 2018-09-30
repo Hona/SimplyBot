@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace SimplyBotUI.Models
+namespace SimplyBotUI.Models.Simply
 {
     internal class MinecraftServerModel
     {

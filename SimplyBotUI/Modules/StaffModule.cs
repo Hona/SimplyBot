@@ -21,7 +21,7 @@ namespace SimplyBotUI.Modules
         [Summary("Sends an embed into the updates channel")]
         public async Task SendUpdate(string title, [Remainder] string description)
         {
-            if (_client.GetChannel(Constants.UpdateChannelId) is IMessageChannel channel)
+            if (_client.GetChannel(Constants.Constants.UpdateChannelId) is IMessageChannel channel)
                 await channel.SendMessageAsync("",
                     embed: EmbedHelper.CreateEmbed($"**__[{title.ToUpper()}]__**", description, Color.Green));
         }

@@ -1,4 +1,4 @@
-﻿namespace SimplyBotUI
+﻿namespace SimplyBotUI.Constants
 {
     internal static class ServerConstants
     {
