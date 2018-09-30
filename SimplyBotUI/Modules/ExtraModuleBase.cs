@@ -7,6 +7,7 @@ namespace SimplyBotUI.Modules
 {
     public class ExtraModuleBase : ModuleBase
     {
+        // TODO: Check that this is consistent
         public async Task ReplyNewEmbed(string text)
         {
             var parts = text.SplitInParts(2000);

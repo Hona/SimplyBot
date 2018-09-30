@@ -21,7 +21,7 @@ namespace SimplyBotUI.Updaters
 
             try
             {
-                await DeleteMessages(channel);
+                await DeleteAllMessages(channel);
             }
             catch (Exception)
             {

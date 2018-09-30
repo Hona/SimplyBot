@@ -11,7 +11,6 @@
 
         internal static string ToString(int value)
         {
-            // TODO: Add emoji to this class
             switch (value)
             {
                 case 0: return "Soldier";

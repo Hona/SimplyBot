@@ -8,7 +8,6 @@ namespace SimplyBotUI.Modules
 {
     public class DiscordModule : ExtraModuleBase
     {
-        // TODO: Add functions to get all discord info (user info, server info, role info, channel)
         [Command("roleinfo")]
         public async Task GetRoleInfo(string roleParam)
         {

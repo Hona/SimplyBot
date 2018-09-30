@@ -18,10 +18,7 @@ namespace SimplyBotUI.Modules
         public string Uptime =>
             $"{(DateTime.Now - Process.GetCurrentProcess().StartTime).Days}d {(DateTime.Now - Process.GetCurrentProcess().StartTime).Hours}h {(DateTime.Now - Process.GetCurrentProcess().StartTime).Minutes}m {(DateTime.Now - Process.GetCurrentProcess().StartTime).Seconds}s";
 
-        public string GetSummaryString(string summary)
-        {
-            return string.IsNullOrEmpty(summary) ? "" : $"({summary})";
-        }
+        public string GetSummaryString(string summary) => string.IsNullOrEmpty(summary) ? "" : $"({summary})";
 
         [Command("stats")]
         [Summary("Gets various bot-related stats")]

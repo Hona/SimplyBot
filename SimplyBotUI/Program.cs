@@ -23,18 +23,12 @@ namespace SimplyBotUI
         private StatusUpdater _statusUpdater;
         private TempusDataAccess _tempusDataAccess;
 
-        private int FromMinutes(int minutes)
-        {
-            return 1000 * 60 * minutes;
-        }
+        private static int FromMinutes(int minutes) => 1000 * 60 * minutes;
 
         // Starts the program as an async instance
-        public static void Main(string[] args)
-        {
-            new Program().MainAsync().GetAwaiter().GetResult();
-        }
+        public static void Main(string[] args) => new Program().MainAsync().GetAwaiter().GetResult();
 
-        public async Task MainAsync()
+        private async Task MainAsync()
         {
             _client = new DiscordSocketClient(new DiscordSocketConfig {AlwaysDownloadUsers = true});
             _commands = new CommandService(new CommandServiceConfig {DefaultRunMode = RunMode.Async});
@@ -47,6 +41,20 @@ namespace SimplyBotUI
 
             await Login();
 
+            BuildServiceProvider();
+
+            await InstallCommands();
+
+            await _client.StartAsync();
+
+            _rankUpdateTimer = new Timer(IntervalFunctions, null, 0, FromMinutes(5));
+
+            // Block this task until the program is closed.
+            await Task.Delay(-1);
+        }
+
+        private void BuildServiceProvider()
+        {
             _services = new ServiceCollection()
                 .AddSingleton(_simplyDataAccess)
                 .AddSingleton(_client)
@@ -55,15 +63,6 @@ namespace SimplyBotUI
                 .AddSingleton(_tempusDataAccess)
                 .BuildServiceProvider();
 
-            await InstallCommands();
-
-            await _client.StartAsync();
-
-            _rankUpdateTimer = new Timer(IntervalFunctions, null, 0, FromMinutes(5));
-
-
-            // Block this task until the program is closed.
-            await Task.Delay(-1);
         }
 
         private void AddClientEvents()

@@ -11,7 +11,7 @@ using SimplyBotUI.Models.Simply;
 
 namespace SimplyBotUI.Data
 {
-    internal class SimplyDataAccess
+    public class SimplyDataAccess
     {
         private readonly string _mapInfoConnectionString;
         private readonly string _playerRanksConnectionString;
@@ -20,6 +20,7 @@ namespace SimplyBotUI.Data
 
         internal SimplyDataAccess()
         {
+            // Initialise the class mappings
             FluentMapper.Initialize(config =>
             {
                 config.AddMap(new HighscoreMap());
@@ -28,6 +29,8 @@ namespace SimplyBotUI.Data
                 config.AddMap(new HightowerPlayerMap());
                 config.AddMap(new PersonalTimeMap());
             });
+
+            // Get connection strings from file
             var connectionStringLines = File.ReadAllLines(Constants.Constants.DatabaseInfoPath);
             _mapInfoConnectionString = connectionStringLines[0];
             _playerRanksConnectionString = connectionStringLines[1];
@@ -35,34 +38,34 @@ namespace SimplyBotUI.Data
 
         private async Task OpenMapInfoConnection()
         {
-            _mapInfoConnection = new MySqlConnection(_mapInfoConnectionString);
+            if (_mapInfoConnection == null) _mapInfoConnection = new MySqlConnection(_mapInfoConnectionString);
             await _mapInfoConnection.OpenAsync();
         }
 
 
         private async Task CheckMapInfoConnection()
         {
-            if (_mapInfoConnection == null || _mapInfoConnection.State == ConnectionState.Closed)
+            if (_mapInfoConnection == null || _mapInfoConnection.State == ConnectionState.Closed || _mapInfoConnection.State == ConnectionState.Broken)
                 await OpenMapInfoConnection();
         }
 
         private async Task OpenPlayerRanksConnection()
         {
-            _playerRanksConnection = new MySqlConnection(_playerRanksConnectionString);
+            if (_playerRanksConnection == null) _playerRanksConnection = new MySqlConnection(_playerRanksConnectionString);
             await _playerRanksConnection.OpenAsync();
         }
 
 
         private async Task CheckPlayerRankConnection()
         {
-            if (_playerRanksConnection == null || _playerRanksConnection.State == ConnectionState.Closed)
+            if (_playerRanksConnection == null || _playerRanksConnection.State == ConnectionState.Closed || _playerRanksConnection.State == ConnectionState.Broken)
                 await OpenPlayerRanksConnection();
         }
 
-        internal void Close()
+        internal async Task Close()
         {
-            // TODO: Find a closing event to hook this to
-            _mapInfoConnection.Close();
+            if (_mapInfoConnection != null) await _mapInfoConnection.CloseAsync();
+            if (_playerRanksConnection != null) await _playerRanksConnection.CloseAsync();
         }
 
         #region MapInfo Queries
@@ -71,7 +74,9 @@ namespace SimplyBotUI.Data
         {
             await CheckMapInfoConnection();
 
-            return (await _mapInfoConnection.QueryAsync(query)).ToList();
+            var result = (await _mapInfoConnection.QueryAsync(query)).ToList();
+            await Close();
+            return result;
         }
 
         internal async Task<List<HighscoreModel>> GetMapTimes(int classValue, string mapName)
@@ -79,35 +84,44 @@ namespace SimplyBotUI.Data
             await CheckMapInfoConnection();
 
             var query =
-                @"select * from highscores where timestamp>0 and class=@ClassValue and map like @MapName '%@mapName%'";
+                @"select * from highscores where timestamp>0 and class=@ClassValue and map like CONCAT('%', @MapName, '%')";
             var param = new
             {
                 ClassValue = classValue,
-                MapName = $"'%{mapName}%'"
+                MapName = mapName
             };
-            return (await _mapInfoConnection.QueryAsync<HighscoreModel>(query, param)).ToList();
+            var result = (await _mapInfoConnection.QueryAsync<HighscoreModel>(query, param)).ToList();
+            await Close();
+            return result;
         }
 
         internal async Task<string> GetFullMapName(string partialName)
         {
             await CheckMapInfoConnection();
-            var query = @"select map from details where map like @PartialName";
-            var param = new {PartialName = $"'%{partialName}%'"};
-            return (await _mapInfoConnection.QueryAsync<string>(query, param)).First();
+            var query = @"select map from details where map like CONCAT('%', @PartialName, '%')";
+            var param = new {PartialName = partialName};
+            var result = (await _mapInfoConnection.QueryAsync<string>(query, param)).First();
+            await Close();
+            return result;
         }
 
         internal async Task<List<string>> GetMapsContainingName(string partialName)
         {
             await CheckMapInfoConnection();
-            var query = @"select map from details where map like @PartialName";
-            var param = new {PartialName = $"'%{partialName}%'"};
+            var query = "select map from details where map like CONCAT('%', @PartialName, '%')";
+            var param = new {PartialName = partialName};
             var output = (await _mapInfoConnection.QueryAsync<DetailsModel>(query, param)).ToList()
                 .ConvertAll(x => x.Map)
                 .ToList();
+
+            await Close();
+
             if (output.Count < 30) return output;
+
             var extraCount = output.Count - 30;
             output = output.Take(30).ToList();
             output.Add($"{extraCount} more...");
+
             return output;
         }
 
@@ -116,23 +130,31 @@ namespace SimplyBotUI.Data
             await CheckMapInfoConnection();
 
             var query =
-                "select * from highscores where timestamp>0 and class=@ClassValue and map like @MapName and name like @User";
+                "select * from highscores where timestamp>0 and class=@ClassValue and map like CONCAT('%', @MapName, '%') and name like CONCAT('%', @User, '%')";
             var param = new
             {
                 ClassValue = classValue,
-                MapName = $"'%{mapName}%'",
-                User = $"'%{user}%'"
+                MapName = mapName,
+                User = user
             };
-            return (await _mapInfoConnection.QueryAsync<HighscoreModel>(query, param)).OrderBy(time => time.RunTime)
+            var result = (await _mapInfoConnection.QueryAsync<HighscoreModel>(query, param)).OrderBy(time => time.RunTime)
                 .FirstOrDefault();
+            await Close();
+            return result;
         }
 
         internal async Task<DetailsModel> GetMapDetails(string partialName)
         {
             await CheckMapInfoConnection();
-            var query = @"select * from details where map like @PartialName";
-            var param = new {PartialName = $"'%{partialName}%'"};
+            var query = @"select * from details where map like CONCAT('%', @PartialName, '%')";
+            var param = new
+            {
+                PartialName = partialName
+            };
             var result = (await _mapInfoConnection.QueryAsync<DetailsModel>(query, param)).First();
+
+            await Close();
+
             return result;
         }
 
@@ -171,8 +193,11 @@ namespace SimplyBotUI.Data
             await CheckMapInfoConnection();
 
             var query = $@"select * from JumpRanks order by {type} desc limit {count}";
-            var result = await _mapInfoConnection.QueryAsync<JumpRankModel>(query);
-            return result.ToList();
+            var result = (await _mapInfoConnection.QueryAsync<JumpRankModel>(query)).ToList();
+
+            await Close();
+
+            return result;
         }
 
         internal async Task<List<HighscoreModel>> GetRecentRecords(int count)
@@ -182,7 +207,11 @@ namespace SimplyBotUI.Data
             var query =
                 $@"select * from highscores where timestamp>0 order by timestamp desc limit {count}";
 
-            return (await _mapInfoConnection.QueryAsync<HighscoreModel>(query)).ToList();
+            var result = (await _mapInfoConnection.QueryAsync<HighscoreModel>(query)).ToList();
+
+            await Close();
+
+            return result;
         }
 
         internal async Task<List<PersonalTimeModel>> GetRecentPersonalBests(int count)
@@ -192,7 +221,11 @@ namespace SimplyBotUI.Data
             var query =
                 $@"select * from personal where timestamp>0 order by timestamp desc limit {count}";
 
-            return (await _mapInfoConnection.QueryAsync<PersonalTimeModel>(query)).ToList();
+            var result = (await _mapInfoConnection.QueryAsync<PersonalTimeModel>(query)).ToList();
+
+            await Close();
+
+            return result;
         }
 
         #endregion
@@ -203,7 +236,11 @@ namespace SimplyBotUI.Data
         {
             await CheckPlayerRankConnection();
 
-            return (await _playerRanksConnection.QueryAsync(query)).ToList();
+            var result = (await _playerRanksConnection.QueryAsync(query)).ToList();
+
+            await Close();
+
+            return result;
         }
 
         internal async Task<List<HightowerPlayerModel>> GetTopHightowerRank(int count)
@@ -212,7 +249,11 @@ namespace SimplyBotUI.Data
 
             var query = $@"select * from players order by points desc limit {count}";
 
-            return (await _playerRanksConnection.QueryAsync<HightowerPlayerModel>(query)).ToList();
+            var result = (await _playerRanksConnection.QueryAsync<HightowerPlayerModel>(query)).ToList();
+
+            await Close();
+
+            return result;
         }
 
         #endregion

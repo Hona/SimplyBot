@@ -26,7 +26,7 @@ namespace SimplyBotUI.Updaters
 
             try
             {
-                await DeleteMessages(channel);
+                await DeleteAllMessages(channel);
                 await SendTopJumpRanks(channel);
                 await SendTopHightowerRanks(channel);
                 await SendRecentRecords(channel);

@@ -42,9 +42,8 @@ namespace QueryMaster.GameServer
         internal IPEndPoint Address;
         protected internal int BufferSize;
 
-        internal ServerSocket(ConnectionInfo conInfo, ProtocolType type, EngineType engineType)
+        internal ServerSocket(ConnectionInfo conInfo, ProtocolType type)
         {
-            EngineType = engineType;
             switch (type)
             {
                 case ProtocolType.Tcp:
