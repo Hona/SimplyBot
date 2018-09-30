@@ -38,12 +38,13 @@ namespace QueryMaster.GameServer
     {
         internal static readonly int UdpBufferSize = 1400;
         internal static readonly int TcpBufferSize = 4110;
-        private readonly object LockObj = new object();
+        private readonly object _lockObj = new object();
         internal IPEndPoint Address;
         protected internal int BufferSize;
 
-        internal ServerSocket(ConnectionInfo conInfo, ProtocolType type)
+        internal ServerSocket(ConnectionInfo conInfo, ProtocolType type, EngineType engineType)
         {
+            EngineType = engineType;
             switch (type)
             {
                 case ProtocolType.Tcp:
@@ -75,7 +76,7 @@ namespace QueryMaster.GameServer
         internal int SendData(byte[] data)
         {
             ThrowIfDisposed();
-            lock (LockObj)
+            lock (_lockObj)
             {
                 return Socket.Send(data);
             }
@@ -86,7 +87,7 @@ namespace QueryMaster.GameServer
             ThrowIfDisposed();
             var recvData = new byte[BufferSize];
             var recv = 0;
-            lock (LockObj)
+            lock (_lockObj)
             {
                 recv = Socket.Receive(recvData);
             }
@@ -99,7 +100,7 @@ namespace QueryMaster.GameServer
             if (!IsDisposed)
             {
                 if (disposing)
-                    lock (LockObj)
+                    lock (_lockObj)
                     {
                         if (Socket != null)
                             Socket.Close();

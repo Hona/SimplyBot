@@ -161,11 +161,6 @@ namespace SimplyBotUI.Minecraft
             _buffer.AddRange(buffer);
         }
 
-        internal static void Write(byte b)
-        {
-            _stream.WriteByte(b);
-        }
-
         internal static void Flush(int id = -1)
         {
             var buffer = _buffer.ToArray();

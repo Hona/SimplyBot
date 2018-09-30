@@ -13,11 +13,13 @@ namespace SimplyBotUI.Updaters
     {
         private readonly DiscordSocketClient _client;
         private readonly SimplyDataAccess _simplyDataAccess;
+
         public RankUpdater(DiscordSocketClient client, SimplyDataAccess simplyDataAccess)
         {
             _client = client;
             _simplyDataAccess = simplyDataAccess;
         }
+
         internal async Task UpdateRanks()
         {
             if (!(_client.GetChannel(Constants.Constants.RankChannelId) is IMessageChannel channel)) return;
@@ -45,7 +47,7 @@ namespace SimplyBotUI.Updaters
             var engiTopString = await GetEngiTopString();
             var pyroTopString = await GetPyroTopString();
 
-            var builder = new EmbedBuilder { Title = "**Top Ranked Jumpers**" };
+            var builder = new EmbedBuilder {Title = "**Top Ranked Jumpers**"};
             builder.AddInlineField("Overall", overallTopString)
                 .AddInlineField("Soldier", soldierTopString)
                 .AddInlineField("Demoman", demomanTopString)
@@ -55,6 +57,7 @@ namespace SimplyBotUI.Updaters
                 .WithFooter("Updated " + DateTime.Now.ToShortTimeString());
             await channel.SendMessageAsync("", embed: builder);
         }
+
         private async Task SendTopHightowerRanks(IMessageChannel channel)
         {
             var topHightowerScore = await _simplyDataAccess.GetTopHightowerRank(15);
@@ -62,9 +65,9 @@ namespace SimplyBotUI.Updaters
 
             for (var i = 0; i < topHightowerScore.Count; i++)
                 topHightowerScoreString +=
-                    $"**__#{i + 1}__**: **__{topHightowerScore[i].Nickname}__** {Math.Round(topHightowerScore[i].Points)} points, **{topHightowerScore[i].Kills} kills**, {topHightowerScore[i].Deaths} deaths, **{Math.Round((double)topHightowerScore[i].Kills / topHightowerScore[i].Deaths, 1)} K/D**, {topHightowerScore[i].Headshots} headshots, **{Math.Round(topHightowerScore[i].Playtime / 60 / 60)} hours**{Environment.NewLine}";
+                    $"**__#{i + 1}__**: **__{topHightowerScore[i].Nickname}__** {Math.Round(topHightowerScore[i].Points)} points, **{topHightowerScore[i].Kills} kills**, {topHightowerScore[i].Deaths} deaths, **{Math.Round((double) topHightowerScore[i].Kills / topHightowerScore[i].Deaths, 1)} K/D**, {topHightowerScore[i].Headshots} headshots, **{Math.Round(topHightowerScore[i].Playtime / 60 / 60)} hours**{Environment.NewLine}";
 
-            var builder = new EmbedBuilder { Title = "**Top Ranked Hightower Players**" };
+            var builder = new EmbedBuilder {Title = "**Top Ranked Hightower Players**"};
 
             builder.WithDescription(topHightowerScoreString)
                 .WithFooter("Updated " + DateTime.Now.ToShortTimeString());
@@ -79,7 +82,7 @@ namespace SimplyBotUI.Updaters
                                                   $"{ClassConstants.ToString(nextHighscore.Class)} **#{nextHighscore.Position + 1}** on **{nextHighscore.Map}** in **__{nextHighscore.GetTimeSpan:c}__** run by **{nextHighscore.Name}**" +
                                                   Environment.NewLine);
 
-            var builder = new EmbedBuilder { Title = "**Recent Map Records**" };
+            var builder = new EmbedBuilder {Title = "**Recent Map Records**"};
 
             builder.WithDescription(recentRecordsString)
                 .WithFooter("Updated " + DateTime.Now.ToShortTimeString());
@@ -95,7 +98,7 @@ namespace SimplyBotUI.Updaters
                                                   $"**{nextHighscore.Name}** got a **{ClassConstants.ToString(nextHighscore.Class)}** personal best of **{nextHighscore.GetTimeSpan:c}** on **{nextHighscore.Map}**" +
                                                   Environment.NewLine);
 
-            var builder = new EmbedBuilder { Title = "**Recent Personal Bests**" };
+            var builder = new EmbedBuilder {Title = "**Recent Personal Bests**"};
 
             builder.WithDescription(recentRecordsString)
                 .WithFooter("Updated " + DateTime.Now.ToShortTimeString());
@@ -155,6 +158,5 @@ namespace SimplyBotUI.Updaters
         {
             return src.GetType().GetProperty(propName).GetValue(src, null);
         }
-
     }
 }

@@ -6,6 +6,7 @@ namespace SimplyBotUI.Models.Tempus
     {
         [JsonProperty(PropertyName = "demoman")]
         public int Demoman { get; set; }
+
         [JsonProperty(PropertyName = "soldier")]
         public int Soldier { get; set; }
     }

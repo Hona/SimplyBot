@@ -9,7 +9,6 @@ using Discord.WebSocket;
 using Microsoft.Extensions.DependencyInjection;
 using SimplyBotUI.Data;
 using SimplyBotUI.Updaters;
-using SimplyBotUI.Constants;
 
 namespace SimplyBotUI
 {
@@ -17,12 +16,12 @@ namespace SimplyBotUI
     {
         private DiscordSocketClient _client;
         private CommandService _commands;
-        private SimplyDataAccess _simplyDataAccess;
+        private RankUpdater _rankUpdater;
         private Timer _rankUpdateTimer;
         private IServiceProvider _services;
-        private TempusDataAccess _tempusDataAccess;
-        private RankUpdater _rankUpdater;
+        private SimplyDataAccess _simplyDataAccess;
         private StatusUpdater _statusUpdater;
+        private TempusDataAccess _tempusDataAccess;
 
         private int FromMinutes(int minutes)
         {
@@ -37,8 +36,8 @@ namespace SimplyBotUI
 
         public async Task MainAsync()
         {
-            _client = new DiscordSocketClient(new DiscordSocketConfig{AlwaysDownloadUsers = true});
-            _commands = new CommandService(new CommandServiceConfig{DefaultRunMode = RunMode.Async});
+            _client = new DiscordSocketClient(new DiscordSocketConfig {AlwaysDownloadUsers = true});
+            _commands = new CommandService(new CommandServiceConfig {DefaultRunMode = RunMode.Async});
             _simplyDataAccess = new SimplyDataAccess();
             _tempusDataAccess = new TempusDataAccess();
             _rankUpdater = new RankUpdater(_client, _simplyDataAccess);
@@ -55,7 +54,7 @@ namespace SimplyBotUI
                 .AddSingleton(_commands)
                 .AddSingleton(_tempusDataAccess)
                 .BuildServiceProvider();
-            
+
             await InstallCommands();
 
             await _client.StartAsync();
@@ -79,9 +78,7 @@ namespace SimplyBotUI
         private Task UserJoined(SocketGuildUser user)
         {
             if (user.Guild.Id == Constants.Constants.SimplyGuildId)
-            {
                 user.AddRoleAsync(user.Guild.GetRole(Constants.Constants.SimplyMemberRoleId));
-            }
 
             return Task.CompletedTask;
         }
@@ -91,6 +88,7 @@ namespace SimplyBotUI
             IntervalFunctions(null);
             return Task.CompletedTask;
         }
+
         private async Task Login()
         {
             try
@@ -154,11 +152,5 @@ namespace SimplyBotUI
             await _rankUpdater.UpdateRanks();
             await _statusUpdater.UpdateStatus();
         }
-
-
-
-
-
-       
     }
 }

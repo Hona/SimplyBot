@@ -8,11 +8,13 @@ namespace SimplyBotUI.Updaters
 {
     internal class StatusUpdater : BaseUpdater
     {
-        private DiscordSocketClient _client;
+        private readonly DiscordSocketClient _client;
+
         public StatusUpdater(DiscordSocketClient client)
         {
             _client = client;
         }
+
         internal async Task UpdateStatus()
         {
             if (!(_client.GetChannel(Constants.Constants.StatusChannelId) is IMessageChannel channel)) return;
@@ -20,16 +22,15 @@ namespace SimplyBotUI.Updaters
             try
             {
                 await DeleteMessages(channel);
-                
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 await channel.SendMessageAsync("Could not delete messages");
             }
+
             try
             {
                 await SendStatus(channel);
-
             }
             catch (Exception e)
             {
@@ -40,10 +41,15 @@ namespace SimplyBotUI.Updaters
         private async Task SendStatus(IMessageChannel channel)
         {
             var serverModule = new ServerModule();
-            await channel.SendMessageAsync("", embed: serverModule.JustJumpEmbed.WithFooter("Updated " + DateTime.Now.ToShortTimeString()));
-            await channel.SendMessageAsync("", embed: serverModule.HightowerEmbed.WithFooter("Updated " + DateTime.Now.ToShortTimeString()));
-            await channel.SendMessageAsync("", embed: serverModule.GmodEmbed.WithFooter("Updated " + DateTime.Now.ToShortTimeString()));
-            await channel.SendMessageAsync("",embed: (await serverModule.GetMinecraftEmbed()).WithFooter("Updated " + DateTime.Now.ToShortTimeString()));
+            await channel.SendMessageAsync("",
+                embed: serverModule.JustJumpEmbed.WithFooter("Updated " + DateTime.Now.ToShortTimeString()));
+            await channel.SendMessageAsync("",
+                embed: serverModule.HightowerEmbed.WithFooter("Updated " + DateTime.Now.ToShortTimeString()));
+            await channel.SendMessageAsync("",
+                embed: serverModule.GmodEmbed.WithFooter("Updated " + DateTime.Now.ToShortTimeString()));
+            await channel.SendMessageAsync("",
+                embed: (await serverModule.GetMinecraftEmbed()).WithFooter(
+                    "Updated " + DateTime.Now.ToShortTimeString()));
         }
     }
 }

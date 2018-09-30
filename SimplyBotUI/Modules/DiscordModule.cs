@@ -15,7 +15,7 @@ namespace SimplyBotUI.Modules
             var roles = Context.Guild.Roles.Where(x => x.Name.ToLower().Contains(roleParam.ToLower()));
             foreach (var role in roles.Take(5))
             {
-                var builder = new EmbedBuilder{Title = "@"+role.Name};
+                var builder = new EmbedBuilder {Title = "@" + role.Name};
                 builder.AddInlineField("Separate from @everyone", role.IsHoisted);
                 builder.AddInlineField("Mentionable", role.IsMentionable);
                 builder.AddInlineField("Hierarchical position", role.Position);
@@ -27,33 +27,33 @@ namespace SimplyBotUI.Modules
                 await ReplyEmbed(builder);
             }
         }
+
         [Command("userinfo")]
         public async Task GetUserInfo(SocketGuildUser userParam)
         {
-
-                var builder = new EmbedBuilder { Title = "@" + userParam.Username };
-            builder.AddInlineField("Username", userParam.Username + "#" + userParam.DiscriminatorValue + NicknameString(userParam.Nickname));
+            var builder = new EmbedBuilder {Title = "@" + userParam.Username};
+            builder.AddInlineField("Username",
+                userParam.Username + "#" + userParam.DiscriminatorValue + NicknameString(userParam.Nickname));
             builder.AddInlineField("Bot", userParam.IsBot);
-            if (userParam.JoinedAt != null) builder.AddInlineField("Joined Server", userParam.JoinedAt.Value.ToString("d"));
+            if (userParam.JoinedAt != null)
+                builder.AddInlineField("Joined Server", userParam.JoinedAt.Value.ToString("d"));
             builder.AddInlineField("Created Account", userParam.CreatedAt.ToString("d"));
             if (userParam.Game != null) builder.AddInlineField("Game", userParam.Game.Value.Name);
-            builder.AddInlineField("Roles", userParam.Roles.Aggregate("", (currentString, nextRole) => currentString + nextRole.Mention + ", "));
+            builder.AddInlineField("Roles",
+                userParam.Roles.Aggregate("", (currentString, nextRole) => currentString + nextRole.Mention + ", "));
             builder.AddInlineField("Permissions", PermissionsToString(userParam.GuildPermissions));
             if (userParam.Hierarchy == int.MaxValue)
             {
-                builder.WithColor(Context.Guild.Roles.OrderByDescending(x=>x.Position).First().Color);
+                builder.WithColor(Context.Guild.Roles.OrderByDescending(x => x.Position).First().Color);
             }
             else
             {
                 var role = Context.Guild.Roles.First(x => x.Position == userParam.Hierarchy);
-                if (role != null)
-                {
-                    builder.WithColor(role.Color);
-                }
+                if (role != null) builder.WithColor(role.Color);
             }
-                builder.WithFooter(userParam.Id.ToString());
-                await ReplyEmbed(builder);
-           
+
+            builder.WithFooter(userParam.Id.ToString());
+            await ReplyEmbed(builder);
         }
 
         [Command("serverinfo")]
@@ -72,7 +72,17 @@ namespace SimplyBotUI.Modules
                 await ReplyEmbed(builder);
             }
         }
-        private string NicknameString(string nickname)=> string.IsNullOrWhiteSpace(nickname) ? string.Empty:$" ({nickname})";
-        private string PermissionsToString(GuildPermissions perms) => perms.ToList().Aggregate("", (currentString, nextPermission) => currentString + nextPermission.ToString() + ", ").TrimEnd(' ', ',');
+
+        private string NicknameString(string nickname)
+        {
+            return string.IsNullOrWhiteSpace(nickname) ? string.Empty : $" ({nickname})";
+        }
+
+        private string PermissionsToString(GuildPermissions perms)
+        {
+            return perms.ToList()
+                .Aggregate("", (currentString, nextPermission) => currentString + nextPermission.ToString() + ", ")
+                .TrimEnd(' ', ',');
+        }
     }
 }

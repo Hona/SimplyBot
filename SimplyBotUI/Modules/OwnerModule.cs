@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Discord;
 using Discord.Commands;
-using Discord.WebSocket;
 using SimplyBotUI.Data;
 
 namespace SimplyBotUI.Modules
@@ -12,9 +10,8 @@ namespace SimplyBotUI.Modules
     [RequireOwner]
     public class OwnerModule : ExtraModuleBase
     {
-        private readonly SimplyDataAccess _simplyDataAccess;
         private readonly Program _program;
-        public DiscordSocketClient Client;
+        private readonly SimplyDataAccess _simplyDataAccess;
 
         internal OwnerModule(Program program, SimplyDataAccess simplyDataAccess)
         {
@@ -47,12 +44,13 @@ namespace SimplyBotUI.Modules
             await ReplyNewEmbed(string.Join(string.Empty, result));
             await ReplyNewEmbed("Done");
         }
+
         [Command("giveall")]
         [Summary("Executes unescaped SQL queries on the PlayerRanks database")]
         public async Task GiveAll([Remainder] string roleParam)
         {
             var role = Context.Guild.Roles.First(x => x.Name.ToLower().Contains(roleParam.ToLower()));
-            var users = (await Context.Guild.GetUsersAsync()).Where(x=>!x.IsBot).ToList();
+            var users = (await Context.Guild.GetUsersAsync()).Where(x => !x.IsBot).ToList();
             var count = 0;
             foreach (var user in users)
             {

@@ -326,7 +326,6 @@ namespace QueryMaster.GameServer
         {
             byte[] recvData = null;
             List<PlayerInfo> players = null;
-            Parser parser = null;
             try
             {
                 if (IsObsolete)
@@ -347,7 +346,7 @@ namespace QueryMaster.GameServer
                             Type);
                 }
 
-                parser = new Parser(recvData);
+                var parser = new Parser(recvData);
                 if (parser.ReadByte() != (byte) ResponseMsgHeader.A2S_PLAYER)
                     throw new InvalidHeaderException("A2S_PLAYER message header is not valid");
                 int playerCount = parser.ReadByte();
@@ -378,13 +377,11 @@ namespace QueryMaster.GameServer
         private byte[] GetPlayerChallengeId()
         {
             byte[] recvBytes = null;
-            byte header = 0;
-            Parser parser = null;
             recvBytes = UdpSocket.GetResponse(QueryMsg.PlayerChallengeQuery, Type);
             try
             {
-                parser = new Parser(recvBytes);
-                header = parser.ReadByte();
+                var parser = new Parser(recvBytes);
+                var header = parser.ReadByte();
                 switch (header)
                 {
                     case (byte) ResponseMsgHeader.A2S_SERVERQUERY_GETCHALLENGE:
@@ -422,7 +419,6 @@ namespace QueryMaster.GameServer
         {
             byte[] recvData = null;
             List<Rule> rules = null;
-            Parser parser = null;
             try
             {
                 if (IsObsolete)
@@ -443,7 +439,7 @@ namespace QueryMaster.GameServer
                             Type);
                 }
 
-                parser = new Parser(recvData);
+                var parser = new Parser(recvData);
                 if (parser.ReadByte() != (byte) ResponseMsgHeader.A2S_RULES)
                     throw new InvalidHeaderException("A2S_RULES message header is not valid");
 
@@ -464,13 +460,11 @@ namespace QueryMaster.GameServer
         private byte[] GetRuleChallengeId()
         {
             byte[] recvBytes = null;
-            byte header = 0;
-            Parser parser = null;
             recvBytes = UdpSocket.GetResponse(QueryMsg.RuleChallengeQuery, Type);
             try
             {
-                parser = new Parser(recvBytes);
-                header = parser.ReadByte();
+                var parser = new Parser(recvBytes);
+                var header = parser.ReadByte();
 
                 switch (header)
                 {

@@ -79,23 +79,30 @@ namespace SimplyBotUI.Data
             await CheckMapInfoConnection();
 
             var query =
-                $@"select * from highscores where timestamp>0 and class={classValue} and map like '%{mapName}%'";
-
-            return (await _mapInfoConnection.QueryAsync<HighscoreModel>(query)).ToList();
+                @"select * from highscores where timestamp>0 and class=@ClassValue and map like @MapName '%@mapName%'";
+            var param = new
+            {
+                ClassValue = classValue,
+                MapName = $"'%{mapName}%'"
+            };
+            return (await _mapInfoConnection.QueryAsync<HighscoreModel>(query, param)).ToList();
         }
 
         internal async Task<string> GetFullMapName(string partialName)
         {
             await CheckMapInfoConnection();
-            var query = $@"select map from details where map like '%{partialName}%'";
-            return (await _mapInfoConnection.QueryAsync<string>(query)).First();
+            var query = @"select map from details where map like @PartialName";
+            var param = new {PartialName = $"'%{partialName}%'"};
+            return (await _mapInfoConnection.QueryAsync<string>(query, param)).First();
         }
 
         internal async Task<List<string>> GetMapsContainingName(string partialName)
         {
             await CheckMapInfoConnection();
-            var query = $@"select map from details where map like '%{partialName}%'";
-            var output = (await _mapInfoConnection.QueryAsync<DetailsModel>(query)).ToList().ConvertAll(x => x.Map)
+            var query = @"select map from details where map like @PartialName";
+            var param = new {PartialName = $"'%{partialName}%'"};
+            var output = (await _mapInfoConnection.QueryAsync<DetailsModel>(query, param)).ToList()
+                .ConvertAll(x => x.Map)
                 .ToList();
             if (output.Count < 30) return output;
             var extraCount = output.Count - 30;
@@ -109,17 +116,23 @@ namespace SimplyBotUI.Data
             await CheckMapInfoConnection();
 
             var query =
-                $@"select * from highscores where timestamp>0 and class={classValue} and map like '%{mapName}%' and name like '%{user}%'";
-
-            return (await _mapInfoConnection.QueryAsync<HighscoreModel>(query)).OrderBy(time => time.RunTime)
+                "select * from highscores where timestamp>0 and class=@ClassValue and map like @MapName and name like @User";
+            var param = new
+            {
+                ClassValue = classValue,
+                MapName = $"'%{mapName}%'",
+                User = $"'%{user}%'"
+            };
+            return (await _mapInfoConnection.QueryAsync<HighscoreModel>(query, param)).OrderBy(time => time.RunTime)
                 .FirstOrDefault();
         }
 
         internal async Task<DetailsModel> GetMapDetails(string partialName)
         {
             await CheckMapInfoConnection();
-            var query = $@"select * from details where map like '%{partialName}%'";
-            var result = (await _mapInfoConnection.QueryAsync<DetailsModel>(query)).First();
+            var query = @"select * from details where map like @PartialName";
+            var param = new {PartialName = $"'%{partialName}%'"};
+            var result = (await _mapInfoConnection.QueryAsync<DetailsModel>(query, param)).First();
             return result;
         }
 

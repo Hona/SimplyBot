@@ -13,6 +13,17 @@ namespace SimplyBotUI.Modules
     [Summary("Gets server info")]
     public class ServerModule : ExtraModuleBase
     {
+        public EmbedBuilder JustJumpEmbed => GetEmbedBuilder(ServerConstants.JustJumpServerIpAddress,
+            ServerConstants.JustJumpServerPort,
+            Game.Team_Fortress_2);
+
+        public EmbedBuilder HightowerEmbed => GetEmbedBuilder(ServerConstants.HightowerServerIpAddress,
+            ServerConstants.HightowerServerPort,
+            Game.Team_Fortress_2);
+
+        public EmbedBuilder GmodEmbed => GetEmbedBuilder(ServerConstants.GmodServerIpAddress,
+            ServerConstants.GmodServerPort, Game.Garrys_Mod);
+
         [Alias("si")]
         [Command("serverinfo")]
         [Summary("Source engine server info")]
@@ -64,10 +75,6 @@ namespace SimplyBotUI.Modules
             await ReplyEmbed(JustJumpEmbed);
         }
 
-        public EmbedBuilder JustJumpEmbed => GetEmbedBuilder(ServerConstants.JustJumpServerIpAddress,
-            ServerConstants.JustJumpServerPort,
-            Game.Team_Fortress_2);
-
         [Alias("ht")]
         [Command("hightower")]
         [Summary("Hightower server info")]
@@ -76,10 +83,6 @@ namespace SimplyBotUI.Modules
             await ReplyEmbed(HightowerEmbed);
         }
 
-        public EmbedBuilder HightowerEmbed => GetEmbedBuilder(ServerConstants.HightowerServerIpAddress,
-            ServerConstants.HightowerServerPort,
-            Game.Team_Fortress_2);
-
         [Command("gmod")]
         [Summary("Gmod server info")]
         public async Task GmodInfo()
@@ -87,8 +90,6 @@ namespace SimplyBotUI.Modules
             await ReplyEmbed(GmodEmbed);
         }
 
-        public EmbedBuilder GmodEmbed => GetEmbedBuilder(ServerConstants.GmodServerIpAddress,
-            ServerConstants.GmodServerPort, Game.Garrys_Mod);
         private EmbedBuilder GetEmbedBuilder(string ip, ushort port)
         {
             var server = ServerQuery.GetServerInstance(EngineType.Source, ip, port, sendTimeout: 1000,
@@ -102,16 +103,10 @@ namespace SimplyBotUI.Modules
             return GetSourceServerReplyEmbed(server);
         }
 
-        private async Task ReplyInfo(Server server)
-        {
-            var builder = GetSourceServerReplyEmbed(server);
-            await ReplyEmbed(builder);
-        }
-
         private EmbedBuilder GetSourceServerReplyEmbed(Server server)
         {
             var info = server.GetInfo();
-            var builder = new EmbedBuilder { Title = $"**{info.Name}**" };
+            var builder = new EmbedBuilder {Title = $"**{info.Name}**"};
             builder.AddInlineField("Description", info.Description)
                 .AddInlineField("IP", info.Address)
                 .AddInlineField("Map", info.Map)
